@@ -1,0 +1,35 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "lab-002",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "posts/002-form-abstractions-dx/lab",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "5174",
+        "--strictPort"
+      ],
+      "port": 5174
+    },
+    {
+      "name": "lab-site",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "site",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4322",
+        "--strictPort"
+      ],
+      "port": 4322
+    }
+  ]
+}

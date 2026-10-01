@@ -1,0 +1,16 @@
+node_modules/
+dist/
+build/
+.vite/
+.cache/
+coverage/
+*.log
+.DS_Store
+.env
+.env.local
+.astro/
+.wrangler/
+
+# ferramentas locais, fora do repositório
+.impeccable/
+graphify-out/
