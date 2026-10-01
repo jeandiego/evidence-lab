@@ -1,0 +1,65 @@
+{
+  "generatedAt": "2026-09-30T20:56:46.795Z",
+  "environment": {
+    "node": "v24.11.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "groups": {
+    "reactAbstractedConsumer": {
+      "files": {
+        "src/react/App.tsx": 21
+      },
+      "total": 21
+    },
+    "reactAbstractedInfrastructure": {
+      "files": {
+        "src/react/create-form.tsx": 42
+      },
+      "total": 42
+    },
+    "reactUncontrolledConsumer": {
+      "files": {
+        "src/react-uncontrolled/App.tsx": 21
+      },
+      "total": 21
+    },
+    "reactUncontrolledInfrastructure": {
+      "files": {
+        "src/react-uncontrolled/create-form.tsx": 43
+      },
+      "total": 43
+    },
+    "validationSchema": {
+      "files": {
+        "src/react/schema.ts": 8
+      },
+      "total": 8
+    },
+    "reactRHFZodConsumer": {
+      "files": {
+        "src/react-rhf/App.tsx": 26
+      },
+      "total": 26
+    },
+    "reactUseStateConsumerAndValidation": {
+      "files": {
+        "src/react-state/App.tsx": 37
+      },
+      "total": 37
+    },
+    "vueConsumerAndValidation": {
+      "files": {
+        "src/vue/App.vue": 27
+      },
+      "total": 27
+    },
+    "angularConsumerAndValidation": {
+      "files": {
+        "src/angular/template.html": 20,
+        "src/angular/main.ts": 23
+      },
+      "total": 43
+    }
+  }
+}

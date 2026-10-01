@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fdfcfc" />
+    <meta name="description" content="Um laboratório visual sobre APIs declarativas para formulários React e o custo da infraestrutura que as sustenta." />
+    <title>Form abstractions & DX · Evidence Lab</title>
+  </head>
+  <body>
+    <header class="hero site-container">
+      <p class="hero__kicker">Evidence Lab <span aria-hidden="true">·</span> Post 002</p>
+      <h1>Formulários React<br />com <em>uma API declarativa.</em></h1>
+      <div class="hero__support">
+        <p>Compare o que sai das telas, o que passa para a infraestrutura e quanto essa escolha custa.</p>
+        <span>React · Vue · AngularJS</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="workbench site-container" aria-labelledby="workbench-title">
+        <header class="workbench__header">
+          <div><p class="technical-label">Objeto em inspeção</p><h2 id="workbench-title">Formulário de criação de conta</h2></div>
+          <p class="workbench__contract"><span></span> 5 campos · 1 contrato · 6 implementações</p>
+        </header>
+
+        <div class="workspace">
+          <nav class="strategy-nav" aria-label="Estratégias de implementação" role="tablist" aria-orientation="vertical">
+            <p class="technical-label strategy-nav__label">Estratégias</p>
+            <button class="strategy-nav__item" id="tab-react-abstracted" data-strategy="react-abstracted" role="tab" aria-selected="true" aria-controls="panel-react-abstracted"><span class="strategy-nav__index">01</span><span><strong>React · abstraído</strong><small>Controller</small></span><b>21 LOC</b></button>
+            <button class="strategy-nav__item" id="tab-react-uncontrolled" data-strategy="react-uncontrolled" role="tab" aria-selected="false" aria-controls="panel-react-uncontrolled" tabindex="-1"><span class="strategy-nav__index">02</span><span><strong>React · abstraído</strong><small>uncontrolled</small></span><b>21 LOC</b></button>
+            <button class="strategy-nav__item" id="tab-react-rhf" data-strategy="react-rhf" role="tab" aria-selected="false" aria-controls="panel-react-rhf" tabindex="-1"><span class="strategy-nav__index">03</span><span><strong>React · RHF + Zod</strong><small>ecossistema direto</small></span><b>34 LOC</b></button>
+            <button class="strategy-nav__item" id="tab-react-state" data-strategy="react-state" role="tab" aria-selected="false" aria-controls="panel-react-state" tabindex="-1"><span class="strategy-nav__index">04</span><span><strong>React · useState</strong><small>sem libs de formulário</small></span><b>37 LOC</b></button>
+            <button class="strategy-nav__item" id="tab-vue" data-strategy="vue" role="tab" aria-selected="false" aria-controls="panel-vue" tabindex="-1"><span class="strategy-nav__index">05</span><span><strong>Vue</strong><small>progressive framework</small></span><b>27 LOC</b></button>
+            <button class="strategy-nav__item" id="tab-angular" data-strategy="angular" role="tab" aria-selected="false" aria-controls="panel-angular" tabindex="-1"><span class="strategy-nav__index">06</span><span><strong>AngularJS</strong><small>framework legado</small></span><b>43 LOC</b></button>
+            <footer class="strategy-nav__note"><span>LOC</span><p>Linhas localizam o custo.<br />Não medem produtividade.</p></footer>
+          </nav>
+
+          <div class="stage">
+            <header class="stage__header">
+              <div><p class="technical-label" id="active-layer">Camada · abstração local</p><h3 id="active-title">React · abstraído</h3></div>
+              <p id="active-description">A aplicação declara intenção. Registro, estado e erro ficam atrás da interface.</p>
+            </header>
+
+            <div class="stage__preview" id="strategy-preview">
+              <div class="form-canvas">
+                <div class="form-canvas__topline"><span>Preview funcional</span><span id="active-file">App.tsx</span></div>
+                <div class="strategy-panel" id="panel-react-abstracted" data-panel="react-abstracted" role="tabpanel" aria-labelledby="tab-react-abstracted"><div id="react-abstracted-root"></div></div>
+                <div class="strategy-panel" id="panel-react-uncontrolled" data-panel="react-uncontrolled" role="tabpanel" aria-labelledby="tab-react-uncontrolled" hidden><div id="react-uncontrolled-root"></div></div>
+                <div class="strategy-panel" id="panel-react-rhf" data-panel="react-rhf" role="tabpanel" aria-labelledby="tab-react-rhf" hidden><div id="react-rhf-root"></div></div>
+                <div class="strategy-panel" id="panel-react-state" data-panel="react-state" role="tabpanel" aria-labelledby="tab-react-state" hidden><div id="react-state-root"></div></div>
+                <div class="strategy-panel" id="panel-vue" data-panel="vue" role="tabpanel" aria-labelledby="tab-vue" hidden><div id="vue-root"></div></div>
+                <div class="strategy-panel" id="panel-angular" data-panel="angular" role="tabpanel" aria-labelledby="tab-angular" hidden><div id="angular-root"></div></div>
+              </div>
+              <aside class="strategy-summary" aria-labelledby="summary-title">
+                <p class="technical-label">Raio-x da estratégia</p><h4 id="summary-title">Onde cada decisão mora</h4>
+                <dl id="strategy-facts"></dl>
+                <div class="strategy-summary__verdict"><span>Leitura</span><p id="strategy-verdict"></p></div>
+              </aside>
+            </div>
+
+            <section class="inspection" aria-labelledby="inspection-title">
+              <div class="inspection__tabs" role="tablist" aria-label="Camadas de inspeção">
+                <p class="technical-label" id="inspection-title">Bancada de inspeção</p>
+                <button data-inspection="code" role="tab" aria-selected="true" aria-controls="inspection-content">Código</button>
+                <button data-inspection="dependencies" role="tab" aria-selected="false" aria-controls="inspection-content" tabindex="-1">Dependências</button>
+                <button data-inspection="diagram" role="tab" aria-selected="false" aria-controls="inspection-content" tabindex="-1">Diagrama</button>
+                <button data-inspection="behavior" role="tab" aria-selected="false" aria-controls="inspection-content" tabindex="-1">Comportamento</button>
+              </div>
+              <div class="inspection__body" id="inspection-content" role="tabpanel" aria-live="polite"></div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="frameworks site-container" aria-labelledby="frameworks-title">
+        <header class="frameworks__header"><p class="technical-label">Recorte complementar</p><h2 id="frameworks-title">Quando o framework já escolheu parte do caminho.</h2><p>Vue e AngularJS reduzem decisões diferentes. Nenhum rótulo substitui olhar para o que realmente vem no núcleo.</p></header>
+        <div class="frameworks__comparison">
+          <article><span class="framework-mark framework-mark--vue" aria-hidden="true">V</span><div><h3>Vue</h3><p><code>v-model</code> resolve o binding. O contrato de validação continua na aplicação ou no ecossistema.</p></div><dl><div><dt>Binding</dt><dd>nativo</dd></div><div><dt>Validação</dt><dd>aplicação</dd></div><div><dt>Autoria</dt><dd>27 LOC</dd></div></dl></article>
+          <article><span class="framework-mark framework-mark--angular" aria-hidden="true">A</span><div><h3>AngularJS</h3><p><code>ngModel</code> e o form controller entregam binding, estado e validação declarativa.</p></div><dl><div><dt>Binding</dt><dd>nativo</dd></div><div><dt>Validação</dt><dd>framework</dd></div><div><dt>Autoria</dt><dd>43 LOC</dd></div></dl></article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="page-footer site-container"><span>Evidence Lab · 002</span><p>Complexidade não desaparece. Ela muda de endereço.</p></footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+<div ng-controller="FormController as vm">
+  <header class="implementation-header">
+    <span class="badge">Framework legado</span><h2>AngularJS</h2>
+    <p><code>ngModel</code> + estado/validação nativos do form controller.</p>
+  </header>
+  <form name="accountForm" ng-submit="vm.submit(accountForm)" novalidate>
+    <label>Nome<input name="name" ng-model="vm.model.name" required ng-minlength="2" /></label>
+    <p class="error" ng-if="accountForm.name.$touched && accountForm.name.$invalid">Use pelo menos 2 caracteres.</p>
+    <label>E-mail<input name="email" type="email" ng-model="vm.model.email" required /></label>
+    <p class="error" ng-if="accountForm.email.$touched && accountForm.email.$invalid">Informe um e-mail válido.</p>
+    <label>Papel<select name="role" ng-model="vm.model.role" required><option value="">Selecione</option><option value="dev">Developer</option><option value="lead">Tech Lead</option><option value="manager">Engineering Manager</option></select></label>
+    <p class="error" ng-if="accountForm.role.$touched && accountForm.role.$invalid">Selecione um papel.</p>
+    <label>Bio<textarea name="bio" ng-model="vm.model.bio" ng-maxlength="120"></textarea></label>
+    <p class="error" ng-if="accountForm.bio.$touched && accountForm.bio.$invalid">Use no máximo 120 caracteres.</p>
+    <label class="check"><input name="terms" type="checkbox" ng-model="vm.model.terms" required /> Aceito os termos</label>
+    <p class="error" ng-if="accountForm.terms.$touched && accountForm.terms.$invalid">Aceite os termos.</p>
+    <button type="submit">Criar conta</button>
+    <pre ng-if="vm.result">{{ vm.result | json }}</pre>
+  </form>
+</div>

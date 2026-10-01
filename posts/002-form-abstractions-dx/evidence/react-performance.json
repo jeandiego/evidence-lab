@@ -1,0 +1,519 @@
+{
+  "generatedAt": "2026-09-30T20:57:35.255Z",
+  "methodology": {
+    "samples": 10,
+    "warmups": 1,
+    "build": "Vite development server with explicit render-call instrumentation; isolated production builds for bundle size",
+    "scenario": "Type name, email and bio; select role; check terms; submit valid form",
+    "caveats": [
+      "Render-function calls are explicitly instrumented and count only the App and local field wrappers included in this experiment.",
+      "TaskDuration is comparative browser CPU time, not user-perceived latency or an INP measurement.",
+      "StrictMode is intentionally absent from the benchmark harness.",
+      "TaskDuration is Chromium main-thread task time during the automated scenario.",
+      "Bundle measurements use isolated minified builds and include transitive dependencies."
+    ]
+  },
+  "environment": {
+    "node": "v25.9.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "chrome": "Chrome/143.0.7499.193",
+    "cpu": "Apple M3 Pro",
+    "memoryBytes": 19327352832,
+    "react": "19.3.0",
+    "reactHookForm": "7.89.0",
+    "zod": "4.6.5"
+  },
+  "summary": {
+    "react-abstracted": {
+      "renderFunctionCalls": {
+        "median": 73,
+        "p95": 73,
+        "min": 73,
+        "max": 73
+      },
+      "taskDurationMs": {
+        "median": 49.523,
+        "p95": 53.259,
+        "min": 47.085,
+        "max": 53.259
+      },
+      "bundle": {
+        "assets": [
+          {
+            "file": "app.js",
+            "bytes": 346626,
+            "gzipBytes": 107389
+          }
+        ],
+        "totalBytes": 346626,
+        "totalGzipBytes": 107389
+      }
+    },
+    "react-uncontrolled": {
+      "renderFunctionCalls": {
+        "median": 11,
+        "p95": 11,
+        "min": 11,
+        "max": 11
+      },
+      "taskDurationMs": {
+        "median": 33.061,
+        "p95": 38.418,
+        "min": 31.28,
+        "max": 38.418
+      },
+      "bundle": {
+        "assets": [
+          {
+            "file": "app.js",
+            "bytes": 342721,
+            "gzipBytes": 106257
+          }
+        ],
+        "totalBytes": 342721,
+        "totalGzipBytes": 106257
+      }
+    },
+    "react-rhf": {
+      "renderFunctionCalls": {
+        "median": 2,
+        "p95": 2,
+        "min": 2,
+        "max": 2
+      },
+      "taskDurationMs": {
+        "median": 32.703,
+        "p95": 37.544,
+        "min": 31.352,
+        "max": 37.544
+      },
+      "bundle": {
+        "assets": [
+          {
+            "file": "app.js",
+            "bytes": 340585,
+            "gzipBytes": 105541
+          }
+        ],
+        "totalBytes": 340585,
+        "totalGzipBytes": 105541
+      }
+    },
+    "react-state": {
+      "renderFunctionCalls": {
+        "median": 63,
+        "p95": 63,
+        "min": 63,
+        "max": 63
+      },
+      "taskDurationMs": {
+        "median": 71.19,
+        "p95": 89.85,
+        "min": 57.464,
+        "max": 89.85
+      },
+      "bundle": {
+        "assets": [
+          {
+            "file": "app.js",
+            "bytes": 224026,
+            "gzipBytes": 69763
+          }
+        ],
+        "totalBytes": 224026,
+        "totalGzipBytes": 69763
+      }
+    }
+  },
+  "runs": {
+    "react-abstracted": [
+      {
+        "renderFunctionCalls": 73,
+        "renderCallsByComponent": {
+          "Field.Text:name": 14,
+          "Field.Text:email": 17,
+          "Field.Select:role": 3,
+          "Field.Textarea:bio": 35,
+          "Field.Checkbox:terms": 3,
+          "App": 1
+        },
+        "taskDurationMs": 48.792
+      },
+      {
+        "renderFunctionCalls": 73,
+        "renderCallsByComponent": {
+          "Field.Text:name": 14,
+          "Field.Text:email": 17,
+          "Field.Select:role": 3,
+          "Field.Textarea:bio": 35,
+          "Field.Checkbox:terms": 3,
+          "App": 1
+        },
+        "taskDurationMs": 52.208
+      },
+      {
+        "renderFunctionCalls": 73,
+        "renderCallsByComponent": {
+          "Field.Text:name": 14,
+          "Field.Text:email": 17,
+          "Field.Select:role": 3,
+          "Field.Textarea:bio": 35,
+          "Field.Checkbox:terms": 3,
+          "App": 1
+        },
+        "taskDurationMs": 50.189
+      },
+      {
+        "renderFunctionCalls": 73,
+        "renderCallsByComponent": {
+          "Field.Text:name": 14,
+          "Field.Text:email": 17,
+          "Field.Select:role": 3,
+          "Field.Textarea:bio": 35,
+          "Field.Checkbox:terms": 3,
+          "App": 1
+        },
+        "taskDurationMs": 49.523
+      },
+      {
+        "renderFunctionCalls": 73,
+        "renderCallsByComponent": {
+          "Field.Text:name": 14,
+          "Field.Text:email": 17,
+          "Field.Select:role": 3,
+          "Field.Textarea:bio": 35,
+          "Field.Checkbox:terms": 3,
+          "App": 1
+        },
+        "taskDurationMs": 47.109
+      },
+      {
+        "renderFunctionCalls": 73,
+        "renderCallsByComponent": {
+          "Field.Text:name": 14,
+          "Field.Text:email": 17,
+          "Field.Select:role": 3,
+          "Field.Textarea:bio": 35,
+          "Field.Checkbox:terms": 3,
+          "App": 1
+        },
+        "taskDurationMs": 47.085
+      },
+      {
+        "renderFunctionCalls": 73,
+        "renderCallsByComponent": {
+          "Field.Text:name": 14,
+          "Field.Text:email": 17,
+          "Field.Select:role": 3,
+          "Field.Textarea:bio": 35,
+          "Field.Checkbox:terms": 3,
+          "App": 1
+        },
+        "taskDurationMs": 49.053
+      },
+      {
+        "renderFunctionCalls": 73,
+        "renderCallsByComponent": {
+          "Field.Text:name": 14,
+          "Field.Text:email": 17,
+          "Field.Select:role": 3,
+          "Field.Textarea:bio": 35,
+          "Field.Checkbox:terms": 3,
+          "App": 1
+        },
+        "taskDurationMs": 52.962
+      },
+      {
+        "renderFunctionCalls": 73,
+        "renderCallsByComponent": {
+          "Field.Text:name": 14,
+          "Field.Text:email": 17,
+          "Field.Select:role": 3,
+          "Field.Textarea:bio": 35,
+          "Field.Checkbox:terms": 3,
+          "App": 1
+        },
+        "taskDurationMs": 53.259
+      },
+      {
+        "renderFunctionCalls": 73,
+        "renderCallsByComponent": {
+          "Field.Text:name": 14,
+          "Field.Text:email": 17,
+          "Field.Select:role": 3,
+          "Field.Textarea:bio": 35,
+          "Field.Checkbox:terms": 3,
+          "App": 1
+        },
+        "taskDurationMs": 49.643
+      }
+    ],
+    "react-uncontrolled": [
+      {
+        "renderFunctionCalls": 11,
+        "renderCallsByComponent": {
+          "App": 1,
+          "Field.Text:name": 2,
+          "Field.Text:email": 2,
+          "Field.Select:role": 2,
+          "Field.Textarea:bio": 2,
+          "Field.Checkbox:terms": 2
+        },
+        "taskDurationMs": 32.564
+      },
+      {
+        "renderFunctionCalls": 11,
+        "renderCallsByComponent": {
+          "App": 1,
+          "Field.Text:name": 2,
+          "Field.Text:email": 2,
+          "Field.Select:role": 2,
+          "Field.Textarea:bio": 2,
+          "Field.Checkbox:terms": 2
+        },
+        "taskDurationMs": 32.239
+      },
+      {
+        "renderFunctionCalls": 11,
+        "renderCallsByComponent": {
+          "App": 1,
+          "Field.Text:name": 2,
+          "Field.Text:email": 2,
+          "Field.Select:role": 2,
+          "Field.Textarea:bio": 2,
+          "Field.Checkbox:terms": 2
+        },
+        "taskDurationMs": 33.234
+      },
+      {
+        "renderFunctionCalls": 11,
+        "renderCallsByComponent": {
+          "App": 1,
+          "Field.Text:name": 2,
+          "Field.Text:email": 2,
+          "Field.Select:role": 2,
+          "Field.Textarea:bio": 2,
+          "Field.Checkbox:terms": 2
+        },
+        "taskDurationMs": 35.642
+      },
+      {
+        "renderFunctionCalls": 11,
+        "renderCallsByComponent": {
+          "App": 1,
+          "Field.Text:name": 2,
+          "Field.Text:email": 2,
+          "Field.Select:role": 2,
+          "Field.Textarea:bio": 2,
+          "Field.Checkbox:terms": 2
+        },
+        "taskDurationMs": 33.632
+      },
+      {
+        "renderFunctionCalls": 11,
+        "renderCallsByComponent": {
+          "App": 1,
+          "Field.Text:name": 2,
+          "Field.Text:email": 2,
+          "Field.Select:role": 2,
+          "Field.Textarea:bio": 2,
+          "Field.Checkbox:terms": 2
+        },
+        "taskDurationMs": 31.28
+      },
+      {
+        "renderFunctionCalls": 11,
+        "renderCallsByComponent": {
+          "App": 1,
+          "Field.Text:name": 2,
+          "Field.Text:email": 2,
+          "Field.Select:role": 2,
+          "Field.Textarea:bio": 2,
+          "Field.Checkbox:terms": 2
+        },
+        "taskDurationMs": 33.061
+      },
+      {
+        "renderFunctionCalls": 11,
+        "renderCallsByComponent": {
+          "App": 1,
+          "Field.Text:name": 2,
+          "Field.Text:email": 2,
+          "Field.Select:role": 2,
+          "Field.Textarea:bio": 2,
+          "Field.Checkbox:terms": 2
+        },
+        "taskDurationMs": 32.599
+      },
+      {
+        "renderFunctionCalls": 11,
+        "renderCallsByComponent": {
+          "App": 1,
+          "Field.Text:name": 2,
+          "Field.Text:email": 2,
+          "Field.Select:role": 2,
+          "Field.Textarea:bio": 2,
+          "Field.Checkbox:terms": 2
+        },
+        "taskDurationMs": 38.418
+      },
+      {
+        "renderFunctionCalls": 11,
+        "renderCallsByComponent": {
+          "App": 1,
+          "Field.Text:name": 2,
+          "Field.Text:email": 2,
+          "Field.Select:role": 2,
+          "Field.Textarea:bio": 2,
+          "Field.Checkbox:terms": 2
+        },
+        "taskDurationMs": 33.919
+      }
+    ],
+    "react-rhf": [
+      {
+        "renderFunctionCalls": 2,
+        "renderCallsByComponent": {
+          "App": 2
+        },
+        "taskDurationMs": 33.564
+      },
+      {
+        "renderFunctionCalls": 2,
+        "renderCallsByComponent": {
+          "App": 2
+        },
+        "taskDurationMs": 32.663
+      },
+      {
+        "renderFunctionCalls": 2,
+        "renderCallsByComponent": {
+          "App": 2
+        },
+        "taskDurationMs": 33.048
+      },
+      {
+        "renderFunctionCalls": 2,
+        "renderCallsByComponent": {
+          "App": 2
+        },
+        "taskDurationMs": 31.585
+      },
+      {
+        "renderFunctionCalls": 2,
+        "renderCallsByComponent": {
+          "App": 2
+        },
+        "taskDurationMs": 32.703
+      },
+      {
+        "renderFunctionCalls": 2,
+        "renderCallsByComponent": {
+          "App": 2
+        },
+        "taskDurationMs": 32.495
+      },
+      {
+        "renderFunctionCalls": 2,
+        "renderCallsByComponent": {
+          "App": 2
+        },
+        "taskDurationMs": 37.544
+      },
+      {
+        "renderFunctionCalls": 2,
+        "renderCallsByComponent": {
+          "App": 2
+        },
+        "taskDurationMs": 34.935
+      },
+      {
+        "renderFunctionCalls": 2,
+        "renderCallsByComponent": {
+          "App": 2
+        },
+        "taskDurationMs": 33.276
+      },
+      {
+        "renderFunctionCalls": 2,
+        "renderCallsByComponent": {
+          "App": 2
+        },
+        "taskDurationMs": 31.352
+      }
+    ],
+    "react-state": [
+      {
+        "renderFunctionCalls": 63,
+        "renderCallsByComponent": {
+          "App": 63
+        },
+        "taskDurationMs": 82.596
+      },
+      {
+        "renderFunctionCalls": 63,
+        "renderCallsByComponent": {
+          "App": 63
+        },
+        "taskDurationMs": 64.443
+      },
+      {
+        "renderFunctionCalls": 63,
+        "renderCallsByComponent": {
+          "App": 63
+        },
+        "taskDurationMs": 65.845
+      },
+      {
+        "renderFunctionCalls": 63,
+        "renderCallsByComponent": {
+          "App": 63
+        },
+        "taskDurationMs": 63.282
+      },
+      {
+        "renderFunctionCalls": 63,
+        "renderCallsByComponent": {
+          "App": 63
+        },
+        "taskDurationMs": 57.464
+      },
+      {
+        "renderFunctionCalls": 63,
+        "renderCallsByComponent": {
+          "App": 63
+        },
+        "taskDurationMs": 71.19
+      },
+      {
+        "renderFunctionCalls": 63,
+        "renderCallsByComponent": {
+          "App": 63
+        },
+        "taskDurationMs": 89.85
+      },
+      {
+        "renderFunctionCalls": 63,
+        "renderCallsByComponent": {
+          "App": 63
+        },
+        "taskDurationMs": 86.761
+      },
+      {
+        "renderFunctionCalls": 63,
+        "renderCallsByComponent": {
+          "App": 63
+        },
+        "taskDurationMs": 84.544
+      },
+      {
+        "renderFunctionCalls": 63,
+        "renderCallsByComponent": {
+          "App": 63
+        },
+        "taskDurationMs": 76.389
+      }
+    ]
+  }
+}
