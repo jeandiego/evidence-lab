@@ -1,0 +1,16 @@
+---
+interface Props {
+  title: string
+  emphasis?: string
+  as?: 'h1' | 'h2'
+  class?: string
+}
+
+const { title, emphasis, as: Tag = 'h1', class: className } = Astro.props
+const index = emphasis ? title.indexOf(emphasis) : -1
+const parts = index >= 0 && emphasis ? [title.slice(0, index), emphasis, title.slice(index + emphasis.length)] : [title]
+---
+
+<Tag class={className}>
+  {parts[0]}{parts[1] && <em>{parts[1]}</em>}{parts[2]}
+</Tag>

@@ -1,0 +1,311 @@
+---
+import { url } from '../lib/url'
+import { LANGS, t, type Lang } from '../lib/i18n'
+import { WORK_URL } from '../lib/repo'
+
+interface Props {
+  lang: Lang
+  alternates: Partial<Record<Lang, string>>
+  issue?: { number: string; title: string }
+}
+
+const { lang, alternates, issue } = Astro.props
+const strings = t(lang)
+const langLabel: Record<Lang, string> = { 'pt-br': 'PT', en: 'EN' }
+---
+
+<header class="site-header" data-issue={issue ? '' : undefined}>
+  <div class="container site-header__row">
+    <a class="brand" href={url(lang)}>
+      <span class="brand__dot" aria-hidden="true"></span>
+      <span class="brand__name">Evidence Lab</span>
+    </a>
+
+    {
+      issue && (
+        <p class="header-issue" aria-hidden="true">
+          <span class="header-issue__number">Nº {issue.number}</span>
+          <span class="header-issue__title">{issue.title}</span>
+        </p>
+      )
+    }
+
+    <nav class="site-nav" aria-label="Synko">
+      <a class="site-nav__link" href={WORK_URL}>
+        {strings.work}
+        <svg class="icon" viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 2.5h6v6M9.5 2.5l-7 7" fill="none" stroke="currentColor" stroke-width="1.3"></path></svg>
+      </a>
+
+      <ul class="lang-switch" aria-label={strings.language}>
+        {
+          LANGS.map(code => {
+            const href = alternates[code] ?? url(code)
+            return (
+              <li>
+                <a href={href} hreflang={code} lang={code} aria-current={code === lang ? 'true' : undefined}>
+                  {langLabel[code]}
+                </a>
+              </li>
+            )
+          })
+        }
+      </ul>
+
+      <button class="theme-toggle" type="button" data-label-light={strings.themeToLight} data-label-dark={strings.themeToDark} aria-label={strings.themeToDark}>
+        <svg class="theme-toggle__sun" viewBox="0 0 20 20" aria-hidden="true">
+          <circle cx="10" cy="10" r="3.4" fill="none" stroke="currentColor" stroke-width="1.4"></circle>
+          <path d="M10 1.8v2.2M10 16v2.2M1.8 10H4M16 10h2.2M4.2 4.2l1.6 1.6M14.2 14.2l1.6 1.6M4.2 15.8l1.6-1.6M14.2 5.8l1.6-1.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+        </svg>
+        <svg class="theme-toggle__moon" viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M16.2 12.6A6.8 6.8 0 0 1 7.4 3.8a6.8 6.8 0 1 0 8.8 8.8Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path>
+        </svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('.theme-toggle')!
+  const root = document.documentElement
+  const sync = () => {
+    const dark = root.dataset.theme === 'dark'
+    button.setAttribute('aria-label', (dark ? button.dataset.labelLight : button.dataset.labelDark) ?? '')
+    button.setAttribute('aria-pressed', String(dark))
+  }
+  sync()
+  button.addEventListener('click', () => {
+    root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark'
+    try {
+      localStorage.setItem('theme', root.dataset.theme)
+    } catch {}
+    sync()
+  })
+
+  // Ao passar do título, a barra passa a carregar a edição que está sendo lida.
+  const header = document.querySelector<HTMLElement>('.site-header[data-issue]')
+  const title = document.querySelector('.issue-hero__title')
+  if (header && title) {
+    new IntersectionObserver(([entry]) => header.classList.toggle('is-reading', !entry.isIntersecting && entry.boundingClientRect.top < 0)).observe(title)
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--rule);
+    backdrop-filter: saturate(1.4) blur(10px);
+    -webkit-backdrop-filter: saturate(1.4) blur(10px);
+  }
+
+  .site-header__row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: var(--header-h);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex: none;
+    color: var(--ink);
+    font-size: 0.98rem;
+    font-weight: 560;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+
+  .brand__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--spark);
+  }
+
+  .brand__name {
+    transition: opacity 240ms var(--ease-out);
+  }
+
+  .header-issue {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    min-width: 0;
+    margin: 0;
+    padding-left: 24px;
+    border-left: 1px solid var(--rule);
+    opacity: 0;
+    transform: translateY(6px);
+    filter: blur(3px);
+    transition:
+      opacity 320ms var(--ease-out),
+      transform 420ms var(--ease-out),
+      filter 320ms var(--ease-out);
+    pointer-events: none;
+  }
+
+  .is-reading .header-issue {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .header-issue__number {
+    flex: none;
+    color: var(--wine-text);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+
+  .header-issue__title {
+    overflow: hidden;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .site-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+  }
+
+  .site-nav__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 40px;
+    padding-inline: 10px;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    text-decoration: none;
+    border-radius: 9px;
+    transition: color 160ms var(--ease-out), background-color 160ms var(--ease-out);
+  }
+
+  .site-nav__link .icon {
+    width: 0.7em;
+    height: 0.7em;
+    color: var(--ink-muted);
+  }
+
+  .site-nav__link:hover {
+    color: var(--ink);
+    background: var(--surface);
+  }
+
+  .lang-switch {
+    display: flex;
+    margin: 0 4px;
+    padding: 0 0 0 10px;
+    list-style: none;
+    border-left: 1px solid var(--rule);
+  }
+
+  .lang-switch a {
+    display: inline-grid;
+    place-items: center;
+    min-width: 34px;
+    min-height: 40px;
+    color: var(--ink-muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    transition: color 160ms var(--ease-out);
+  }
+
+  .lang-switch a:hover {
+    color: var(--ink);
+  }
+
+  .lang-switch a[aria-current='true'] {
+    color: var(--wine-text);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.5em;
+  }
+
+  .theme-toggle {
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    color: var(--ink-soft);
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 9px;
+    cursor: pointer;
+    transition: color 160ms var(--ease-out), border-color 160ms var(--ease-out), background-color 160ms var(--ease-out);
+  }
+
+  .theme-toggle:hover {
+    color: var(--ink);
+    border-color: var(--rule-strong);
+    background: var(--surface);
+  }
+
+  .theme-toggle svg {
+    grid-area: 1 / 1;
+    width: 18px;
+    height: 18px;
+    transition: opacity 240ms var(--ease-out), transform 360ms var(--ease-out);
+  }
+
+  .theme-toggle__moon {
+    opacity: 0;
+    transform: rotate(-40deg) scale(0.7);
+  }
+
+  :global([data-theme='dark']) .theme-toggle__sun {
+    opacity: 0;
+    transform: rotate(40deg) scale(0.7);
+  }
+
+  :global([data-theme='dark']) .theme-toggle__moon {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (max-width: 760px) {
+    .site-header__row {
+      gap: 12px;
+    }
+
+    /* No celular a marca cede lugar ao número da edição durante a leitura. */
+    .header-issue {
+      position: absolute;
+      left: calc(var(--gutter) + 18px);
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    .header-issue__title {
+      display: none;
+    }
+
+    .is-reading .brand__name {
+      opacity: 0;
+    }
+
+    .site-nav__link {
+      padding-inline: 8px;
+    }
+
+    .lang-switch {
+      margin: 0;
+      padding-left: 6px;
+    }
+  }
+</style>

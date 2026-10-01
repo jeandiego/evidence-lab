@@ -1,0 +1,42 @@
+---
+import { url } from '../lib/url'
+import Base from '../layouts/Base.astro'
+---
+
+<Base lang="pt-br" title="Página não encontrada · Evidence Lab" description="Esta página não existe no Evidence Lab.">
+  <section class="not-found container">
+    <p class="not-found__code" aria-hidden="true">404</p>
+    <h1>Esta página não existe no Evidence Lab.</h1>
+    <p>
+      <a href={url('pt-br')}>Ver as edições</a> · <a href={url('en')}>See the issues</a>
+    </p>
+  </section>
+</Base>
+
+<style>
+  .not-found {
+    padding-top: clamp(56px, 10vw, 120px);
+  }
+
+  .not-found__code {
+    margin: 0;
+    color: var(--spark);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+
+  h1 {
+    max-width: 20ch;
+    margin: 16px 0 24px;
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.2rem);
+    font-weight: 330;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  a {
+    color: var(--wine-text);
+  }
+</style>

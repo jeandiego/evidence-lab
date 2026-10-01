@@ -1,0 +1,480 @@
+---
+import { url } from '../../lib/url'
+import { render } from 'astro:content'
+import Base from '../../layouts/Base.astro'
+import IssueTitle from '../../components/IssueTitle.astro'
+import Toc from '../../components/Toc.astro'
+import '../../styles/prose.css'
+import { formatDate, t, type Lang } from '../../lib/i18n'
+import { allPosts, assetUrl, evidenceUrl, postPath, postsFor, readingMinutes, translationsOf, type Post } from '../../lib/posts'
+
+export async function getStaticPaths() {
+  const posts = await allPosts()
+  return posts.map(post => ({ params: { lang: post.data.lang, slug: post.data.slug }, props: { post } }))
+}
+
+const { post } = Astro.props as { post: Post }
+const lang = post.data.lang as Lang
+const strings = t(lang)
+const { Content, headings } = await render(post)
+
+const translations = await translationsOf(post.data.slug)
+const alternates = Object.fromEntries(translations.map(code => [code, postPath(code, post.data.slug)]))
+
+const siblings = await postsFor(lang)
+const index = siblings.findIndex(p => p.data.slug === post.data.slug)
+const newer = index > 0 ? siblings[index - 1] : undefined
+const older = index >= 0 ? siblings[index + 1] : undefined
+
+const video = assetUrl(post, post.data.video)
+const poster = assetUrl(post, post.data.poster)
+---
+
+<Base
+  lang={lang}
+  title={`${post.data.title} · Evidence Lab Nº ${post.data.number}`}
+  description={post.data.description}
+  alternates={alternates}
+  ogImage={url(`og/${lang}/${post.data.slug}.png`)}
+  type="article"
+  issue={{ number: post.data.number, title: post.data.title }}
+>
+  <article>
+    <header class="issue-hero container">
+      <div class="issue-hero__text">
+        <p class="issue-hero__number" aria-label={`${strings.edition} ${post.data.number}`}>
+          <span class="issue-hero__no" aria-hidden="true">Nº</span><span aria-hidden="true">{post.data.number}</span>
+        </p>
+        <IssueTitle class="issue-hero__title" title={post.data.title} emphasis={post.data.emphasis} />
+      </div>
+
+      {
+        video && (
+          <figure class="issue-hero__media">
+            <div class="player">
+              <video playsinline preload="none" poster={poster} aria-label={strings.videoLabel(post.data.number)}>
+                <source src={video} type="video/mp4" />
+              </video>
+              <button class="player__play" type="button" aria-label={strings.play}>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M8 5.5v13l10.5-6.5Z" fill="currentColor" />
+                </svg>
+              </button>
+            </div>
+            <figcaption class="label">{strings.video}</figcaption>
+          </figure>
+        )
+      }
+
+      <dl class="issue-hero__brief">
+        <div class="brief__thesis">
+          <dt class="label">{strings.thesis}</dt>
+          <dd>{post.data.thesis}</dd>
+        </div>
+        <div class="brief__meta">
+          <dt class="visually-hidden">{strings.published}</dt>
+          <dd><time datetime={post.data.date.toISOString().slice(0, 10)}>{formatDate(post.data.date, lang)}</time></dd>
+          <dd>{strings.readingTime(readingMinutes(post))}</dd>
+          <dd>
+            <a href={post.data.repo}>{strings.codeAndData}</a>
+          </dd>
+          {post.data.tags.length > 0 && <dd class="brief__tags">{post.data.tags.map(tag => `#${tag}`).join(' ')}</dd>}
+        </div>
+      </dl>
+    </header>
+
+    <div class="issue-body container">
+      <aside class="issue-body__toc">
+        <Toc headings={headings} label={strings.onThisPage} />
+      </aside>
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <footer class="issue-end">
+        {
+          post.data.evidence.length > 0 && (
+            <section class="issue-end__evidence" aria-labelledby="evidence-title">
+              <h2 id="evidence-title" class="label">{strings.evidence}</h2>
+              <ul>
+                {post.data.evidence.map(file => (
+                  <li>
+                    <a href={evidenceUrl(post, file)}>{file.replace(/^\.\.\//, '')}</a>
+                  </li>
+                ))}
+                <li>
+                  <a href={post.data.repo}>{strings.source}</a>
+                </li>
+              </ul>
+            </section>
+          )
+        }
+
+        <nav class="issue-end__nav" aria-label={strings.allEditions}>
+          {
+            older && (
+              <a class="issue-link" href={postPath(older.data.lang as Lang, older.data.slug)}>
+                <span class="label">{strings.previous}</span>
+                <span class="issue-link__title">
+                  Nº {older.data.number} · {older.data.title}
+                </span>
+              </a>
+            )
+          }
+          {
+            newer && (
+              <a class="issue-link issue-link--next" href={postPath(newer.data.lang as Lang, newer.data.slug)}>
+                <span class="label">{strings.next}</span>
+                <span class="issue-link__title">
+                  Nº {newer.data.number} · {newer.data.title}
+                </span>
+              </a>
+            )
+          }
+          <a class="issue-link issue-link--all" href={url(lang)}>
+            <span class="issue-link__title">
+              {strings.allEditions}
+              <svg class="icon" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M2.5 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.4" />
+              </svg>
+            </span>
+          </a>
+        </nav>
+      </footer>
+    </div>
+  </article>
+</Base>
+
+<script>
+  // Tabelas largas: esmaece o lado que ainda tem conteúdo para rolar.
+  for (const scroller of document.querySelectorAll<HTMLElement>('.table-scroll')) {
+    const sync = () => {
+      scroller.toggleAttribute('data-more-left', scroller.scrollLeft > 1)
+      scroller.toggleAttribute('data-more-right', scroller.scrollLeft + scroller.clientWidth < scroller.scrollWidth - 1)
+    }
+    scroller.addEventListener('scroll', sync, { passive: true })
+    new ResizeObserver(sync).observe(scroller)
+  }
+
+  // Capa limpa em repouso; os controles nativos aparecem só depois do play.
+  for (const player of document.querySelectorAll<HTMLElement>('.player')) {
+    const video = player.querySelector('video')!
+    const button = player.querySelector('button')!
+    button.addEventListener('click', () => {
+      video.controls = true
+      player.classList.add('is-playing')
+      void video.play()
+      video.focus()
+    })
+  }
+</script>
+
+<style>
+  .issue-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 340px);
+    grid-template-areas:
+      'text media'
+      'brief media';
+    column-gap: clamp(32px, 5vw, 72px);
+    padding-top: clamp(40px, 7vw, 88px);
+  }
+
+  .issue-hero__text {
+    grid-area: text;
+    align-self: end;
+  }
+
+  .issue-hero__number {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.08em;
+    margin: 0 0 clamp(12px, 2vw, 24px) -0.04em;
+    color: var(--ink);
+    font-size: clamp(6rem, 17vw, 11rem);
+    font-weight: 250;
+    line-height: 0.82;
+    letter-spacing: -0.045em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .issue-hero__no {
+    margin-top: 0.12em;
+    color: var(--wine-text);
+    font-family: var(--font-mono);
+    font-size: 0.1em;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .issue-hero :global(.issue-hero__title) {
+    max-width: 17ch;
+    margin: 0;
+    color: var(--ink);
+    font-size: clamp(2.15rem, 1.4rem + 3vw, 3.65rem);
+    font-weight: 330;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+  }
+
+  .issue-hero :global(.issue-hero__title em) {
+    color: var(--wine-text);
+    font-style: normal;
+  }
+
+  .issue-hero__media {
+    grid-area: media;
+    margin: 0;
+  }
+
+  .player {
+    position: relative;
+    overflow: hidden;
+    background: var(--media-bg);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+  }
+
+  .player video {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    filter: var(--media-filter);
+    transition: filter 240ms var(--ease-out);
+  }
+
+  .player.is-playing video {
+    filter: none;
+  }
+
+  .player__play {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    color: #fdfcfc;
+    background: #421d24;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgb(30 27 24 / 0.22);
+    transition: transform 280ms var(--ease-out), background-color 160ms var(--ease-out);
+  }
+
+  .player__play svg {
+    width: 22px;
+    height: 22px;
+    margin-left: 2px;
+  }
+
+  .player__play:hover {
+    background: #55262f;
+    transform: scale(1.06);
+  }
+
+  .player.is-playing .player__play {
+    display: none;
+  }
+
+  .issue-hero__media figcaption {
+    margin-top: 10px;
+  }
+
+  .issue-hero__brief {
+    grid-area: brief;
+    margin: clamp(28px, 4vw, 48px) 0 0;
+    border-top: 1px solid var(--rule-strong);
+  }
+
+  .brief__thesis {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 18px;
+    padding-block: 22px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .brief__thesis dt {
+    padding-top: 0.5em;
+  }
+
+  .brief__thesis dd {
+    max-width: 44ch;
+    margin: 0;
+    color: var(--ink);
+    font-size: clamp(1.15rem, 1rem + 0.55vw, 1.4rem);
+    font-weight: 350;
+    line-height: 1.38;
+    letter-spacing: -0.01em;
+  }
+
+  .brief__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 28px;
+    padding: 14px 0 0 114px;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.02em;
+    color: var(--ink-muted);
+  }
+
+  .brief__meta dd {
+    margin: 0;
+  }
+
+  .brief__tags {
+    flex-basis: 100%;
+  }
+
+  .brief__meta a {
+    color: var(--wine-text);
+  }
+
+  .issue-body {
+    display: grid;
+    grid-template-columns: minmax(0, var(--measure)) minmax(200px, 250px);
+    grid-template-areas:
+      'prose toc'
+      'end toc';
+    justify-content: space-between;
+    column-gap: clamp(40px, 6vw, 96px);
+    margin-top: clamp(48px, 7vw, 96px);
+  }
+
+  .issue-body > .prose {
+    grid-area: prose;
+  }
+
+  .issue-body__toc {
+    grid-area: toc;
+  }
+
+  .issue-body__toc :global(.toc) {
+    position: sticky;
+    top: calc(var(--header-h) + 32px);
+    max-height: calc(100vh - var(--header-h) - 64px);
+    overflow-y: auto;
+  }
+
+  .issue-end {
+    grid-area: end;
+    max-width: var(--measure);
+    margin-top: 4rem;
+  }
+
+  .issue-end__evidence {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 18px;
+    padding-block: 22px;
+    border-block: 1px solid var(--rule-strong);
+  }
+
+  .issue-end__evidence h2 {
+    margin: 0;
+    padding-top: 0.3em;
+  }
+
+  .issue-end__evidence ul {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+  }
+
+  .issue-end__evidence a {
+    color: var(--wine-text);
+  }
+
+  .issue-end__nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    margin-top: 30px;
+  }
+
+  .issue-link {
+    display: grid;
+    gap: 6px;
+    padding: 18px 0;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .issue-link__title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.05rem;
+    transition: color 160ms var(--ease-out);
+  }
+
+  .issue-link--all .issue-link__title {
+    color: var(--wine-text);
+  }
+
+  .issue-link--all .icon {
+    transition: transform 280ms var(--ease-out);
+  }
+
+  .issue-link--all:hover .icon {
+    transform: translateX(4px);
+  }
+
+  .issue-link:hover .issue-link__title {
+    color: var(--wine-hover);
+  }
+
+  @media (max-width: 1099px) {
+    .issue-body {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        'toc'
+        'prose'
+        'end';
+      max-width: calc(var(--measure) + var(--gutter) * 2);
+    }
+
+    .issue-body__toc :global(.toc) {
+      position: static;
+      max-height: none;
+      margin-bottom: 36px;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .issue-hero {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        'text'
+        'brief'
+        'media';
+    }
+
+    .issue-hero__media {
+      max-width: 360px;
+      margin-top: 36px;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .brief__thesis,
+    .issue-end__evidence {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
+    }
+
+    .brief__meta {
+      padding-left: 0;
+    }
+  }
+</style>

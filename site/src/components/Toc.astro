@@ -1,0 +1,137 @@
+---
+import type { MarkdownHeading } from 'astro'
+
+interface Props {
+  headings: MarkdownHeading[]
+  label: string
+}
+
+const { headings, label } = Astro.props
+const items = headings.filter(h => h.depth === 2 || h.depth === 3)
+---
+
+<nav class="toc" aria-label={label}>
+  <details class="toc__details" open>
+    <summary class="toc__summary label">{label}</summary>
+    <ol class="toc__list">
+      {
+        items.map(h => (
+          <li class:list={['toc__item', { 'toc__item--sub': h.depth === 3 }]}>
+            <a href={`#${h.slug}`}>{h.text}</a>
+          </li>
+        ))
+      }
+    </ol>
+  </details>
+</nav>
+
+<script>
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.toc__item a')]
+  const targets = links.map(link => document.getElementById(decodeURIComponent(link.hash.slice(1)))).filter(Boolean) as HTMLElement[]
+  const details = document.querySelector<HTMLDetailsElement>('.toc__details')
+  const desktop = matchMedia('(min-width: 1100px)')
+  const syncOpen = () => details && (details.open = desktop.matches)
+  syncOpen()
+  desktop.addEventListener('change', syncOpen)
+
+  let current = ''
+  const update = () => {
+    const line = innerHeight * 0.28
+    let active = targets[0]?.id ?? ''
+    for (const target of targets) if (target.getBoundingClientRect().top <= line) active = target.id
+    if (active === current) return
+    current = active
+    for (const link of links) link.toggleAttribute('aria-current', decodeURIComponent(link.hash.slice(1)) === active)
+  }
+  addEventListener('scroll', update, { passive: true })
+  update()
+</script>
+
+<style>
+  .toc {
+    font-size: 0.86rem;
+    line-height: 1.4;
+  }
+
+  .toc__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 44px;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .toc__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .toc__summary::after {
+    content: '';
+    width: 7px;
+    height: 7px;
+    margin-right: 4px;
+    border-right: 1.3px solid currentColor;
+    border-bottom: 1.3px solid currentColor;
+    transform: rotate(45deg) translateY(-2px);
+    transition: transform 200ms var(--ease-out);
+  }
+
+  .toc__details[open] .toc__summary::after {
+    transform: rotate(-135deg) translateY(-2px);
+  }
+
+  .toc__list {
+    margin: 4px 0 0;
+    padding: 0;
+    list-style: none;
+    border-left: 1px solid var(--rule);
+  }
+
+  .toc__item a {
+    display: block;
+    margin-left: -1px;
+    padding: 6px 0 6px 14px;
+    border-left: 1px solid transparent;
+    color: var(--ink-muted);
+    text-decoration: none;
+    transition: color 160ms var(--ease-out), border-color 160ms var(--ease-out);
+  }
+
+  .toc__item--sub a {
+    padding-left: 26px;
+    font-size: 0.94em;
+  }
+
+  .toc__item a:hover {
+    color: var(--ink);
+  }
+
+  .toc__item a[aria-current] {
+    color: var(--wine-text);
+    border-left-color: var(--wine);
+  }
+
+  @media (min-width: 1100px) {
+    .toc__summary {
+      min-height: 0;
+      margin-bottom: 10px;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .toc__summary::after {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1099px) {
+    .toc {
+      border-block: 1px solid var(--rule);
+    }
+
+    .toc__list {
+      margin-bottom: 16px;
+    }
+  }
+</style>

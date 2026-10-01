@@ -1,0 +1,78 @@
+---
+import { url } from '../lib/url'
+import { t, type Lang } from '../lib/i18n'
+import { REPO_URL, WORK_URL } from '../lib/repo'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const strings = t(lang)
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__row">
+    <p class="site-footer__note">
+      <span class="site-footer__brand">Evidence Lab</span>
+      {strings.footer}
+    </p>
+    <ul class="site-footer__links">
+      <li><a href={WORK_URL}>Synko · {strings.work}</a></li>
+      <li><a href={REPO_URL}>GitHub</a></li>
+      <li><a href={url(`${lang}/rss.xml`)}>{strings.rss}</a></li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: clamp(80px, 12vw, 160px);
+    border-top: 1px solid var(--rule);
+  }
+
+  .site-footer__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px 32px;
+    padding-block: 30px 42px;
+  }
+
+  .site-footer__note {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.9rem;
+  }
+
+  .site-footer__brand {
+    margin-right: 10px;
+    color: var(--ink);
+    font-weight: 560;
+  }
+
+  .site-footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .site-footer__links a {
+    color: var(--ink-muted);
+    text-decoration: none;
+    transition: color 160ms var(--ease-out);
+  }
+
+  .site-footer__links a:hover {
+    color: var(--wine-text);
+  }
+</style>

@@ -1,0 +1,23 @@
+---
+import { url } from '../lib/url'
+// A raiz não tem conteúdo próprio: envia para o idioma do navegador (pt-br por padrão).
+const targets = { pt: url('pt-br'), en: url('en') }
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>Evidence Lab · Synko</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={new URL(url('pt-br'), Astro.site)} />
+    <meta http-equiv="refresh" content={`0; url=${url('pt-br')}`} />
+    <script is:inline define:vars={{ targets }}>
+      const lang = (navigator.languages?.[0] ?? navigator.language ?? '').toLowerCase()
+      location.replace(lang.startsWith('en') ? targets.en : targets.pt)
+    </script>
+  </head>
+  <body>
+    <a href={url('pt-br')}>Evidence Lab</a>
+  </body>
+</html>

@@ -1,0 +1,76 @@
+/*
+  Claro: tokens do DESIGN.md (Editorial Workbench).
+  Escuro: tema de leitura derivado do dark da synko-lp. Texto abaixo do branco
+  puro para evitar halação em leitura longa, superfícies grafite quentes e
+  vinho clareado para manter contraste de link.
+*/
+:root {
+  color-scheme: light;
+  --paper: #fdfcfc;
+  --canvas: #ffffff;
+  --surface: #f5f3f1;
+  --rule: #ebe8e4;
+  --rule-strong: #d9d4ce;
+  --ink: #1e1b18;
+  --ink-soft: #514c47;
+  --ink-muted: #6f6962;
+  --wine: #421d24;
+  --wine-text: #6f2f3a;
+  --wine-hover: #55262f;
+  --wine-wash: rgb(66 29 36 / 0.07);
+  --spark: #d48a46;
+  --selection: rgb(111 47 58 / 0.16);
+  --inline-code-bg: #f3efeb;
+  --inline-code-ink: #55262f;
+  --code-bg: #1e1b18;
+  --code-bar: #25211d;
+  --code-border: #332d28;
+  --code-meta: #a89e94;
+  --media-bg: #f5f3f1;
+  --media-filter: none;
+  --header-bg: rgb(253 252 252 / 0.92);
+
+  --font-sans: 'Figtree Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
+
+  --gutter: 24px;
+  --container: 1280px;
+  --measure: 68ch;
+  --header-h: 60px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --paper: #161310;
+  --canvas: #1c1814;
+  --surface: #1f1b17;
+  --rule: rgb(230 224 217 / 0.1);
+  --rule-strong: rgb(230 224 217 / 0.18);
+  --ink: #e6e0d9;
+  --ink-soft: #c2bab1;
+  --ink-muted: #968d84;
+  --wine: #ba6e7b;
+  --wine-text: #d8959f;
+  --wine-hover: #e6adb6;
+  --wine-wash: rgb(186 110 123 / 0.12);
+  --spark: #e7a35b;
+  --selection: rgb(186 110 123 / 0.32);
+  --inline-code-bg: #231e1a;
+  --inline-code-ink: #e3b9a0;
+  --code-bg: #100e0c;
+  --code-bar: #151210;
+  --code-border: rgb(230 224 217 / 0.09);
+  --code-meta: #8f867d;
+  --media-bg: #100e0c;
+  /* capas claras dos vídeos não ofuscam a leitura no escuro */
+  --media-filter: brightness(0.82) contrast(1.02);
+  --header-bg: rgb(22 19 16 / 0.9);
+}
+
+@media (max-width: 760px) {
+  :root {
+    --gutter: 16px;
+    --header-h: 56px;
+  }
+}

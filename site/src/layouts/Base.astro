@@ -1,0 +1,73 @@
+---
+import { url } from '../lib/url'
+import '../styles/global.css'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import { htmlLang, t, type Lang } from '../lib/i18n'
+
+interface Props {
+  lang: Lang
+  title: string
+  description: string
+  /** Idiomas com versão desta página, e o caminho de cada uma. */
+  alternates?: Partial<Record<Lang, string>>
+  ogImage?: string
+  type?: 'website' | 'article'
+  issue?: { number: string; title: string }
+}
+
+const { lang, title, description, alternates = {}, ogImage, type = 'website', issue } = Astro.props
+const canonical = new URL(Astro.url.pathname, Astro.site)
+const og = ogImage ? new URL(ogImage, Astro.site) : undefined
+const beacon = import.meta.env.PUBLIC_CF_BEACON_TOKEN
+const strings = t(lang)
+---
+
+<!doctype html>
+<html lang={htmlLang[lang]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {
+      Object.entries(alternates).map(([alt, path]) => (
+        <link rel="alternate" hreflang={htmlLang[alt as Lang]} href={new URL(path, Astro.site)} />
+      ))
+    }
+    <link rel="alternate" type="application/rss+xml" title={`Evidence Lab (${lang})`} href={url(`${lang}/rss.xml`)} />
+    <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
+    <meta name="theme-color" content="#fdfcfc" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#161310" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content="Evidence Lab · Synko" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={htmlLang[lang].replace('-', '_')} />
+    {og && <meta property="og:image" content={og} />}
+    {og && <meta property="og:image:width" content="1200" />}
+    {og && <meta property="og:image:height" content="630" />}
+    <meta name="twitter:card" content={og ? 'summary_large_image' : 'summary'} />
+    <script is:inline>
+      ;(() => {
+        let theme
+        try {
+          theme = localStorage.getItem('theme')
+        } catch {}
+        if (theme !== 'light' && theme !== 'dark') theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        document.documentElement.dataset.theme = theme
+      })()
+    </script>
+    {beacon && <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={JSON.stringify({ token: beacon })} />}
+  </head>
+  <body>
+    <a class="skip-link" href="#content">{strings.skip}</a>
+    <Header lang={lang} alternates={alternates} issue={issue} />
+    <main id="content">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+  </body>
+</html>
