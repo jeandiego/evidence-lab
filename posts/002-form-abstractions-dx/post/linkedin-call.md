@@ -11,7 +11,7 @@ link: https://lab.synko.digital/pt-br/002-form-abstractions-dx/?utm_source=linke
 
 ## Mídia
 
-- Arquivo: `assets/reel-002.mp4` (1080×1350, 4:5).
+- Arquivo: `assets/reel-002.mp4` (1080×1350, 4:5, 45 s, 3,3 MB). Capa sugerida: `assets/reel-002-poster.jpg` (tomada 03, renders e CPU).
 - Subir o vídeo nativamente no LinkedIn, sem link do YouTube, e com as legendas ativadas se houver narração.
 - Capa: escolher um frame que mostre um número do resultado, não o título. Conferir antes de subir.
 

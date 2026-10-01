@@ -14,3 +14,5 @@ coverage/
 # ferramentas locais, fora do repositório
 .impeccable/
 graphify-out/
+.archive/
+.reel/

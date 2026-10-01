@@ -34,6 +34,16 @@ npm run measure
 npm run benchmark:react
 ```
 
+Para gerar o vídeo do LinkedIn (`post/assets/reel-002.mp4`, 1080×1350), feito com a skill própria `lab-reel`. Todo número exibido é lido de `evidence/` e o render é bloqueado se algum dígito não tiver origem:
+
+```bash
+npm run reel:check    # fatos, seletores, layout e colisões
+npm run reel:sheet    # folha de contato em lab/.reel/sheet.png
+npm run reel:render   # MP4 + capa em post/assets/
+```
+
+O preview interativo fica em `/reel.html` com o `npm run dev` ativo.
+
 ## Resultados
 
 Primeira medição de linhas de fonte não vazias:

@@ -6,7 +6,10 @@
     "dev": "vite",
     "build": "vite build",
     "measure": "node scripts/measure.mjs",
-    "benchmark:react": "node scripts/benchmark-react.mjs"
+    "benchmark:react": "node scripts/benchmark-react.mjs",
+    "reel:check": "node scripts/reel.mjs check",
+    "reel:sheet": "node scripts/reel.mjs sheet",
+    "reel:render": "node scripts/reel.mjs render --out ../post/assets/reel-002.mp4"
   },
   "dependencies": {
     "@fontsource-variable/figtree": "^5.3.0",
