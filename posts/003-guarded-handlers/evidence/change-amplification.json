@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-02T14:53:49.248Z",
+  "experiment": "Add editorial-lock after online and before permission in publish, archive, and delete",
+  "protocol": "change-amplification-protocol.md",
+  "behaviorValidation": {
+    "variants": 3,
+    "cases": 18,
+    "observations": 54,
+    "equivalentCases": 18,
+    "previousCasesPreserved": 15,
+    "previousCasesUpdated": 12,
+    "newCases": [
+      "publish:editorialLocked",
+      "archive:editorialLocked",
+      "delete:editorialLocked"
+    ]
+  },
+  "methodology": "Before sources and case manifest are versioned fixtures; after sources are parsed from the live benchmark. Line deltas use an LCS diff and handler changes compare AST source text.",
+  "sharedChanges": {
+    "domain": {
+      "source": {
+        "before": "fixtures/change-amplification/before/domain.ts",
+        "after": "src/benchmark/domain.ts"
+      },
+      "changed": true,
+      "lines": {
+        "added": 14,
+        "removed": 6
+      }
+    }
+  },
+  "productionFilesChangedPerVariant": 2,
+  "variants": {
+    "guarded": {
+      "source": {
+        "before": "fixtures/change-amplification/before/guarded.ts",
+        "after": "src/benchmark/guarded.ts"
+      },
+      "filesChanged": 1,
+      "handlersChanged": [
+        "publish",
+        "archive",
+        "delete"
+      ],
+      "lines": {
+        "added": 4,
+        "removed": 1
+      },
+      "policyDecisionLocations": 1,
+      "policyWiringLocations": 3,
+      "decisionPoints": {
+        "before": 0,
+        "after": 0
+      },
+      "maxIfNesting": {
+        "before": 0,
+        "after": 0
+      },
+      "nonBlankLines": {
+        "before": 37,
+        "after": 40
+      }
+    },
+    "earlyReturn": {
+      "source": {
+        "before": "fixtures/change-amplification/before/early-return.ts",
+        "after": "src/benchmark/early-return.ts"
+      },
+      "filesChanged": 1,
+      "handlersChanged": [
+        "publish",
+        "archive",
+        "delete"
+      ],
+      "lines": {
+        "added": 3,
+        "removed": 0
+      },
+      "policyDecisionLocations": 3,
+      "policyWiringLocations": 0,
+      "decisionPoints": {
+        "before": 9,
+        "after": 12
+      },
+      "maxIfNesting": {
+        "before": 1,
+        "after": 1
+      },
+      "nonBlankLines": {
+        "before": 31,
+        "after": 34
+      }
+    },
+    "monolithic": {
+      "source": {
+        "before": "fixtures/change-amplification/before/monolithic.ts",
+        "after": "src/benchmark/monolithic.ts"
+      },
+      "filesChanged": 1,
+      "handlersChanged": [
+        "publish",
+        "archive",
+        "delete"
+      ],
+      "lines": {
+        "added": 33,
+        "removed": 21
+      },
+      "policyDecisionLocations": 3,
+      "policyWiringLocations": 0,
+      "decisionPoints": {
+        "before": 9,
+        "after": 12
+      },
+      "maxIfNesting": {
+        "before": 4,
+        "after": 5
+      },
+      "nonBlankLines": {
+        "before": 50,
+        "after": 62
+      }
+    }
+  }
+}

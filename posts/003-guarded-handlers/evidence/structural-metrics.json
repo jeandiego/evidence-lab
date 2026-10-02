@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-02T12:12:22.360Z",
+  "methodology": {
+    "parser": "TypeScript 5.9.3",
+    "scope": "Three behaviorally equivalent action handlers: publish, archive, and delete.",
+    "definitions": {
+      "nonBlankLines": "Physical non-empty lines; descriptive only, not a quality or productivity score.",
+      "ifStatements": "Count of IfStatement AST nodes.",
+      "decisionPoints": "IfStatement, conditional expression, and logical AND/OR AST nodes.",
+      "maxIfNesting": "Maximum nested IfStatement depth.",
+      "returnStatements": "Count of ReturnStatement AST nodes.",
+      "policyReferences": "References to the five domain policy dependencies; a proxy for policy wiring sites, not maintenance time."
+    }
+  },
+  "measurements": {
+    "guardedConsumer": {
+      "path": "src/benchmark/guarded.ts",
+      "nonBlankLines": 40,
+      "ifStatements": 0,
+      "decisionPoints": 0,
+      "maxIfNesting": 0,
+      "returnStatements": 2,
+      "policyReferences": 5
+    },
+    "guardedInfrastructure": {
+      "path": "src/guards.ts",
+      "nonBlankLines": 53,
+      "ifStatements": 1,
+      "decisionPoints": 5,
+      "maxIfNesting": 1,
+      "returnStatements": 4,
+      "policyReferences": 0
+    },
+    "earlyReturn": {
+      "path": "src/benchmark/early-return.ts",
+      "nonBlankLines": 34,
+      "ifStatements": 12,
+      "decisionPoints": 12,
+      "maxIfNesting": 1,
+      "returnStatements": 18,
+      "policyReferences": 12
+    },
+    "monolithic": {
+      "path": "src/benchmark/monolithic.ts",
+      "nonBlankLines": 62,
+      "ifStatements": 12,
+      "decisionPoints": 12,
+      "maxIfNesting": 5,
+      "returnStatements": 16,
+      "policyReferences": 12
+    }
+  },
+  "guardedCombined": {
+    "note": "Consumer and reusable infrastructure are reported separately and summed to avoid hiding abstraction cost.",
+    "nonBlankLines": 93
+  }
+}

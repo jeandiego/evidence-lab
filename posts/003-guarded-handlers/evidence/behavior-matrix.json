@@ -1,0 +1,898 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-02T14:49:59.388Z",
+  "methodology": "Compare serialized result, ordered trace, and propagated error for each applicable action/scenario pair.",
+  "summary": {
+    "variants": 3,
+    "cases": 18,
+    "observations": 54,
+    "equivalentCases": 18
+  },
+  "cases": [
+    {
+      "action": "publish",
+      "scenario": "success",
+      "equivalent": true,
+      "observations": [
+        {
+          "variant": "guarded",
+          "result": {
+            "status": "executed",
+            "value": {
+              "action": "publish",
+              "articleId": "article-003"
+            }
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:content",
+            "check:confirmation",
+            "execute:publish"
+          ],
+          "error": null
+        },
+        {
+          "variant": "earlyReturn",
+          "result": {
+            "status": "executed",
+            "value": {
+              "action": "publish",
+              "articleId": "article-003"
+            }
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:content",
+            "check:confirmation",
+            "execute:publish"
+          ],
+          "error": null
+        },
+        {
+          "variant": "monolithic",
+          "result": {
+            "status": "executed",
+            "value": {
+              "action": "publish",
+              "articleId": "article-003"
+            }
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:content",
+            "check:confirmation",
+            "execute:publish"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "action": "publish",
+      "scenario": "offline",
+      "equivalent": true,
+      "observations": [
+        {
+          "variant": "guarded",
+          "result": {
+            "status": "blocked",
+            "guard": "online"
+          },
+          "trace": [
+            "check:online",
+            "blocked:online"
+          ],
+          "error": null
+        },
+        {
+          "variant": "earlyReturn",
+          "result": {
+            "status": "blocked",
+            "guard": "online"
+          },
+          "trace": [
+            "check:online",
+            "blocked:online"
+          ],
+          "error": null
+        },
+        {
+          "variant": "monolithic",
+          "result": {
+            "status": "blocked",
+            "guard": "online"
+          },
+          "trace": [
+            "check:online",
+            "blocked:online"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "action": "publish",
+      "scenario": "editorialLocked",
+      "equivalent": true,
+      "observations": [
+        {
+          "variant": "guarded",
+          "result": {
+            "status": "blocked",
+            "guard": "editorial-lock"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "blocked:editorial-lock"
+          ],
+          "error": null
+        },
+        {
+          "variant": "earlyReturn",
+          "result": {
+            "status": "blocked",
+            "guard": "editorial-lock"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "blocked:editorial-lock"
+          ],
+          "error": null
+        },
+        {
+          "variant": "monolithic",
+          "result": {
+            "status": "blocked",
+            "guard": "editorial-lock"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "blocked:editorial-lock"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "action": "publish",
+      "scenario": "unauthorized",
+      "equivalent": true,
+      "observations": [
+        {
+          "variant": "guarded",
+          "result": {
+            "status": "blocked",
+            "guard": "permission"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "blocked:permission"
+          ],
+          "error": null
+        },
+        {
+          "variant": "earlyReturn",
+          "result": {
+            "status": "blocked",
+            "guard": "permission"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "blocked:permission"
+          ],
+          "error": null
+        },
+        {
+          "variant": "monolithic",
+          "result": {
+            "status": "blocked",
+            "guard": "permission"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "blocked:permission"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "action": "publish",
+      "scenario": "invalidContent",
+      "equivalent": true,
+      "observations": [
+        {
+          "variant": "guarded",
+          "result": {
+            "status": "blocked",
+            "guard": "content"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:content",
+            "blocked:content"
+          ],
+          "error": null
+        },
+        {
+          "variant": "earlyReturn",
+          "result": {
+            "status": "blocked",
+            "guard": "content"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:content",
+            "blocked:content"
+          ],
+          "error": null
+        },
+        {
+          "variant": "monolithic",
+          "result": {
+            "status": "blocked",
+            "guard": "content"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:content",
+            "blocked:content"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "action": "publish",
+      "scenario": "unconfirmed",
+      "equivalent": true,
+      "observations": [
+        {
+          "variant": "guarded",
+          "result": {
+            "status": "blocked",
+            "guard": "confirmation"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:content",
+            "check:confirmation",
+            "blocked:confirmation"
+          ],
+          "error": null
+        },
+        {
+          "variant": "earlyReturn",
+          "result": {
+            "status": "blocked",
+            "guard": "confirmation"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:content",
+            "check:confirmation",
+            "blocked:confirmation"
+          ],
+          "error": null
+        },
+        {
+          "variant": "monolithic",
+          "result": {
+            "status": "blocked",
+            "guard": "confirmation"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:content",
+            "check:confirmation",
+            "blocked:confirmation"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "action": "publish",
+      "scenario": "actionError",
+      "equivalent": true,
+      "observations": [
+        {
+          "variant": "guarded",
+          "result": null,
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:content",
+            "check:confirmation",
+            "execute:publish"
+          ],
+          "error": "action failed"
+        },
+        {
+          "variant": "earlyReturn",
+          "result": null,
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:content",
+            "check:confirmation",
+            "execute:publish"
+          ],
+          "error": "action failed"
+        },
+        {
+          "variant": "monolithic",
+          "result": null,
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:content",
+            "check:confirmation",
+            "execute:publish"
+          ],
+          "error": "action failed"
+        }
+      ]
+    },
+    {
+      "action": "archive",
+      "scenario": "success",
+      "equivalent": true,
+      "observations": [
+        {
+          "variant": "guarded",
+          "result": {
+            "status": "executed",
+            "value": {
+              "action": "archive",
+              "articleId": "article-003"
+            }
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "execute:archive"
+          ],
+          "error": null
+        },
+        {
+          "variant": "earlyReturn",
+          "result": {
+            "status": "executed",
+            "value": {
+              "action": "archive",
+              "articleId": "article-003"
+            }
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "execute:archive"
+          ],
+          "error": null
+        },
+        {
+          "variant": "monolithic",
+          "result": {
+            "status": "executed",
+            "value": {
+              "action": "archive",
+              "articleId": "article-003"
+            }
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "execute:archive"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "action": "archive",
+      "scenario": "offline",
+      "equivalent": true,
+      "observations": [
+        {
+          "variant": "guarded",
+          "result": {
+            "status": "blocked",
+            "guard": "online"
+          },
+          "trace": [
+            "check:online",
+            "blocked:online"
+          ],
+          "error": null
+        },
+        {
+          "variant": "earlyReturn",
+          "result": {
+            "status": "blocked",
+            "guard": "online"
+          },
+          "trace": [
+            "check:online",
+            "blocked:online"
+          ],
+          "error": null
+        },
+        {
+          "variant": "monolithic",
+          "result": {
+            "status": "blocked",
+            "guard": "online"
+          },
+          "trace": [
+            "check:online",
+            "blocked:online"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "action": "archive",
+      "scenario": "editorialLocked",
+      "equivalent": true,
+      "observations": [
+        {
+          "variant": "guarded",
+          "result": {
+            "status": "blocked",
+            "guard": "editorial-lock"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "blocked:editorial-lock"
+          ],
+          "error": null
+        },
+        {
+          "variant": "earlyReturn",
+          "result": {
+            "status": "blocked",
+            "guard": "editorial-lock"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "blocked:editorial-lock"
+          ],
+          "error": null
+        },
+        {
+          "variant": "monolithic",
+          "result": {
+            "status": "blocked",
+            "guard": "editorial-lock"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "blocked:editorial-lock"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "action": "archive",
+      "scenario": "unauthorized",
+      "equivalent": true,
+      "observations": [
+        {
+          "variant": "guarded",
+          "result": {
+            "status": "blocked",
+            "guard": "permission"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "blocked:permission"
+          ],
+          "error": null
+        },
+        {
+          "variant": "earlyReturn",
+          "result": {
+            "status": "blocked",
+            "guard": "permission"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "blocked:permission"
+          ],
+          "error": null
+        },
+        {
+          "variant": "monolithic",
+          "result": {
+            "status": "blocked",
+            "guard": "permission"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "blocked:permission"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "action": "archive",
+      "scenario": "actionError",
+      "equivalent": true,
+      "observations": [
+        {
+          "variant": "guarded",
+          "result": null,
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "execute:archive"
+          ],
+          "error": "action failed"
+        },
+        {
+          "variant": "earlyReturn",
+          "result": null,
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "execute:archive"
+          ],
+          "error": "action failed"
+        },
+        {
+          "variant": "monolithic",
+          "result": null,
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "execute:archive"
+          ],
+          "error": "action failed"
+        }
+      ]
+    },
+    {
+      "action": "delete",
+      "scenario": "success",
+      "equivalent": true,
+      "observations": [
+        {
+          "variant": "guarded",
+          "result": {
+            "status": "executed",
+            "value": {
+              "action": "delete",
+              "articleId": "article-003"
+            }
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:confirmation",
+            "execute:delete"
+          ],
+          "error": null
+        },
+        {
+          "variant": "earlyReturn",
+          "result": {
+            "status": "executed",
+            "value": {
+              "action": "delete",
+              "articleId": "article-003"
+            }
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:confirmation",
+            "execute:delete"
+          ],
+          "error": null
+        },
+        {
+          "variant": "monolithic",
+          "result": {
+            "status": "executed",
+            "value": {
+              "action": "delete",
+              "articleId": "article-003"
+            }
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:confirmation",
+            "execute:delete"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "action": "delete",
+      "scenario": "offline",
+      "equivalent": true,
+      "observations": [
+        {
+          "variant": "guarded",
+          "result": {
+            "status": "blocked",
+            "guard": "online"
+          },
+          "trace": [
+            "check:online",
+            "blocked:online"
+          ],
+          "error": null
+        },
+        {
+          "variant": "earlyReturn",
+          "result": {
+            "status": "blocked",
+            "guard": "online"
+          },
+          "trace": [
+            "check:online",
+            "blocked:online"
+          ],
+          "error": null
+        },
+        {
+          "variant": "monolithic",
+          "result": {
+            "status": "blocked",
+            "guard": "online"
+          },
+          "trace": [
+            "check:online",
+            "blocked:online"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "action": "delete",
+      "scenario": "editorialLocked",
+      "equivalent": true,
+      "observations": [
+        {
+          "variant": "guarded",
+          "result": {
+            "status": "blocked",
+            "guard": "editorial-lock"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "blocked:editorial-lock"
+          ],
+          "error": null
+        },
+        {
+          "variant": "earlyReturn",
+          "result": {
+            "status": "blocked",
+            "guard": "editorial-lock"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "blocked:editorial-lock"
+          ],
+          "error": null
+        },
+        {
+          "variant": "monolithic",
+          "result": {
+            "status": "blocked",
+            "guard": "editorial-lock"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "blocked:editorial-lock"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "action": "delete",
+      "scenario": "unauthorized",
+      "equivalent": true,
+      "observations": [
+        {
+          "variant": "guarded",
+          "result": {
+            "status": "blocked",
+            "guard": "permission"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "blocked:permission"
+          ],
+          "error": null
+        },
+        {
+          "variant": "earlyReturn",
+          "result": {
+            "status": "blocked",
+            "guard": "permission"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "blocked:permission"
+          ],
+          "error": null
+        },
+        {
+          "variant": "monolithic",
+          "result": {
+            "status": "blocked",
+            "guard": "permission"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "blocked:permission"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "action": "delete",
+      "scenario": "unconfirmed",
+      "equivalent": true,
+      "observations": [
+        {
+          "variant": "guarded",
+          "result": {
+            "status": "blocked",
+            "guard": "confirmation"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:confirmation",
+            "blocked:confirmation"
+          ],
+          "error": null
+        },
+        {
+          "variant": "earlyReturn",
+          "result": {
+            "status": "blocked",
+            "guard": "confirmation"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:confirmation",
+            "blocked:confirmation"
+          ],
+          "error": null
+        },
+        {
+          "variant": "monolithic",
+          "result": {
+            "status": "blocked",
+            "guard": "confirmation"
+          },
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:confirmation",
+            "blocked:confirmation"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "action": "delete",
+      "scenario": "actionError",
+      "equivalent": true,
+      "observations": [
+        {
+          "variant": "guarded",
+          "result": null,
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:confirmation",
+            "execute:delete"
+          ],
+          "error": "action failed"
+        },
+        {
+          "variant": "earlyReturn",
+          "result": null,
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:confirmation",
+            "execute:delete"
+          ],
+          "error": "action failed"
+        },
+        {
+          "variant": "monolithic",
+          "result": null,
+          "trace": [
+            "check:online",
+            "check:editorial-lock",
+            "check:permission",
+            "check:confirmation",
+            "execute:delete"
+          ],
+          "error": "action failed"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "capturedBefore": "editorial-lock",
+  "actions": {
+    "publish": ["success", "offline", "unauthorized", "invalidContent", "unconfirmed", "actionError"],
+    "archive": ["success", "offline", "unauthorized", "actionError"],
+    "delete": ["success", "offline", "unauthorized", "unconfirmed", "actionError"]
+  },
+  "sourceFiles": {
+    "guarded": "guarded.ts",
+    "earlyReturn": "early-return.ts",
+    "monolithic": "monolithic.ts"
+  },
+  "sharedSourceFiles": {
+    "domain": {
+      "before": "domain.ts",
+      "after": "src/benchmark/domain.ts"
+    }
+  }
+}
