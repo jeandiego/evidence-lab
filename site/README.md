@@ -18,6 +18,7 @@ npx wrangler pages dev dist  # serve dist/ como o Cloudflare Pages
   `/en/` lista o original marcado "In Portuguese".
 - Links relativos do markdown (`../evidence/…`, `../docs/…`) viram URLs do GitHub.
 - `video` e `poster` do frontmatter apontam para `post/assets/`; entram no build com hash.
+- `demo.kind: live` incorpora o build estático do lab em `/demos/<slug>/`; o site nunca importa seu código-fonte.
 - A OG image (1200×630) é gerada no build a partir do número, do título e do poster.
 
 ## Rotas
