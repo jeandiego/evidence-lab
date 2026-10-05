@@ -19,7 +19,7 @@ const aliases = {
   'cart-add-product-partial-merge': 'cart-add-product',
   'cart-remove-product-fanout': 'cart-remove-product',
   'coupon-post-save-cart-overwrite': 'coupon-change-to-particular-and-apply-campaign',
-  'subscription-removal-atomic-rebuild': 'dasa-card-remove-subscription',
+  'subscription-removal-atomic-rebuild': 'subscription-card-remove-subscription',
   'reserve-status-to-local-reconstruction': 'reserve-effective',
   'health-insurance-status-hydration': 'health-insurance-remote-validation',
   'payment-method-workflow-state': 'payment-method-change',
@@ -32,7 +32,7 @@ const aliases = {
 const labels = { evitavel: 'avoidable', simplificavel: 'simplifiable', legitimo: 'legitimate', inconclusivo: 'inconclusive' }
 const extensionIds = new Set([
   'coupon-change-to-particular-and-apply-campaign',
-  'dasa-card-remove-subscription',
+  'subscription-card-remove-subscription',
   'health-insurance-remote-validation',
   'payment-method-change',
   'clone-draft-to-new-patient',

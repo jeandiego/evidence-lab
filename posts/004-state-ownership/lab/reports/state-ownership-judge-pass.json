@@ -418,7 +418,7 @@
       "judgeResponse": "That would indicate an incomplete mutation contract, but it still calls for one centralized projection or optimistic lifecycle. Writing request-derived products after applying a canonical draft response increases hybrid-snapshot risk."
     },
     {
-      "id": "dasa-card-remove-subscription",
+      "id": "subscription-card-remove-subscription",
       "operation": "Remove a subscription, rebuild payment transactions and pricing, then reconcile the global scheduling state",
       "classification": "simplificavel",
       "confidence": 0.99,
