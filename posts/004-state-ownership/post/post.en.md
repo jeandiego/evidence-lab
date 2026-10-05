@@ -10,7 +10,10 @@ status: review
 thesis: "When the server owns the state, duplicating its snapshot in a global store turns consistency into manual synchronization and increases the risk of divergence as the domain evolves."
 tags: [react, zustand, tanstack-query, state-management, architecture, frontend]
 demo:
-  kind: live
+  kind: video
+# Vídeo para o LinkedIn e hero do site; a capa alimenta o card OG.
+video: ./assets/reel-004.mp4
+poster: ./assets/reel-004-poster.jpg
 evidence:
   - ../lab/reports/contract-evolution-benchmark.json
   - ../lab/reports/state-ownership-classification.json

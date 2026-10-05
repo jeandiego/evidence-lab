@@ -11,8 +11,9 @@ thesis: "Quando o servidor é o dono do estado, duplicar seu snapshot numa store
 tags: [react, zustand, tanstack-query, state-management, architecture, frontend]
 demo:
   kind: video
-  src: ./assets/reel-004.mp4
-  poster: ./assets/reel-004-poster.jpg
+# Vídeo para o LinkedIn e hero do site; a capa alimenta o card OG.
+video: ./assets/reel-004.mp4
+poster: ./assets/reel-004-poster.jpg
 evidence:
   - ../lab/reports/contract-evolution-benchmark.json
   - ../lab/reports/state-ownership-classification.json
