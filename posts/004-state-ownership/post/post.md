@@ -10,7 +10,9 @@ status: review
 thesis: "Quando o servidor é o dono do estado, duplicar seu snapshot numa store global transforma consistência em sincronização manual e amplia o risco de divergência conforme o domínio evolui."
 tags: [react, zustand, tanstack-query, state-management, architecture, frontend]
 demo:
-  kind: live
+  kind: video
+  src: ./assets/reel-004.mp4
+  poster: ./assets/reel-004-poster.jpg
 evidence:
   - ../lab/reports/contract-evolution-benchmark.json
   - ../lab/reports/state-ownership-classification.json
@@ -19,13 +21,15 @@ evidence:
 repo: https://github.com/jeandiego/evidence-lab/tree/main/posts/004-state-ownership
 ---
 
-Em muitas aplicações React, a store global chega antes da modelagem do estado. Alguns dados precisam atravessar várias telas, então ela parece o lugar natural para guardar usuário, carrinho, draft, unidade, configurações e respostas completas da API.
+Troquei Luna por Thor num laboratório pequeno. O nome mudou na tela; cobertura, preço, desconto e revisão continuaram sendo os de Luna. O TypeScript aceitou, a action passou no teste e cada campo, visto sozinho, continuou válido.
 
-Parte desses dados pertence ao servidor. Quando também os guardamos numa cópia mutável no cliente, cada mutation precisa manter as duas representações sincronizadas. A escolha da biblioteca importa menos aqui do que a pergunta que ficou para depois: quem é o dono deste estado?
+O estado completo é que nunca poderia ter existido.
+
+Eu queria isolar um problema que aparece quando a store global chega antes da modelagem do estado. Ela começa guardando dados que atravessam várias telas e logo recebe usuário, carrinho, draft, unidade, configurações e respostas completas da API. Quando parte desses dados pertence ao servidor, a cópia mutável no cliente cria um trabalho adicional: cada mutation precisa manter duas representações coerentes.
 
 ## Uma troca aparentemente simples
 
-O laboratório começa com Luna, coberta por um plano e com atendimento gratuito. O usuário seleciona Thor, cujo atendimento é particular.
+No início do cenário, Luna está coberta por um plano e seu atendimento é gratuito. O usuário seleciona Thor, cujo atendimento é particular.
 
 O servidor responde com um novo snapshot:
 
@@ -107,8 +111,9 @@ Esse benchmark mede amplificação de mudança na sincronização. Não compara 
 
 ## Uma aplicação real
 
-O laboratório isola o mecanismo. Para observar sua escala, auditei uma aplicação real que atende mais de 1 milhão de usuários. Fiz a classificação, a evidência por arquivo e linha.
-O que encontrei foram 23 operações de sincronização ligadas à store principal:
+O laboratório isola o mecanismo. Para observar sua escala, auditei uma aplicação real que atende mais de 1 milhão de usuários. Para cada classificação, preservei a evidência por arquivo e linha.
+
+Encontrei 23 operações de sincronização ligadas à store principal:
 
 | Classificação | Operações |
 | --- | ---: |
@@ -121,7 +126,7 @@ Classifiquei como evitável uma operação que copiava estado pertencente ao ser
 
 Nos casos simplificáveis, alguma reconciliação continuaria necessária, embora pudesse ser reduzida ou centralizada. Trocar a biblioteca não remove optimistic updates, persistência de workflow nem projeções locais.
 
-Os 19 casos evitáveis ou simplificáveis são pontos onde a arquitetura depende de sincronização manual. Não encontrei 19 bugs em produção. Encontrei 19 lugares onde o risco de introduzir um bug é maior, porque uma mudança no domínio depende de alguém lembrar de manter outra representação coerente.
+Os 19 casos evitáveis ou simplificáveis são pontos onde a arquitetura depende de sincronização manual. Não encontrei 19 bugs em produção. Encontrei 19 lugares onde uma mudança no domínio depende de alguém lembrar de manter outra representação coerente.
 
 Entre eles estavam operações que:
 
@@ -133,7 +138,7 @@ Entre eles estavam operações que:
 
 Cada solução faz sentido quando lida isoladamente. Juntas, elas deixam a mesma informação em várias representações e sob vários escritores. Uma mudança no contrato pode chegar a um desses caminhos e não aos demais.
 
-Indo um pouquinho mais a fundo ~sendo insistente até demais~ também revisei os 200 commits mais recentes, excluindo merges. Usei um critério conservador: a mensagem do commit não bastava; o diff precisava mostrar uma correção de estado obsoleto, campos relacionados não sincronizados, cópias locais divergentes ou um campo remoto omitido pelo cliente.
+Não parei na fotografia do código. Revisei também os 200 commits mais recentes, excluindo merges. Usei um critério conservador: a mensagem do commit não bastava; o diff precisava mostrar uma correção de estado obsoleto, campos relacionados não sincronizados, cópias locais divergentes ou um campo remoto omitido pelo cliente.
 
 Encontrei 7 commits com esse perfil, 3,5% da janela analisada. Havia correções para limpar uma unidade que permanecia selecionada, restaurar em conjunto forma e contexto de pagamento, reconciliar o carrinho após mudanças feitas em outro fluxo e incluir no contrato consumido um campo remoto que havia ficado de fora.
 
@@ -245,9 +250,9 @@ const useUiStore = create((set) => ({
 
 O servidor não decide se a sidebar está aberta. Não existe resposta HTTP capaz de tornar esse booleano obsoleto. Aqui, a store é a proprietária do estado, e não uma réplica de outro dono.
 
-## Testar a action não basta
+## O teste da action pode passar
 
-“Mas a action está testada” costuma encerrar a discussão cedo demais. Muitas vezes, o teste prova apenas que o setter fez exatamente o que foi programado para fazer:
+Um teste da action muitas vezes prova apenas que o setter fez exatamente o que foi programado para fazer:
 
 ```ts
 expect(store.pet.id).toBe('thor')
@@ -255,7 +260,7 @@ expect(store.pet.id).toBe('thor')
 
 Esse teste passa mesmo com o snapshot semanticamente quebrado.
 
-Esse é o detalhe incômodo: a action pode estar funcionando e o domínio pode continuar errado. Um teste verde confirma a implementação da action; não confirma, por si só, a invariância que ela deveria preservar.
+A action pode funcionar como foi escrita e ainda produzir um estado impossível para o domínio. O teste verde confirma sua implementação; não confirma, por si só, a invariância que ela deveria preservar.
 
 Uma invariância mais útil seria:
 
@@ -263,7 +268,7 @@ Uma invariância mais útil seria:
 
 No lab, o diff compara PET, cobertura, preço, subtotal, desconto, total e revisão. Além de verificar o setter, o teste confere se o estado resultante ainda representa uma versão possível do domínio. Um teste de implementação pode continuar existindo, desde que a invariância que a action deveria preservar também esteja coberta.
 
-## A pergunta anterior à ferramenta
+## Antes da store
 
 Antes de adicionar uma store, eu faria estas perguntas:
 
@@ -276,7 +281,7 @@ Antes de adicionar uma store, eu faria estas perguntas:
 
 As respostas definem o mecanismo. Se o servidor é o dono, copiar os dados para uma store transforma consistência em sincronização manual. Conforme o domínio cresce, cada ponto de sincronização é mais um lugar que precisa acompanhar a mudança.
 
-Zustand continua sendo uma opção para o estado que pertence ao cliente. Para o estado remoto, a decisão precisa incluir o custo de manter outra fonte de verdade.
+Eu continuaria usando Zustand para o estado que pertence ao cliente. Para o estado remoto, colocaria na decisão o custo que costuma ficar escondido: manter outra fonte de verdade coerente com a primeira.
 
 ## Limitações
 

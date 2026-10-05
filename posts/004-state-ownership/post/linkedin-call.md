@@ -11,38 +11,25 @@ link: https://lab.synko.digital/pt-br/004-state-ownership/?utm_source=linkedin&u
 ## Copy do post
 
 ```text
-Frontend adora discutir qual biblioteca deve ser dona do estado.
+Troquei Luna por Thor num lab sobre state ownership.
 
-Zustand? Redux? Context? TanStack Query?
+O nome mudou na tela. A cobertura, o preço, o desconto e a revisão continuaram sendo os de Luna.
 
-Essa discussão costuma começar com uma pergunta tarde demais.
+O TypeScript aceitou, o teste da action passou e cada campo permaneceu válido quando lido sozinho. Juntos, eles formaram um estado que nunca existiu no domínio.
 
-Quem é o dono do dado?
+A action tinha sido modelada como a intenção do botão: “trocar o PET”. O servidor tratava a mesma operação como uma mudança de PET, cobertura, preço, desconto, total e revisão. Ao copiar apenas parte da resposta para a store, o cliente produziu uma combinação visualmente plausível de duas revisões diferentes.
 
-Quando o servidor devolve um snapshot completo e a aplicação copia esse snapshot para uma store global, alguém passa a manter duas verdades. Cada mutation vira um pequeno protocolo de sincronização escrito pelo time.
+Fiz então o contrato evoluir com dois campos calculados pelo servidor. A projeção manual continuou compilando e deixou os dois de fora. A estratégia que substituía o snapshot remoto pela resposta canônica não precisou mudar.
 
-No lab, trocar o PET atualiza corretamente o nome para Thor. A cobertura, o preço, o desconto e a revisão continuam sendo os de Luna.
+Quis saber quanto desse trabalho aparecia fora do lab. Auditei uma aplicação usada por mais de 1 milhão de pessoas e encontrei 23 operações de sincronização ligadas à store principal. Classifiquei 19 como evitáveis ou simplificáveis com uma separação diferente entre client state e server state.
 
-TypeScript aprova e o teste da action passa. Mesmo assim, a tela combina valores de duas revisões do domínio e parece plausível para quem usa.
+Não encontrei 19 bugs. Encontrei 19 pontos onde uma mudança no domínio dependia de alguém lembrar de manter outra representação coerente.
 
-Depois fiz o contrato evoluir com dois campos calculados pelo servidor. A projeção manual continuou compilando e esqueceu os dois. A estratégia que substituía o snapshot canônico não precisou mudar.
+Depois revisei os 200 commits mais recentes, excluindo merges. Em 7 deles, o diff corrigia estado obsoleto, campos relacionados fora de sincronia, cópias divergentes ou um campo remoto omitido pelo cliente. Isso corresponde a 3,5% da janela analisada, não à incidência de bugs em produção nem ao histórico inteiro do produto.
 
-Também auditei uma aplicação real de agendamento usada por mais de 1 milhão de pessoas:
+Zustand fez o trabalho que recebeu. O custo apareceu porque pedimos à store que mantivesse uma cópia mutável de dados que continuavam pertencendo ao servidor.
 
-23 operações de sincronização na store principal.
-19 eram evitáveis ou simplificáveis com uma separação melhor entre client state e server state.
-
-A contagem não representa 19 bugs encontrados. Ela marca 19 lugares onde o próximo bug tem mais chance de nascer porque alguém precisa lembrar de atualizar outra cópia.
-
-Olhei também os últimos 200 commits sem merge. Em 7 deles, o diff corrigia diretamente estado obsoleto, campos relacionados fora de sincronia, cópias divergentes ou um campo remoto omitido pelo cliente.
-
-Em 3,5% dessa janela, o time precisou voltar a um ponto de sincronização para recuperar coerência.
-
-Zustand fez exatamente o trabalho que entregamos a ele. Talvez tenhamos entregado trabalho demais.
-
-O erro acontece antes da escolha da biblioteca: começar pela store e decidir ownership depois.
-
-Se a API ganhar um campo amanhã, quantas actions do seu frontend precisam lembrar dele?
+Se a API ganhar um campo amanhã, quantas actions do seu frontend precisam conhecê-lo para que a tela continue coerente?
 
 Artigo, demo reproduzível, código, metodologia e limitações no primeiro comentário.
 

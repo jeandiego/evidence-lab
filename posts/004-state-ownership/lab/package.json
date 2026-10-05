@@ -20,6 +20,7 @@
     "test": "docker compose up -d db && npm run db:wait && npm run db:migrate && npm run db:seed && npm run test:unit --workspaces --if-present",
     "test:e2e": "playwright test",
     "benchmark:contract": "node scripts/benchmark-contract-evolution.mjs",
+    "reel:render": "node scripts/render-reel.mjs --out ../post/assets/reel-004.mp4",
     "report:paths:test": "node --test scripts/protect-report-paths.test.mjs",
     "report:paths:audit": "set -e; for file in reports/*.json; do node scripts/protect-report-paths.mjs audit \"$file\"; done"
   },

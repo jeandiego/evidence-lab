@@ -1,14 +1,12 @@
 # State ownership: sua store global virou uma segunda fonte de verdade?
 
-O problema não começa quando você escolhe Zustand.
+Eu comecei por uma pergunta sobre Zustand e acabei em outra, anterior à biblioteca: quem deveria ser o dono de cada estado?
 
-Começa quando você escolhe a store antes de decidir quem é o dono do estado.
-
-Esse é um caminho comum em aplicações React:
+O caminho que estou tentando isolar aparece com frequência em aplicações React:
 
 > “Vamos precisar desses dados em várias telas. Melhor começar com uma store global.”
 
-A decisão parece inofensiva. A store oferece acesso simples, leitura imperativa e persistência entre rotas. Logo ela recebe o usuário, o carrinho, o draft, a unidade, configurações e respostas inteiras da API.
+A decisão parece inofensiva. A store oferece acesso simples, leitura imperativa e persistência entre rotas. Aos poucos, recebe usuário, carrinho, draft, unidade, configurações e respostas inteiras da API.
 
 Em algum momento, dados que pertencem ao servidor passam a existir também numa cópia mutável no cliente.
 
@@ -63,9 +61,7 @@ Depois da mutation, a interface mostra:
 
 Thor aparece na tela com os dados financeiros de Luna.
 
-O TypeScript não reclama. A aplicação não lança uma exceção. Todos os campos obrigatórios existem e cada valor, isoladamente, é válido.
-
-É um bug silencioso e visualmente plausível.
+O TypeScript não reclama, a aplicação não lança uma exceção e todos os campos obrigatórios existem. Cada valor, isoladamente, é válido. Juntos, eles descrevem uma versão do domínio que nunca existiu.
 
 ## A action foi modelada pela intenção da interface
 
@@ -160,13 +156,9 @@ O mesmo vale para Redux, Context ou qualquer outra store.
 
 Também seria incorreto dizer que TanStack Query ou Apollo eliminam todo trabalho de consistência. Mutations ainda podem exigir invalidação, refetch, optimistic updates, rollback e atualização coordenada de queries relacionadas.
 
-A diferença está no ponto de partida.
-
 Uma camada de server state assume que os dados remotos pertencem ao servidor e oferece mecanismos para cacheá-los, invalidá-los e reconciliá-los. Uma store genérica aceita qualquer coisa. Se colocamos nela uma cópia do snapshot remoto, somos nós que passamos a definir o protocolo de coerência.
 
-O problema não é ter uma store.
-
-É pedir para ela ser dona de coisas demais.
+Ter uma store não é o problema que o experimento mostrou. O problema aparece quando ela passa a responder por dados que continuam pertencendo a outro sistema.
 
 ## Testar a action não basta
 
@@ -199,11 +191,7 @@ Antes de adicionar uma store, eu faria estas perguntas:
 
 Só depois escolheria o mecanismo.
 
-Quando o servidor é o dono, copiar seus dados para uma store transforma consistência em sincronização manual. E cada sincronização manual aumenta o risco de esquecimento conforme o domínio cresce.
-
-Escolher Zustand é fácil.
-
-Difícil é perceber quando a store virou uma segunda fonte de verdade.
+Quando o servidor é o dono, copiar seus dados para uma store transforma consistência em sincronização manual. Cada sincronização vira outro lugar que precisa acompanhar a evolução do domínio. É assim que uma conveniência local termina operando como segunda fonte de verdade.
 
 ## Limitações
 

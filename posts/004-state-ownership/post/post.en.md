@@ -19,13 +19,15 @@ evidence:
 repo: https://github.com/jeandiego/evidence-lab/tree/main/posts/004-state-ownership
 ---
 
-In many React applications, the global store arrives before the state model. Some data needs to cross several screens, so the store looks like the natural home for the user, cart, draft, selected unit, settings, and complete API responses.
+I switched from Luna to Thor in a small lab. The name changed on screen; coverage, price, discount, and revision still belonged to Luna. TypeScript accepted the result, the action passed its test, and every field remained valid when read on its own.
 
-Some of that data belongs to the server. Once we also keep it in a mutable client copy, every mutation has to keep both representations synchronized. The library matters less here than the question that came too late: who owns this state?
+The complete state should never have existed.
+
+I wanted to isolate a problem that appears when the global store arrives before the state model. It starts by holding data that crosses several screens and soon contains the user, cart, draft, selected unit, settings, and complete API responses. When some of that data belongs to the server, the mutable client copy creates another job: every mutation must keep two representations coherent.
 
 ## A seemingly simple change
 
-The lab starts with Luna, who is covered by a plan and has a free appointment. The user selects Thor, whose appointment is private pay.
+At the start of the scenario, Luna is covered by a plan and has a free appointment. The user selects Thor, whose appointment is private pay.
 
 The server returns a new snapshot:
 
@@ -122,7 +124,7 @@ I classified an operation as avoidable when it copied server-owned state that co
 
 The simplifiable cases would still need some reconciliation, although it could be narrower or centralized. Changing libraries does not remove optimistic updates, workflow persistence, or local projections.
 
-The 19 avoidable or simplifiable operations are places where the architecture depends on manual synchronization. I did not find 19 production bugs. I found 19 places where the risk of introducing one is higher because a domain change depends on somebody remembering to keep another representation coherent.
+The 19 avoidable or simplifiable operations are places where the architecture depends on manual synchronization. I did not find 19 production bugs. I found 19 places where a domain change depends on somebody remembering to keep another representation coherent.
 
 They included operations that:
 
@@ -246,9 +248,9 @@ const useUiStore = create((set) => ({
 
 The server does not decide whether the sidebar is open. No HTTP response can make that boolean stale. The store owns this state instead of acting as another owner's replica.
 
-## Testing the action is not enough
+## The action test can pass
 
-"But the action is tested" often ends the discussion too early. The test may only prove that the setter did exactly what it was programmed to do:
+An action test may only prove that the setter did exactly what it was programmed to do:
 
 ```ts
 expect(store.pet.id).toBe('thor')
@@ -256,7 +258,7 @@ expect(store.pet.id).toBe('thor')
 
 That test passes with a semantically broken snapshot.
 
-Here is the uncomfortable part: the action can work while the domain remains wrong. A green test confirms the action's implementation. By itself, it says nothing about the invariant that action should preserve.
+The action can work as written and still produce a state that is impossible for the domain. A green test confirms its implementation. By itself, it says nothing about the invariant the action should preserve.
 
 A more useful invariant would be:
 
@@ -264,7 +266,7 @@ A more useful invariant would be:
 
 In the lab, the diff compares pet, coverage, price, subtotal, discount, total, and revision. Besides checking the setter, the test verifies that the resulting state still represents a possible version of the domain. An implementation test can stay, provided the invariant is covered too.
 
-## The question that comes before the tool
+## Before the store
 
 Before adding a store, I would ask:
 
@@ -277,7 +279,7 @@ Before adding a store, I would ask:
 
 The answers determine the mechanism. If the server owns the data, copying it into a store turns consistency into manual synchronization. As the domain grows, every synchronization point becomes another place that must follow the change.
 
-Zustand remains a good option for state owned by the client. For remote state, the decision must include the cost of maintaining another source of truth.
+I would still use Zustand for state owned by the client. For remote state, I would include the cost that usually stays hidden: keeping another source of truth coherent with the first.
 
 ## Limitations
 
