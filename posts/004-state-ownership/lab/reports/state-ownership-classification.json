@@ -1,0 +1,1240 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-10-05T12:56:25.174Z",
+  "repositoryAlias": "real-production-scheduling-app",
+  "anonymization": {
+    "absoluteSourcePathIncluded": false,
+    "organizationNameIncluded": false,
+    "note": "Source paths are encrypted. Line numbers and reviewed domain terminology are retained.",
+    "relativeSourcePathIncluded": false,
+    "pathProtection": "AES-256-GCM field encryption (protected-path:v1)"
+  },
+  "scope": {
+    "objective": "Classify concrete manual reconciliation operations between remote data and a global Zustand store.",
+    "unitOfCount": "One user/domain operation, deduplicated even when it performs multiple writes.",
+    "excluded": [
+      "pure UI setters without a remote operation",
+      "test setup",
+      "read-only store access",
+      "analytics-only reads"
+    ],
+    "interpretation": "Counts measure maintenance/reconciliation sites, not confirmed production defects."
+  },
+  "process": {
+    "classifierPass": "Independent repository inspection and classification.",
+    "judgePass": "Independent initial discovery followed by a label-blind targeted coverage extension for classifier-only operations.",
+    "adjudicationPolicy": [
+      "Agreement retains the shared label.",
+      "Avoidable versus simplifiable resolves to simplifiable.",
+      "Disagreement crossing an ownership boundary resolves to inconclusive.",
+      "Judge-only discoveries retain the judge label and are reported as classifier misses."
+    ]
+  },
+  "metrics": {
+    "uniqueOperations": 23,
+    "classifierDiscovered": 20,
+    "judgeReviewed": 23,
+    "judgeIndependentInitialDiscoveries": 16,
+    "judgeTargetedExtensionReviews": 7,
+    "sharedOperations": 20,
+    "agreements": 15,
+    "disagreements": 5,
+    "agreementRateOnShared": 0.75,
+    "classifierCounts": {
+      "avoidable": 8,
+      "simplifiable": 10,
+      "legitimate": 1,
+      "inconclusive": 1,
+      "not_discovered": 3
+    },
+    "judgeCounts": {
+      "avoidable": 7,
+      "simplifiable": 14,
+      "legitimate": 2
+    },
+    "finalCounts": {
+      "avoidable": 6,
+      "simplifiable": 13,
+      "inconclusive": 2,
+      "legitimate": 2
+    }
+  },
+  "results": [
+    {
+      "id": "draft-query-hydration",
+      "entity": "diagnostic draft",
+      "operation": "query draft -> copy complete response into Zustand",
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "remote query response",
+        "scheduleStore.draft",
+        "scheduleStore.cart"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:syp5qfBS1Gou_hzb:amCxlXeK0jX4ieqLrSrstA:IdtGzJfvQImVwx56xvD0NoYs6f5zuDpRnKS3XATqghS2u7o",
+          "line": 49
+        },
+        {
+          "path": "protected-path:v1:1FUr7JXcleJPDV9z:iwsJAAenhMi8oiMohg6eHQ:f8JUGxgduvT8iPt0iphI2Y5j0jUZ",
+          "line": 176,
+          "detail": "setDraft also mirrors draft.cart.products into the top-level cart field."
+        },
+        {
+          "path": "protected-path:v1:ttQl9nmCi8ElEqq4:Ysx7Y9uUfQFzL31pDEDKlw:Y6Qr2yG7fuGw2hV1-6cHyfzaKWZolaxBUE-I8aIYQHiv3vw",
+          "line": 45,
+          "detail": "The query result is written to Zustand by setDraft."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "avoidable",
+        "confidence": 0.94,
+        "rationale": "The complete remote draft is copied into Zustand; setDraft then manually mirrors draft.cart.products into cart.",
+        "counterargument": "The multi-page flow may need persistence and imperative access, but a server-state cache can provide both without a second mutable representation."
+      },
+      "judge": {
+        "discoveryMode": "independent_initial_pass",
+        "classification": "avoidable",
+        "confidence": 0.93,
+        "rationale": "A server-owned draft snapshot is copied to Zustand and immediately creates a second representation of its products, increasing the reconciliation surface.",
+        "counterargument": "The draft is the central cross-page aggregate and Zustand provides synchronous imperative access to it.",
+        "responseToCounterargument": "The access pattern explains the design choice but not the need for ownership duplication; a remote cache plus narrowly scoped client workflow state can provide cross-page access."
+      },
+      "judgeResult": "approved",
+      "finalClassification": "avoidable",
+      "adjudication": "classifier and judge agreed"
+    },
+    {
+      "id": "draft-save-reconciliation",
+      "entity": "diagnostic draft",
+      "operation": "save mutation -> copy returned snapshot into draft and cart",
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "mutation response",
+        "scheduleStore.draft",
+        "scheduleStore.cart"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:Ga_m2SGr49gK6RyQ:V_T2CGuqgJni-HBLsAkCig:nrmCPAk3HfCeSUhJ_Mw1cA0ERk6tvlHVqW694KilmfNp284",
+          "line": 101
+        },
+        {
+          "path": "protected-path:v1:cAElWKeXOJvpPRuv:fVvSA51YnL4zRJQRvgP8zg:YG1GpR3Uat6ghh4UhH3PHBTWCmQ3",
+          "line": 176
+        },
+        {
+          "path": "protected-path:v1:_k8hmLUNQJpCdkv4:cEtuBoRjXSN1Yu_x9NapZQ:CgLjoE9H0rCSgPLJwTWJ6KDOfqbtkd5QAIIoRfTy0NayDfg",
+          "line": 99,
+          "detail": "The canonical draft returned by the mutation is copied into Zustand."
+        },
+        {
+          "path": "protected-path:v1:H-V5_igPdqw9DnF7:GkyNZaflCG7qif-mnA-B7Q:3Cc511uBRkcAk99V7m9XI688-rHi",
+          "line": 180,
+          "detail": "Applying the snapshot also manually maintains the duplicated top-level cart."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "avoidable",
+        "confidence": 0.95,
+        "rationale": "A canonical mutation response is already available, yet it is copied to a second owner and mirrored by a handwritten store rule.",
+        "counterargument": "Central setDraft reduces caller duplication, although it does not remove the duplicate source of truth."
+      },
+      "judge": {
+        "discoveryMode": "independent_initial_pass",
+        "classification": "avoidable",
+        "confidence": 0.91,
+        "rationale": "The mutation already returns the canonical aggregate. Updating the resource in a remote cache would avoid the separate Zustand snapshot and automatic cart mirroring action.",
+        "counterargument": "Writing the complete response is safer than reconstructing it and is currently atomic inside setDraft.",
+        "responseToCounterargument": "Agreed for the current design; the avoidable part is the extra owner and duplicated cart, not the use of the canonical response."
+      },
+      "judgeResult": "approved",
+      "finalClassification": "avoidable",
+      "adjudication": "classifier and judge agreed"
+    },
+    {
+      "id": "draft-add-transactions-reconciliation",
+      "entity": "draft transactions and cart",
+      "operation": "add-transactions mutation -> copy full draft and mirror cart",
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "mutation response",
+        "scheduleStore.draft",
+        "scheduleStore.cart"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:6QRVzb-sB2_0fO9A:Oz1DO2vy2YXm7gaKQLjEpw:bLI7pzEFJkD8GA4an-t9OqIH08ztrErdmWZzGoy7FNB3oB0",
+          "line": 125
+        },
+        {
+          "path": "protected-path:v1:ld4ALfXfZBadxQ-W:oawDZx2LN8RyDmnes4C4iA:-AopAW31rQ3auJ2QGtUTqg292tJ-",
+          "line": 184,
+          "detail": "The action copies the response and separately mirrors draft cart products to cart."
+        },
+        {
+          "path": "protected-path:v1:44R-Gb_sfJYA4I7e:HdePXHxNlFj_YdosyFv2uw:vmLHWYWfWTjuGdTcPAS0qOqJe1fSCbwo8j08ywnV4b4V6sQ",
+          "line": 123,
+          "detail": "The mutation response is routed through a dedicated addTransactions store action."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "avoidable",
+        "confidence": 0.93,
+        "rationale": "The returned draft is copied into Zustand through a second action that repeats the cart mirroring rule.",
+        "counterargument": "The separate action gives useful devtools semantics but could wrap a canonical cache update instead."
+      },
+      "judge": {
+        "discoveryMode": "independent_initial_pass",
+        "classification": "simplifiable",
+        "confidence": 0.86,
+        "rationale": "The response is canonical, but the application needs a special reconciliation action mainly because the aggregate and cart have separate representations. A single remote owner would reduce this to one cache replacement.",
+        "counterargument": "The dedicated action may encode transaction-specific loading behavior and preserve a stable public store API.",
+        "responseToCounterargument": "That justifies an operation abstraction, not the duplicated product projection maintained inside it."
+      },
+      "judgeResult": "reclassified_or_escalated",
+      "finalClassification": "simplifiable",
+      "adjudication": "avoidable/simplifiable disagreement resolved to the less absolute claim"
+    },
+    {
+      "id": "draft-remove-transactions-reconstruction",
+      "entity": "draft transactions and product transaction links",
+      "operation": "status-only mutation -> manually remove transactions and clear product links",
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "server draft",
+        "scheduleStore.draft.transactions",
+        "scheduleStore.draft.cart.products",
+        "scheduleStore.cart"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:BoXbAskwSh_qtMfg:H9E2RB-WaXsNQSqEyXsQ4A:y_K6f3yKi8RCqtI2lCFKO-yWzL4thkFYFwVjhxo6sOBp7pQ",
+          "line": 147
+        },
+        {
+          "path": "protected-path:v1:eNVKQBHTrhHbLl27:s6_pIuHMkjcSfshjC94TXA:Xegy72H2Chx-1tHYPWpfdou3xrKn",
+          "line": 192,
+          "detail": "The action filters transactions, clears product transactionId values, and mirrors cart manually."
+        },
+        {
+          "path": "protected-path:v1:hZp0Sw_v_mCLpy5l:BGp9BYqhZ6u3hj_CSMM4cg:roWjlDXG6CtrB8VjZXdRIcObTop9VwXlaGdnxz5xKAxKP2w",
+          "line": 144,
+          "detail": "A successful boolean/status response triggers local removal by request IDs."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "simplifiable",
+        "confidence": 0.96,
+        "rationale": "The mutation returns only status, so the client reconstructs all affected representations and must know every derived field to clear.",
+        "counterargument": "A local optimistic projection can avoid a refetch; the risk can still be reduced with an entity-level cache updater and rollback."
+      },
+      "judge": {
+        "discoveryMode": "independent_initial_pass",
+        "classification": "simplifiable",
+        "confidence": 0.96,
+        "rationale": "Because the server does not return the updated aggregate, the client reimplements the transition across related fields. Invalidation or a canonical mutation payload would centralize and reduce this logic.",
+        "counterargument": "A local patch avoids a network refetch and can be deterministic for deletion by ID.",
+        "responseToCounterargument": "The optimization is legitimate, so the operation is not labeled wholly avoidable; its multi-field reconstruction is nevertheless a clear simplification target."
+      },
+      "judgeResult": "approved",
+      "finalClassification": "simplifiable",
+      "adjudication": "classifier and judge agreed"
+    },
+    {
+      "id": "draft-remove-home-collect-optimistic",
+      "entity": "draft home collection",
+      "operation": "optimistically null local field -> mutation -> refetch only on failure",
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "server draft.homeCollect",
+        "scheduleStore.draft.homeCollect"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:zFd5CYwuVY4IKgAc:eFio1ZKz96bqwAE5XwTElA:TKCO-2UVaRTJ9oifLMwmI9SkBFfyf_DxneVYMtoI1XnIBDk",
+          "line": 201,
+          "detail": "The local draft is patched before the mutation executes."
+        },
+        {
+          "path": "protected-path:v1:chP_Xf4QGwyDQv7Y:Mv39v1xlITrPL1R86aSlcA:5YmlfN1dbDFqJbEmay2gd7WaYCfAnmLNsUO66Wh82jbWlCk",
+          "line": 202,
+          "detail": "On failure, reconciliation is delegated to refreshDraft rather than a local rollback."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "simplifiable",
+        "confidence": 0.88,
+        "rationale": "This is a valid optimistic interaction, but handwritten ownership and rollback are spread across Zustand and a remote refresh helper.",
+        "counterargument": "Optimism is latency-sensitive and cannot be eliminated; only its reconciliation mechanism can be standardized."
+      },
+      "judge": {
+        "discoveryMode": "independent_initial_pass",
+        "classification": "simplifiable",
+        "confidence": 0.91,
+        "rationale": "Optimism is valid client behavior, but ownership is spread across an ad hoc local patch and a separate refetch-on-error path. A remote mutation lifecycle could co-locate optimistic value, rollback, and invalidation.",
+        "counterargument": "The current refresh on failure restores the authoritative server snapshot.",
+        "responseToCounterargument": "Correct; this prevents labeling the behavior erroneous, but the reconciliation remains distributed and manually maintained."
+      },
+      "judgeResult": "approved",
+      "finalClassification": "simplifiable",
+      "adjudication": "classifier and judge agreed"
+    },
+    {
+      "id": "patient-config-query-hydration",
+      "entity": "patient configuration",
+      "operation": "query configs -> transform array -> copy object into Zustand",
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "remote config array",
+        "scheduleStore.patientConfigs object"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:ktyBplBoESHkkXqG:fP0ZP-9ZZn3DnUZImsS5yA:HiXL9fpgbCiCrdxeQkJDbeVtZEwKObUQEs9cDHZ7-eIydjvN9u8L-3Pfi6fv2IeLb6_2",
+          "line": 12,
+          "detail": "The remote response is transformed and copied into patientConfigs through setPatientConfigs."
+        },
+        {
+          "path": "protected-path:v1:i6wYt5DvBJkFY610:rQdZTzE1pefkfupwz1RPkg:I0iRuCZZutpyfYqCkjJmRTwvLMvk",
+          "line": 149,
+          "detail": "The store retains the transformed server configuration as durable application state."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "avoidable",
+        "confidence": 0.93,
+        "rationale": "Server-owned preferences are transformed and hydrated into a global store rather than selected from one server-state owner.",
+        "counterargument": "The object projection is convenient for consumers; it can remain a selector without becoming another mutable owner."
+      },
+      "judge": {
+        "discoveryMode": "independent_initial_pass",
+        "classification": "avoidable",
+        "confidence": 0.94,
+        "rationale": "The operation is a query whose result is copied to a global store. A query cache could own the result and expose the same transformation as select/adapter logic.",
+        "counterargument": "The data is consumed across many routes and is persisted with the scheduling workflow.",
+        "responseToCounterargument": "Cross-route reuse supports caching but does not by itself require a second source of truth in Zustand."
+      },
+      "judgeResult": "approved",
+      "finalClassification": "avoidable",
+      "adjudication": "classifier and judge agreed"
+    },
+    {
+      "id": "patient-config-update-from-input",
+      "entity": "patient configuration",
+      "operation": "update mutation -> ignore response content -> merge request input into Zustand",
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "mutation response",
+        "request input",
+        "scheduleStore.patientConfigs"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:Com8McwovaLe5Eln:rKuPVRn-D07exYk_kts9UQ:RGxtsFNxcwkxLaz9z3cao7DShAF6zNHcXdJGvx3FE_fzKSW2xL0b3BkYmri0h_iVBUhW",
+          "line": 25,
+          "detail": "After the mutation, Zustand is updated from patientConfigs (the request input), while the mutation response is only returned."
+        },
+        {
+          "path": "protected-path:v1:Gr-s9TLiSQnEZWk2:uxccxIolp5ypQjme0p6-RQ:llwuZfQNDoUq0B3Id2U9_xLWC_cB",
+          "line": 246,
+          "detail": "The action manually merges a partial configuration into the existing local copy."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "simplifiable",
+        "confidence": 0.99,
+        "rationale": "The local state is reconstructed from what the client requested, not reconciled from what the server persisted; new server normalization or derived fields require manual action changes.",
+        "counterargument": "If the mutation contract guarantees exact echo semantics, input-based update may be safe, but that invariant is not encoded locally."
+      },
+      "judge": {
+        "discoveryMode": "independent_initial_pass",
+        "classification": "avoidable",
+        "confidence": 0.99,
+        "rationale": "This is a direct instance of client-side reconstruction: the application assumes the accepted server state equals its input and manually merges it into a duplicated snapshot.",
+        "counterargument": "The mutation contract may only return status, making input-based optimistic or confirmed updates necessary.",
+        "responseToCounterargument": "Even with a status-only contract, invalidating the owning query or changing the contract to return the canonical configuration would remove the independent global copy and its merge obligation."
+      },
+      "judgeResult": "reclassified_or_escalated",
+      "finalClassification": "simplifiable",
+      "adjudication": "avoidable/simplifiable disagreement resolved to the less absolute claim"
+    },
+    {
+      "id": "viewer-query-hydration",
+      "entity": "viewer/patient collection",
+      "operation": "viewer query -> format response -> copy to Zustand",
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "viewer query response",
+        "scheduleStore.viewerController.allViewers"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:OfQ0P80qMSPERg-s:dKgeFUX-QIeJNmW3HO7Lhg:0P3RWC5DK_CjkjaLEH-rw9i11YP30g1iRYUGwjWFA20-Ah0j9A",
+          "line": 13,
+          "detail": "The query response is formatted and copied into the global viewerController."
+        },
+        {
+          "path": "protected-path:v1:_FXeJBvn9bWJ816S:usjt-1Mkmz6VNgSv5BhPpQ:D87sxwXogzNyMcakOr8wD12H4hFxR_scPhZjT-_bXD5xFXuCrYnCiNlMacLUVq8x",
+          "line": 27,
+          "detail": "After the same fetch, the currently selected patient is manually refreshed from allViewers."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "avoidable",
+        "confidence": 0.9,
+        "rationale": "The fetched collection is server state copied into Zustand after formatting.",
+        "counterargument": "Authentication bootstrap and cross-route availability may justify long cache lifetime, but not necessarily a separate mutable store."
+      },
+      "judge": {
+        "discoveryMode": "independent_initial_pass",
+        "classification": "avoidable",
+        "confidence": 0.9,
+        "rationale": "The server viewer collection and a selected patient projection coexist in the store, requiring a post-fetch reconciliation from one representation into the other.",
+        "counterargument": "Selected patient is workflow state and should remain client-owned.",
+        "responseToCounterargument": "The selected patient identity can remain local; copying the full remote viewer resource and then copying an entire selected patient object is avoidable. Store only an ID if local selection is required."
+      },
+      "judgeResult": "approved",
+      "finalClassification": "avoidable",
+      "adjudication": "classifier and judge agreed"
+    },
+    {
+      "id": "patient-health-update-from-input",
+      "entity": "patient height and weight",
+      "operation": "health mutation -> apply request variables to patient and allViewers",
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "server patient",
+        "scheduleStore.patient",
+        "scheduleStore.viewerController.allViewers"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:8xaS3oz4Yg8pJVOH:ztDXLBpdNUBOgs_6BcDWWg:kkfec8ti3apJhfXO-nUMN6MFiHRixeU9R0bJLxiDX8kZYZIfZw",
+          "line": 35,
+          "detail": "After mutation success, setHeightAndWeight receives the request variables rather than the response payload."
+        },
+        {
+          "path": "protected-path:v1:RuM_NQ6Oskf-4BEd:XIJEJz5KR7iVQKtfXYIGaw:KNk5FeO4tzTGotegQbpQXsiNt2kY",
+          "line": 152,
+          "detail": "The action manually updates both patient and the matching entry in viewerController.allViewers."
+        },
+        {
+          "path": "protected-path:v1:2UJmQcDB6tP619kl:eWSgZ6F3-0NrQTfg9bAG_Q:uDyvKijPGVD2fOCNnU-s8J9LXi88",
+          "line": 161
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "simplifiable",
+        "confidence": 0.98,
+        "rationale": "One mutation requires handwritten fan-out to two local patient representations and uses inputs instead of canonical returned patient data.",
+        "counterargument": "The mutation may return only a status, making an optimistic patch reasonable; a normalized single entity would still remove the two-copy fan-out."
+      },
+      "judge": {
+        "discoveryMode": "independent_initial_pass",
+        "classification": "simplifiable",
+        "confidence": 0.99,
+        "rationale": "The operation assumes server acceptance preserves request values and must remember both local representations. A canonical viewer resource plus selected viewer ID would remove the dual write.",
+        "counterargument": "Height and weight are exactly the submitted scalar values and replaying them avoids a refetch.",
+        "responseToCounterargument": "The optimization is reasonable, hence simplifiable; the material risk is the duplicated representations and response-independent assumption."
+      },
+      "judgeResult": "approved",
+      "finalClassification": "simplifiable",
+      "adjudication": "classifier and judge agreed"
+    },
+    {
+      "id": "cart-add-product-partial-merge",
+      "entity": "draft cart products and product details",
+      "operation": "add-product mutation -> merge partial response with existing cart and auxiliary details",
+      "canonicalOwner": "mixed",
+      "duplicatedRepresentations": [
+        "mutation product response",
+        "scheduleStore.draft.cart.products",
+        "scheduleStore.cart",
+        "scheduleStore.productsDetails"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:23qetb4MagY4iaSi:jbqcP04GYuqY9ImWI3KrwA:xtohWdUv7Os2hsEl9I59mDulBiP5TmFvRp9GcJup6SQV",
+          "line": 28,
+          "detail": "The mutation returns status and a product collection rather than the whole draft."
+        },
+        {
+          "path": "protected-path:v1:fvzom-ZJyFzTanmL:FX2sgKkefNIGsvob-A6-qg:dKePu2lQ_m7eK8MyXP7yqhc4-a91enyAl-0n5tNjvr7k",
+          "line": 38,
+          "detail": "A second client projection, productsDetails, is also updated from request-side product data."
+        },
+        {
+          "path": "protected-path:v1:6xCsg-BkEFaZx-CV:bsUh_Lv6YhmxqjLaHrIyEQ:VYRk1dPLO4UFhW0MYNt3VMDFoaHgiRlJdeQ1YmNB_7d6",
+          "line": 46
+        },
+        {
+          "path": "protected-path:v1:hygFp9mOUyVYG7bN:3Uyuc4uC8bp-hoCZZPx7_A:A7bChHe4hsEfg9i98X6gdQQl534Z3lzXjouqxhSwGB6R",
+          "line": 45,
+          "detail": "The code reads the current top-level cart, appends selected response products, then synthesizes a new draft snapshot."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "simplifiable",
+        "confidence": 0.96,
+        "rationale": "The operation manually joins response products, existing cart, and request-side metadata, then relies on setDraft to mirror another copy.",
+        "counterargument": "Product category metadata is absent from the mutation response and may legitimately be client-enriched; normalization can centralize rather than eliminate the projection."
+      },
+      "judge": {
+        "discoveryMode": "independent_initial_pass",
+        "classification": "simplifiable",
+        "confidence": 0.98,
+        "rationale": "This operation manually combines old global state, request metadata, and partial server output. Contract evolution can require changes in several projections even though it is one domain operation.",
+        "counterargument": "The backend payload is partial and UI-only category details are absent from the server response.",
+        "responseToCounterargument": "That makes some client projection legitimate, but a canonical updated draft or query invalidation would still eliminate reconstruction of the server aggregate."
+      },
+      "judgeResult": "approved",
+      "finalClassification": "simplifiable",
+      "adjudication": "classifier and judge agreed"
+    },
+    {
+      "id": "cart-remove-product-fanout",
+      "entity": "draft cart, authorizations, and product details",
+      "operation": "status-only remove mutation -> prune products and two dependent collections",
+      "canonicalOwner": "mixed",
+      "duplicatedRepresentations": [
+        "server draft products",
+        "scheduleStore.draft.cart.products",
+        "scheduleStore.cart",
+        "scheduleStore.authorization",
+        "scheduleStore.productsDetails"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:4jJ6NV0Ur93sQkGK:6y5IHfsw3nRaobwmzF-JiQ:xMFSXxDUtGJ7wEXqSxF7SsO-4f9nFKSZ5_gDEWcWrMNB",
+          "line": 79,
+          "detail": "A status-only mutation response initiates manual reconciliation."
+        },
+        {
+          "path": "protected-path:v1:_dySU4bJzq_5ifxs:LYGI7PvQuMX2Fx2OzSLSGA:8OwqS6TYlLm2S7Xhoc8GD1KVTWLbJSNeCDP8vf9cpDM5",
+          "line": 82,
+          "detail": "The next product set is derived by filtering the local cart with request IDs."
+        },
+        {
+          "path": "protected-path:v1:5tp5khc9bc9unpYK:T59QghwNfVd5s8p-SuoxEw:ehXZUTd_d-9uqmvG_RL6_jX0oRAbxPLkmPPRv9HlywgB",
+          "line": 90
+        },
+        {
+          "path": "protected-path:v1:mgkLS-QXOzvte08F:6yYuqTu8UpmJ41dntSom-w:uYAXJruXtwF8s4RvIjxmAsk0mMGs2Y7c29wJYXLdrBaa",
+          "line": 95,
+          "detail": "A synthesized draft is finally passed to setDraft, which mirrors cart again."
+        },
+        {
+          "path": "protected-path:v1:PUTqJ0yJ9D5iNHoS:Q6iTIWHoxmxjgbMV56W3MQ:H1RxmQwOImtEeuIpEVOJk080McknCG2wB8FLgoa0K1Te",
+          "line": 84,
+          "detail": "Two authorization collections are independently pruned based on the derived products."
+        },
+        {
+          "path": "protected-path:v1:3QB2jJYZr9iT7TvU:FMOt_pCQJP5RRtl7IEjOKw:p0c0Nb8sTtsiHrwulR6Q7-lPGlCfeZ3u4oJPn_256AzH",
+          "line": 92,
+          "detail": "Product details are removed through another store action before the draft/cart update."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "simplifiable",
+        "confidence": 0.98,
+        "rationale": "A single remote removal fans out into manual filters across multiple related local representations; every new dependent representation extends this operation.",
+        "counterargument": "Authorization and display metadata may be local projections, but they should derive from one normalized product set rather than require imperative pruning."
+      },
+      "judge": {
+        "discoveryMode": "independent_initial_pass",
+        "classification": "simplifiable",
+        "confidence": 0.99,
+        "rationale": "One remote operation has multiple manually coordinated writers and depends on both request data and preexisting local projections. This is a high-change-amplification reconciliation site.",
+        "counterargument": "Authorization and product details can be client-derived data that the backend should not own.",
+        "responseToCounterargument": "Those projections may remain client-owned, so the operation is simplifiable rather than wholly avoidable; their invalidation/derivation can still be centralized from one canonical product set."
+      },
+      "judgeResult": "approved",
+      "finalClassification": "simplifiable",
+      "adjudication": "classifier and judge agreed"
+    },
+    {
+      "id": "coupon-post-save-cart-overwrite",
+      "entity": "coupon-priced cart",
+      "operation": "save canonical draft -> manually overwrite cart with pre-response products",
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "saveDiagnosticDraft response applied to draft/cart",
+        "locally mapped products",
+        "scheduleStore.cart"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:Z_8ofj_LmIbyjxfg:6t1yDrInAIc79bVgShrD8g:N2O8EBEszUNQAHEl6XkCyq_xRZIkhLPIIHPvWvRIzLu5Hgo7yvutEeM18w",
+          "line": 111,
+          "detail": "saveDiagnosticDraft sends the reconstructed products and already applies the returned canonical draft through setDraft."
+        },
+        {
+          "path": "protected-path:v1:G6bKxpmB2yG-LoRI:x0Qz5_KuZRRUiKAuBDl9oA:klsm_0UVcBh6yBBa-5lPavf-Xc4hkpu8J7LR0UymBcZLq3bXo1Ed5FL-ug",
+          "line": 112,
+          "detail": "After the canonical response path, the top-level cart is overwritten again with the request-derived products."
+        },
+        {
+          "path": "protected-path:v1:jXF3D-qbsuLByGt1:-SJVXEc0jIqpRzO3xUgIww:zMWrPeneBISppbKq8acl7K1HDbRO2U3r838eRpaf9FkvhSw-VqIeo6MeTg",
+          "line": 110,
+          "detail": "The next product collection is reconstructed from the current local cart by assigning couponApplied."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "avoidable",
+        "confidence": 0.99,
+        "rationale": "saveDiagnosticDraft already applies the returned snapshot, after which cart is overwritten with the request-side projection, creating a direct hybrid-snapshot risk.",
+        "counterargument": "The overwrite may preserve coupon data omitted by the response, which would expose an API contract gap; it still should be explicit and tested rather than silently replace canonical data."
+      },
+      "judge": {
+        "discoveryMode": "targeted_extension_without_initial_label",
+        "classification": "simplifiable",
+        "confidence": 0.99,
+        "rationale": "The final explicit cart write duplicates reconciliation already performed by saveDiagnosticDraft and can replace response-enriched products with the request-side projection. The operation has to remember both draft.cart.products and cart.",
+        "counterargument": "The explicit write may guarantee immediate coupon visibility if the server response omits or delays couponApplied.",
+        "responseToCounterargument": "That would indicate an incomplete mutation contract, but it still calls for one centralized projection or optimistic lifecycle. Writing request-derived products after applying a canonical draft response increases hybrid-snapshot risk."
+      },
+      "judgeResult": "reclassified_or_escalated",
+      "finalClassification": "simplifiable",
+      "adjudication": "avoidable/simplifiable disagreement resolved to the less absolute claim"
+    },
+    {
+      "id": "subscription-removal-atomic-rebuild",
+      "entity": "subscription, draft, cart, unit, and payment",
+      "operation": "multi-mutation workflow -> manually assemble final cross-entity store snapshot",
+      "canonicalOwner": "mixed",
+      "duplicatedRepresentations": [
+        "server draft",
+        "scheduleStore.draft",
+        "scheduleStore.cart",
+        "scheduleStore.unit",
+        "scheduleStore.paymentMethod"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:yKlWn78GVhpMlsdj:UEMupDYn09JBU2nTM73UWQ:ma_l7Uf5hZ5m0FvTkyl0P5Dy-nr6Sj7TEOeP4NuxgfY3U2x5V48S",
+          "line": 223
+        },
+        {
+          "path": "protected-path:v1:oMfD5tcyfeta6nLL:NwNhTYy3cEacRXXqkUFOfQ:iVJDQplh-IEovvWs7h45Cf__RxoRoWt1erE1chT-eHIp6bDXWNRQ",
+          "line": 262,
+          "detail": "The final write must coordinate paymentMethod, paymentContext, unit, draft, and the duplicate cart."
+        },
+        {
+          "path": "protected-path:v1:MkTgdmoOFo7yBjmL:QtgHvb1PRDcbpZruvuA-_g:93uJfumtbU4lz7n8UQ0AZjCt7gunP_0DAY3E2Q6TWC2NfNRNIVjg",
+          "line": 224,
+          "detail": "The operation begins with a remote product removal performed without updating the shared context."
+        },
+        {
+          "path": "protected-path:v1:RTo5bCneG1ThjhxM:qCkcvWiGLrKhA7uUNqK0Jg:VnpxH9DIEXPxmgkR1aAHGcg3qzIu2d-YSG-YRCSFZYfT0iEA8mDk",
+          "line": 228,
+          "detail": "It separately removes every transaction from the remote draft."
+        },
+        {
+          "path": "protected-path:v1:g2wIMA7s4A_Xf3JP:sfsGsfqf-TIMv_EhwqSpnQ:9xCjSkMCN_Sz84BPWrwccYFqLo7EiEa1JeonLmCfO5nyD84UbVFj",
+          "line": 249,
+          "detail": "Unit pricing is reconstructed from additional remote queries and optionally merged with prior local rooms."
+        },
+        {
+          "path": "protected-path:v1:BO7u1KTIgVwYZ5SF:lhsWCrUNShHeXpdXIks4Cw:5bql1TU6XCZ-XfYdMic4j3cYSkmcWgdPJdZiFpd5nFhb_WQ340em",
+          "line": 253,
+          "detail": "Transactions and products are rebuilt client-side and persisted through multiple draft saves."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "simplifiable",
+        "confidence": 0.91,
+        "rationale": "The workflow legitimately coordinates several remote calls, but final consistency depends on one handwritten object enumerating every affected store representation.",
+        "counterargument": "No single backend response represents the full client workflow, so some orchestration is inherently client-owned."
+      },
+      "judge": {
+        "discoveryMode": "targeted_extension_without_initial_label",
+        "classification": "simplifiable",
+        "confidence": 0.99,
+        "rationale": "This is a high-amplification reconciliation workflow: several remote transitions and locally derived projections are committed to five related store fields in one manual final write. Some orchestration is domain-required, but a server command returning a canonical aggregate or a centralized cache update would materially reduce the fan-out.",
+        "counterargument": "The operation intentionally behaves like a client-side saga, and intermediate writes are suppressed to avoid exposing inconsistent states to the UI.",
+        "responseToCounterargument": "The transaction-like orchestration is legitimate, so it is not wholly avoidable. Its need to reconstruct and atomically publish multiple duplicated representations remains a strong simplification target."
+      },
+      "judgeResult": "approved",
+      "finalClassification": "simplifiable",
+      "adjudication": "classifier and judge agreed"
+    },
+    {
+      "id": "reserve-status-to-local-reconstruction",
+      "entity": "reservation code on draft products",
+      "operation": "reservation status -> synthesize code on every bookable product in draft and cart",
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "server reservation",
+        "scheduleStore.draft.cart.products[].schedule.code",
+        "scheduleStore.cart[].schedule.code"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:E3UbpIkjgjyRnvkB:yijgHlFzoOjm8Po1Pm2QTw:R0So9xyEWXFarnoFUJ5-ktDvlKoou9yvJHCw91k9jrolU8dE6LTmZw",
+          "line": 14,
+          "detail": "A success status is mapped to a hard-coded local reserve code of 1."
+        },
+        {
+          "path": "protected-path:v1:7x2uJXAeag9ukTYo:Ze7PmOBXHRwIxfmJvShkpw:zpTSB-SLWDfDsMIYC9gBHydgcNUM",
+          "line": 111,
+          "detail": "setReserveCode maps every bookable draft product, then writes both draft and cart."
+        },
+        {
+          "path": "protected-path:v1:YBhT_wUvEtlSHvPC:QPbo8zMztGfZxwrlG6SZ0Q:e7EE1B2zshcvhHKveiY4QSv7MmtR",
+          "line": 122
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "simplifiable",
+        "confidence": 0.97,
+        "rationale": "A status response is translated into a magic local code and fanned out over two product representations; contract evolution must update this client rule.",
+        "counterargument": "If the API intentionally exposes only reservation status, a local projection is necessary; cache invalidation or a typed projection can reduce risk."
+      },
+      "judge": {
+        "discoveryMode": "independent_initial_pass",
+        "classification": "simplifiable",
+        "confidence": 0.9,
+        "rationale": "The client interprets a coarse response and reconstructs related product schedule state across duplicated collections. A canonical updated draft or centrally owned optimistic patch would reduce the manual mapping.",
+        "counterargument": "The numeric code is a compact client representation of a remote reservation outcome and no complete snapshot may exist.",
+        "responseToCounterargument": "Some translation may remain necessary, so the operation is not labeled avoidable."
+      },
+      "judgeResult": "approved",
+      "finalClassification": "simplifiable",
+      "adjudication": "classifier and judge agreed"
+    },
+    {
+      "id": "health-insurance-status-hydration",
+      "entity": "patient health-insurance validation results",
+      "operation": "remote validation -> copy result into Zustand",
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "remote validation result",
+        "scheduleStore.healthInsurances"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:beZRaplQI8y8hIsa:N0_Ml4k0lNRDCcYplR31EA:FmaZWIEIj47lQqym67qg58UIQQMUDcd_vYBDOKNI9bDzVB7AfRApJ3uFD30jN2jHFxnttHR4olrtVOLHo13hP5v3Sni01940TmNm",
+          "line": 99,
+          "detail": "The remote validation result is copied into the global healthInsurances field."
+        },
+        {
+          "path": "protected-path:v1:VjT6z9ofsMLv3iu2:TExAu5j4I7tgG3YLvdmTZg:Jb8ODwrZmV2nzSZ89d39I-wStd24fSyYntBRq7UDBncCPQSHv2FmDIKBlQyDgBl2UBO4s30jHI9-ngYUFmcW48uzeMtUEx1GX83C",
+          "line": 98,
+          "detail": "A local loading flag is manually set before remote validation."
+        },
+        {
+          "path": "protected-path:v1:DTIGSb1ElGdNBg6i:yV-CvJkk3EnnXf66qSYhTA:5IGdGFm9VIUIPeQejrViVd9RK-g6",
+          "line": 220,
+          "detail": "The store action couples the response write to its own validation-loading transition."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "avoidable",
+        "confidence": 0.84,
+        "rationale": "The async remote result is globally copied and manually coupled to a loading flag instead of being owned by a query result.",
+        "counterargument": "The result may combine several endpoints and business filters, making a composed client cache entry more appropriate than a raw query cache."
+      },
+      "judge": {
+        "discoveryMode": "targeted_extension_without_initial_label",
+        "classification": "avoidable",
+        "confidence": 0.9,
+        "rationale": "The status-enriched insurance collection is query-like server state keyed by the patient. A remote cache can own both result and request status, removing explicit hydration and loading synchronization from Zustand.",
+        "counterargument": "Payment selection logic needs synchronous access to the validated collection throughout the scheduling flow.",
+        "responseToCounterargument": "Broad reuse justifies a shared query, not a second owner. A small selected-payment identifier may remain client-owned while validation results stay in the remote cache."
+      },
+      "judgeResult": "approved",
+      "finalClassification": "avoidable",
+      "adjudication": "classifier and judge agreed"
+    },
+    {
+      "id": "payment-method-workflow-state",
+      "entity": "selected payment method and context",
+      "operation": "user selection -> update local workflow state -> synchronize draft/config remotely",
+      "canonicalOwner": "client workflow",
+      "duplicatedRepresentations": [
+        "scheduleStore.paymentMethod",
+        "scheduleStore.paymentContext",
+        "draft transactions",
+        "patient config"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:wT0DPA9ZvxumWke_:qQt7CqjZ14Z010qrTXTeaA:UGRsiDegjzLu1-aAOJJ51pGWEkVar0SPVIac0YmdD6_8EVrA3J37vXVa0zTJTZ4OFA",
+          "line": 15
+        },
+        {
+          "path": "protected-path:v1:dpLmTEcPXvDDuN57:g7x25Kc0O_PD-c1fS8TQOA:rlhifBhhEvnmVqqxAKT8jibGBtLxFAc-jmU-CKXHxByFWKtOwurA8iyEl0i-cELaFg",
+          "line": 25,
+          "detail": "The global payment selection is committed before remote draft transaction synchronization."
+        },
+        {
+          "path": "protected-path:v1:lN0ROz9kkV6vxsvn:-SmmNUsSGtHiDEk9Gb8O-w:yO8zyHZ1hHz1iwWhx9KKI7nBqeKimh4a8jkJL61XiE2cJ12DVERCVnSKo2B0eeA3Mw",
+          "line": 18,
+          "detail": "The transition first runs guards that can remove or reconcile coupon state."
+        },
+        {
+          "path": "protected-path:v1:N6HaUOgJqmsb5_dF:LWlqJbMi-oPU6s2tOkS9FQ:8Q_ovdr0JOmYeW9K25Khvli0VSdIZVUQlElD26smksunTG0GMU5hii-v0ZgIXf99Ug",
+          "line": 21,
+          "detail": "Subscription removal failure is captured but does not stop the payment transition."
+        },
+        {
+          "path": "protected-path:v1:pmQMVWrImxGasfPY:iakmCfCmIbZrBjxAkXIs4A:foRbuh2n9UaXQKgDxnHPj9uL4WIEyB8MILShKPo8j3vnw4q09ptLey7SfqWfZ7QF_g",
+          "line": 27,
+          "detail": "Remote transaction synchronization failure is swallowed after error capture."
+        },
+        {
+          "path": "protected-path:v1:3237BkKzKs78WeOn:TfySpsk888d8RuPGokOeQA:SqPHq9mZQIb1h9mQ2-9AVE8DK6o4o_wUPnV-xgsYRJKcpr9ST1AkoZ2QTyfWOTcsIQ",
+          "line": 31,
+          "detail": "A separate patient configuration projection is reconstructed and persisted asynchronously."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "legitimate",
+        "confidence": 0.78,
+        "rationale": "The immediate selection and derived UI context are client-owned workflow state, although their remote side effects could be consolidated.",
+        "counterargument": "Because draft transactions and preferences persist the choice, the server may ultimately be canonical; repository contracts do not establish a single owner."
+      },
+      "judge": {
+        "discoveryMode": "targeted_extension_without_initial_label",
+        "classification": "simplifiable",
+        "confidence": 0.97,
+        "rationale": "One domain transition spans several remote resources and local fields, with partial failures permitted after the store has committed the new payment method. The workflow likely remains orchestrated, but ownership and rollback/invalidation can be centralized to reduce mixed states.",
+        "counterargument": "Payment selection itself is client-owned workflow state, while remote synchronization is intentionally best-effort.",
+        "responseToCounterargument": "The selected method may legitimately remain local. The classification targets the distributed reconciliation policy and independent failure handling, not the existence of a client selection."
+      },
+      "judgeResult": "reclassified_or_escalated",
+      "finalClassification": "inconclusive",
+      "adjudication": "ownership-boundary disagreement escalated to inconclusive"
+    },
+    {
+      "id": "clone-draft-patient-switch",
+      "entity": "patient, cloned draft, cart, payment, and config",
+      "operation": "remote clone workflow -> enumerate final store fields and separately persist config",
+      "canonicalOwner": "mixed",
+      "duplicatedRepresentations": [
+        "remote cloned draft",
+        "scheduleStore.draft",
+        "scheduleStore.cart",
+        "scheduleStore.patient",
+        "scheduleStore.paymentMethod",
+        "remote patient config"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:FaXRbjbGFnZYUWNE:NYzHtJ1LJCzytMB4R5y2mg:8TBCSDKm7ATWzrKTZ-EVXTk7hIrvx5Zz0yU9ti7GgMPAElhRDQUYyBq_mmY",
+          "line": 91
+        },
+        {
+          "path": "protected-path:v1:qpT_0eShWXSMUKTL:JqfyUVl_rlfKRnXWnTe6Vw:kfpkdY9cwVHkkTg6vFA49JeDY46QvuOX35d0qW9jMg4CeJd3uH40KVeczRQ",
+          "line": 113,
+          "detail": "patient, draft, paymentMethod, paymentContext, and duplicate cart are manually coordinated in one store update."
+        },
+        {
+          "path": "protected-path:v1:Ue1BKVLHHW9PBkvs:nyGpNof4SGA7BhjFcno9Kg:sK4y82kq82LMhOYiE8pr55HjSaN81GZ69RULkgx2ZaG9dr3-dtvUg2FE8rQ",
+          "line": 93,
+          "detail": "A target-patient remote draft is fetched, then repeatedly reassigned through client orchestration."
+        },
+        {
+          "path": "protected-path:v1:2jizwPQP6MCnL-kY:hcJ9x4HPtLL7Q_2lacXINg:i87l5XuxE2H2DZh8uSYL-3AxbFC_vvPjXrDQlbnNQzTov3gJXWSlkz7Ho6I",
+          "line": 98,
+          "detail": "Transactions, products, and details are cloned through separate remote operations."
+        },
+        {
+          "path": "protected-path:v1:Njb08tGkCquhcmFj:sn5Yjp27GVlZj4WipN0ZcQ:HZkOlnYVVly9Q4BiJfQI_DCY7LvJnOu-IWcq5misUPbKTrXdjf1JGJjOXFA",
+          "line": 100,
+          "detail": "Detail-clone failure is tolerated, preserving a partially cloned draft."
+        },
+        {
+          "path": "protected-path:v1:zb-4bWXZ5U4fzgrS:PajiwmbPd62Mb44Qe9hVyA:Zg22r9CEf43CTvs0mzpxHh09J6oI2yc0dKPPYrsqda7bNVsqaF0u6X17ZAY",
+          "line": 112,
+          "detail": "The original draft is remotely cleaned before the new context is published."
+        },
+        {
+          "path": "protected-path:v1:o79SCAi2_fQ7RMaG:Wk5HYyvtfS3Am4f4uNR2yA:8yuTtgdrF_6q2jLggUGy0ONRVIJkDK3UZF_20oGe7a43rthih9jPF12ip7E",
+          "line": 114,
+          "detail": "A separate remote patient-config update must also remember selected patient, payment, height, and weight projections."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "simplifiable",
+        "confidence": 0.93,
+        "rationale": "After several remote operations, consistency depends on manually listing each affected representation and issuing a separate config update.",
+        "counterargument": "Patient switching is a client transaction spanning backend resources, so orchestration remains necessary even if server-state copies move out of Zustand."
+      },
+      "judge": {
+        "discoveryMode": "targeted_extension_without_initial_label",
+        "classification": "simplifiable",
+        "confidence": 0.98,
+        "rationale": "The domain operation is implemented as a client-side saga across remote drafts and patient configuration, followed by a multi-field global-store commit. It is not removable without changing the contract, but a dedicated server command/canonical response or centralized mutation transaction would shrink the synchronization surface.",
+        "counterargument": "Cloning necessarily spans distinct backend capabilities and the atomic updateStore call prevents intermediate UI renders.",
+        "responseToCounterargument": "That explains the implementation but does not remove the evolution burden: every added dependent field must be considered in the cloning steps, store commit, and patient-config projection."
+      },
+      "judgeResult": "approved",
+      "finalClassification": "simplifiable",
+      "adjudication": "classifier and judge agreed"
+    },
+    {
+      "id": "authorization-query-hydration",
+      "entity": "previous authorizations",
+      "operation": "authorization query -> split response by type -> copy both collections into Zustand",
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "remote authorization response",
+        "scheduleStore.authorization.nac",
+        "scheduleStore.authorization.patient"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:am475z9YDGJRHR2D:xVcMQnUHisgbBn5MJKjKnQ:bXM84lUZot8a0-g17m6RA3RTVy3fB1QLhbbduQ",
+          "line": 480
+        },
+        {
+          "path": "protected-path:v1:G564usNdHg9NvD6C:EvQ46WqBATM5dkAVZeUmiA:IkrYqu7drxYGMG-NXmpRidfPnKO6tRNBQubvkQ",
+          "line": 483,
+          "detail": "Whether to query is derived from the selected unit and scheduling context."
+        },
+        {
+          "path": "protected-path:v1:SajHS9ebvTSbqOxr:cVZS7t_Qw9mWzb5p3j_Frw:LjmwFCKeWeRKGhgwoNZWsdMJyktkkUenxI1Rpg",
+          "line": 484,
+          "detail": "Prior authorization is fetched remotely for the unit."
+        },
+        {
+          "path": "protected-path:v1:QUVHCf8l6kQbRp4W:L_D1gnrYhbmkJhUcquthHw:o73JzQvLTX5Re-y6cG_siwOkXzHp5sJMThHd9Q",
+          "line": 485,
+          "detail": "The response is transformed into nac and patient projections."
+        },
+        {
+          "path": "protected-path:v1:xRcy-XAZb67-tjSO:hbRjKjbFF27_bevijilLUQ:DnD50CelWdMOL6-aKzAIz-Gwz8zNURVaCbNwIQ",
+          "line": 486,
+          "detail": "Those remote projections are copied into global authorization state."
+        },
+        {
+          "path": "protected-path:v1:-lmZpJzX6Nz65EkQ:AFQdZwc3W869NMT2Xmv-qQ:PYUv4sGDRzHqOZMJNeMDMo8eYkNSOAxRIQOPgQ",
+          "line": 489,
+          "detail": "The global copy must also be explicitly cleared when the query predicate is false."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "avoidable",
+        "confidence": 0.88,
+        "rationale": "A server response is transformed into two global collections that can be derived from one cached response.",
+        "counterargument": "Downstream pages may need the classification without rerunning the query; a cached selector can satisfy this need."
+      },
+      "judge": {
+        "discoveryMode": "targeted_extension_without_initial_label",
+        "classification": "avoidable",
+        "confidence": 0.83,
+        "rationale": "The authorization result is query-derived state for a unit. Keeping it under the query owner would naturally key and clear it as the unit/predicate changes, avoiding manual global hydration and reset.",
+        "counterargument": "Authorization results are later pruned when cart products change and may participate in cross-page error handling.",
+        "responseToCounterargument": "Those consumers can derive/filter from the canonical query result and current cart. Because lifecycle requirements are broader than this function shows, confidence is lower than for direct snapshot copies."
+      },
+      "judgeResult": "approved",
+      "finalClassification": "avoidable",
+      "adjudication": "classifier and judge agreed"
+    },
+    {
+      "id": "unavailable-product-removal-fanout",
+      "entity": "products across cart, selected unit, and units collection",
+      "operation": "remove unavailable products remotely -> manually prune three UI/domain representations",
+      "canonicalOwner": "mixed",
+      "duplicatedRepresentations": [
+        "server draft products",
+        "scheduleStore.draft/cart",
+        "scheduleStore.unit.exams",
+        "unit page unitsCollection[].unit.exams"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:4tcqeRbHpEMfTMzc:T3NV1Co59ScWfasE7eEVdg:WnuDHBbUgNwPOVhYLUo2ffG8JvVCu82Bg-i5Lg",
+          "line": 512
+        },
+        {
+          "path": "protected-path:v1:UU-swVtoTqRq9nJv:W5kVN6-vrS30ky1GQ6qOgA:MYxwRRq8dczP6fMYHOGtUmUagGkkO_VfroAKwQ",
+          "line": 523,
+          "detail": "After success, the selected unit's exams are independently filtered from the same removed-product set."
+        },
+        {
+          "path": "protected-path:v1:0HiOVxmZjJLXV2VO:XimDikA91zK3BDqH_CneJg:VLJk1FATB4MkVDFuSDvtr-0qLKvssevqWJ0x6A",
+          "line": 544,
+          "detail": "The global selected-unit representation is updated separately from unitsCollection."
+        },
+        {
+          "path": "protected-path:v1:r_Y9sK91DHOFW3-4:XtrR_pAp8Mb8TzbSGNwWSA:pYit5heN9FUeHC5GbTiI8iQiovoOB6jhQmnlCw",
+          "line": 518,
+          "detail": "The unavailable-products projection is stored before the remote removal is confirmed."
+        },
+        {
+          "path": "protected-path:v1:IrKkTR4H2w94YfRR:Vpj4JdmrCkF3GPDzWiJi7Q:GuGhgMmOFXdbIEC44cj1EaCiSMNo2gbfGCnHkg",
+          "line": 519,
+          "detail": "The operation delegates to product removal, which already reconciles draft, cart, authorization, and product details."
+        },
+        {
+          "path": "protected-path:v1:uhUzrv1zYp4ZFgVP:-BNsmoWhyQQ3KJ3bZgrkDA:DEBRchilSS7cVHKfRTJpGgb8ZbUVT6NSa-leqw",
+          "line": 524,
+          "detail": "Every unit in a separate page-level unitsCollection projection is traversed and filtered manually."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "simplifiable",
+        "confidence": 0.97,
+        "rationale": "One product removal requires coordinated filtering in the store and page-local collection; a missed representation leaves a visually plausible stale unit/product combination.",
+        "counterargument": "The unit search collection is a local view projection and may require an optimistic update, but it can derive from canonical product IDs or use centralized cache updates."
+      },
+      "judge": {
+        "discoveryMode": "targeted_extension_without_initial_label",
+        "classification": "simplifiable",
+        "confidence": 0.99,
+        "rationale": "A single removal fans out through multiple owners and representations. The removed IDs become a manual consistency protocol shared by the cart service, page store, and global store; adding a related projection requires another remembered update.",
+        "counterargument": "Availability collections are search results and can legitimately differ from the selected unit and draft resource; local filtering avoids expensive refetches.",
+        "responseToCounterargument": "The projections need not share one cache entry, but their invalidation/derivation can be centralized. The optimization is legitimate, so the operation is simplifiable rather than avoidable."
+      },
+      "judgeResult": "approved",
+      "finalClassification": "simplifiable",
+      "adjudication": "classifier and judge agreed"
+    },
+    {
+      "id": "unit-selection-owned-state",
+      "entity": "currently selected unit and slot-enriched availability",
+      "operation": "select availability result -> store chosen unit globally",
+      "canonicalOwner": "unclear",
+      "duplicatedRepresentations": [
+        "unit details/availability query results",
+        "scheduleStore.unit"
+      ],
+      "evidence": [
+        {
+          "path": "protected-path:v1:2SARrfRo3ra1f-xf:1BMe_cZ6bFvHfLYwZffKbA:HqbLT6DCKJa7iPpQ8i_3DdN9fs6UftRPYKBHIV1MRONO",
+          "line": 208,
+          "detail": "The operation derives a unit from the draft cart, unit details, product checks, payment data, and existing rooms."
+        },
+        {
+          "path": "protected-path:v1:Te0Z5ZiERvHYgvvY:WzkOCKpSG54pRgkr8mkgDw:Mf3qKLJJghyTuOk_iEhR2oqsEQ3pjhFjO-IacyDQcCM_",
+          "line": 228,
+          "detail": "The composed result is written to the global store."
+        },
+        {
+          "path": "protected-path:v1:cuKtR-_BlUlZyM6_:2uokIvzEJkxzQbOuSVAYBw:2rTbegKld_T5DuthfMq-0LLodlghzeSS6BZ5zNkEYDZj",
+          "line": 224,
+          "detail": "The remote response is converted and optionally merged with rooms from the prior local unit."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": true,
+        "classification": "inconclusive",
+        "confidence": 0.67,
+        "rationale": "The raw data is remote, but the identity of the currently selected unit is client workflow state and rooms may be deliberately preserved locally.",
+        "counterargument": "Store only the selected unit ID and derive the full entity from server-state cache, avoiding a mutable copied unit snapshot."
+      },
+      "judge": {
+        "discoveryMode": "independent_initial_pass",
+        "classification": "simplifiable",
+        "confidence": 0.78,
+        "rationale": "The result is a mixed projection of remote pricing and client selection/rooms. It likely needs client state, but the current composition makes ownership boundaries and freshness responsibilities ambiguous.",
+        "counterargument": "The selected unit and room selection are legitimate workflow state, not merely remote cache data.",
+        "responseToCounterargument": "Agreed; that is why this is simplifiable with lower confidence, not avoidable. Store selection identifiers separately from fetched unit/pricing snapshots."
+      },
+      "judgeResult": "reclassified_or_escalated",
+      "finalClassification": "inconclusive",
+      "adjudication": "ownership-boundary disagreement escalated to inconclusive"
+    },
+    {
+      "id": "reserve-cancel",
+      "entity": "reservation code on draft products",
+      "operation": "Optimistically clear reservation codes before cancellation mutation",
+      "canonicalOwner": "server or mixed",
+      "duplicatedRepresentations": [],
+      "evidence": [
+        {
+          "path": "protected-path:v1:f9Xn3BBoFNmMuAPS:jpjwG93qqxSt2ZfB86nJrw:W63MjF-FoaL8QMUYYWKbC-a7tdV35vnPatMVaWo1tbar3nUZExAZRg",
+          "line": 35,
+          "detail": "The local reservation code is cleared before the remote cancellation runs."
+        },
+        {
+          "path": "protected-path:v1:7vOD7VYXR-EAnCIV:gWQsFOB15WqBOSak0MXnWw:TSIWZ14sim0pNtsB3gu6KfdMG9R9dK8fEtEmXtl3Btyp2Ifi2_7oIg",
+          "line": 36,
+          "detail": "The failure handler reports and rethrows but does not restore or refetch the cleared reservation state."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": false,
+        "classification": null,
+        "confidence": null,
+        "rationale": "Not discovered in the classifier pass.",
+        "counterargument": null
+      },
+      "judge": {
+        "discoveryMode": "independent_initial_pass",
+        "classification": "simplifiable",
+        "confidence": 0.98,
+        "rationale": "The optimistic transition is manually applied without colocated rollback/invalidation, so a failed mutation can leave the local representation inconsistent with the server.",
+        "counterargument": "The surrounding flow may navigate or refresh the draft after failure.",
+        "responseToCounterargument": "No such recovery is established in this operation; absent evidence, the local reconciliation path is incomplete."
+      },
+      "judgeResult": "classifier_did_not_discover",
+      "finalClassification": "simplifiable",
+      "adjudication": "judge-only item retained; classifier did not independently discover it"
+    },
+    {
+      "id": "draft-effectivation-result",
+      "entity": "scheduling completion result",
+      "operation": "Store scheduling result after effectivating a draft",
+      "canonicalOwner": "client workflow",
+      "duplicatedRepresentations": [],
+      "evidence": [
+        {
+          "path": "protected-path:v1:mVQ-WuR5BAW5DVJQ:r1utWUivwzoeiZQzIgX08Q:aA3JRwmdZvq448sd2rg4ZlreTkwDzJ2hsMImmhYyebG0Vq0",
+          "line": 172,
+          "detail": "The mutation result's effectivate payload is stored as scheduledData."
+        },
+        {
+          "path": "protected-path:v1:u9WxupZZnX68Njc8:ANLaPEAeeA48cLJSBf7q7Q:oNgF5wHqAGElKz0zzhYVfdz9sXUj",
+          "line": 325,
+          "detail": "scheduledData has a direct setter and participates in the client scheduling completion flow."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": false,
+        "classification": null,
+        "confidence": null,
+        "rationale": "Not discovered in the classifier pass.",
+        "counterargument": null
+      },
+      "judge": {
+        "discoveryMode": "independent_initial_pass",
+        "classification": "legitimate",
+        "confidence": 0.81,
+        "rationale": "The inspected use is consistent with a workflow result carried into the confirmation experience rather than an independently edited mirror of a server resource.",
+        "counterargument": "The effectivation payload is still remote data and could live in mutation state or a route loader.",
+        "responseToCounterargument": "True, but persistence through a multi-step confirmation flow is a plausible client ownership requirement; evidence is insufficient to call the store write avoidable."
+      },
+      "judgeResult": "classifier_did_not_discover",
+      "finalClassification": "legitimate",
+      "adjudication": "judge-only item retained; classifier did not independently discover it"
+    },
+    {
+      "id": "coupon-operation-ui-state",
+      "entity": "coupon interaction UI state",
+      "operation": "Track coupon interaction status around remote validation and application",
+      "canonicalOwner": "client workflow",
+      "duplicatedRepresentations": [],
+      "evidence": [
+        {
+          "path": "protected-path:v1:4ydAOPC0jaPrQQQF:Arr3tHKPMaVAZxMaP_sqBQ:CQjTnJsLZraB3K7nEAv5_ml36dgPstxUy6gavlhngdKZOS6UCGU",
+          "line": 71,
+          "detail": "Coupon display and operation states are component-local state machines."
+        },
+        {
+          "path": "protected-path:v1:VarEZJxgzl-dLhZp:LK3o8O3Exqgd2GqJbOMnmg:ZLH2Sa72DXMkW_8IybAkPixGrkMV0ZyGSs72Wsm6pPtlF6ROWbk",
+          "line": 137,
+          "detail": "Applying status, invalid-code state, and toast/dialog behavior model transient user interaction rather than a server snapshot."
+        }
+      ],
+      "classifier": {
+        "discoveredIndependently": false,
+        "classification": null,
+        "confidence": null,
+        "rationale": "Not discovered in the classifier pass.",
+        "counterargument": null
+      },
+      "judge": {
+        "discoveryMode": "independent_initial_pass",
+        "classification": "legitimate",
+        "confidence": 0.97,
+        "rationale": "This is client-owned UI/workflow state and should not be counted as an avoidable remote synchronization point, even though it surrounds remote calls.",
+        "counterargument": "The active coupon itself is derived from server validation and draft data.",
+        "responseToCounterargument": "The hook refreshes that information and keeps transient presentation status locally; the classification applies to the operation state, not to the draft write performed by save/apply operations counted elsewhere."
+      },
+      "judgeResult": "classifier_did_not_discover",
+      "finalClassification": "legitimate",
+      "adjudication": "judge-only item retained; classifier did not independently discover it"
+    }
+  ],
+  "crossCuttingFindings": [
+    {
+      "finding": "draft.cart.products and the top-level cart are explicit duplicate representations.",
+      "evidence": [
+        {
+          "path": "protected-path:v1:U8-GwyrcK0BqD-Os:UrqNdx__ggg7psKSoI_2jA:IWMUb-7VtFX6z_zRr25hRURySVfN",
+          "line": 39
+        },
+        {
+          "path": "protected-path:v1:_3L12cvh9mockqEZ:IfhqUr9HIopYWTh6kX1Hcg:FoCGu5lwKJ1pSVO3BUDTkdckBFAQ",
+          "line": 46
+        },
+        {
+          "path": "protected-path:v1:YXDbzyJVQ6yoIfsf:JehRR71ikoPKYXyiUZhxxA:s4FRldewN_VlVKXZmnLDfuoyiFRK",
+          "line": 180
+        },
+        {
+          "path": "protected-path:v1:a3rO7UqiOkRqt4o7:Sj-aeVHk6_PoCIw3o5aFiw:c2mFWF8FDeiHddvvJveD4K-AI0Kl",
+          "line": 205
+        }
+      ]
+    },
+    {
+      "finding": "The selected patient object duplicates one member of viewerController.allViewers and requires coordinated writes for mutable patient fields.",
+      "evidence": [
+        {
+          "path": "protected-path:v1:oFk3qxnIASLgGnbQ:HQXy5IiQiP2Am4q_-9gWEA:vOGgQdiRKwG5cw9RM2jF-Z1WRtWK",
+          "line": 21
+        },
+        {
+          "path": "protected-path:v1:WKWy6P0RMYGZ0oug:jisfHYYTMehnx7AAlbAmTw:mmtmODOaDTq-4JFarn4MBHDaEZ-R",
+          "line": 26
+        },
+        {
+          "path": "protected-path:v1:xjCHdYfhd7q5DCul:RuBjbdBXos2TV7e7IrnCpg:DfWGGyxa0E1Dfqw8LtBie53XY8bU",
+          "line": 155
+        }
+      ]
+    },
+    {
+      "finding": "Status-only mutation contracts push aggregate reconstruction into the client for transaction, product, and reservation operations.",
+      "evidence": [
+        {
+          "path": "protected-path:v1:jRHRrHaugqsVbqGz:RV8D04YsWb5RzzafQKZfTQ:Yw7tzhJvMdaYYn0DpkYIkqRgtQTUSB2Omg8ybjlU8UvfZfE",
+          "line": 144
+        },
+        {
+          "path": "protected-path:v1:9rfclMnh5lIhsfg8:SDdT3OjyZ3ln4Bt_ggZZrw:n1mIiGE7yzWRaau7YbQEPQ7N9swTzk2lTHl2i_o0uYDj",
+          "line": 79
+        },
+        {
+          "path": "protected-path:v1:j6DfEBLc6sal6km9:WS17n4LWzqqAPxYJbd6C4A:tSs9GCyAdzBOOX3Y963v_eH1jlMmC_DXHWkydcSje-aUlmOJPriVeQ",
+          "line": 14
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "The pass is static analysis of the inspected source and does not establish production incident frequency.",
+    "The pass does not prove that every server contract can return a canonical aggregate without backend changes.",
+    "The pass does not count all store actions; it intentionally counts only concrete remote-to-store operations found in scope.",
+    "Alternative ownership designs may trade manual synchronization for invalidation, refetch cost, normalized-cache policy, or route lifecycle complexity.",
+    "Line numbers refer to the repository state inspected during this pass and may drift after edits.",
+    "Static inspection cannot prove runtime frequency, user impact, or that a reconciliation site has produced a defect.",
+    "Avoidable means avoidable under an explicit server-state ownership architecture; removing a write from the current architecture would not be safe by itself.",
+    "The targeted judge extension was label-blind but not discovery-independent, so agreement metrics include only shared classifier items and explicitly disclose review mode.",
+    "The inventory is evidence-backed but not guaranteed exhaustive across every legacy path in the repository."
+  ]
+}

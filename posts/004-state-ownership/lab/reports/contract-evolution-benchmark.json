@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "benchmark": "contract-evolution",
+  "generatedAt": "2026-10-05T12:47:12.959Z",
+  "question": "Quanto da lógica de sincronização precisa mudar quando o servidor adiciona campos derivados ao snapshot?",
+  "contractEvolution": {
+    "addedFields": [
+      "subtotalCents",
+      "discountCents"
+    ],
+    "serverCalculation": "totalCents = subtotalCents - discountCents"
+  },
+  "invariant": "Após uma resposta confirmada, a fonte que renderiza a UI deve ser semanticamente igual ao snapshot canônico.",
+  "variants": {
+    "a1ManualProjection": {
+      "invariantPreserved": false,
+      "divergentFields": [
+        "subtotalCents",
+        "discountCents"
+      ],
+      "synchronizationLocationsRequiringChange": 1,
+      "actionChangesRequired": 1,
+      "reason": "A action enumera os campos conhecidos e ignora silenciosamente os campos adicionados ao contrato."
+    },
+    "a2CanonicalReplacement": {
+      "invariantPreserved": true,
+      "divergentFields": [],
+      "synchronizationLocationsRequiringChange": 0,
+      "actionChangesRequired": 0,
+      "reason": "A resposta canônica substitui o snapshot; a lógica de sincronização não enumera campos."
+    }
+  },
+  "measurements": {
+    "addedContractFields": 2,
+    "a1NewDivergences": 2,
+    "a2NewDivergences": 0,
+    "synchronizationChangeAmplification": {
+      "a1": 1,
+      "a2": 0,
+      "unit": "sync locations changed per contract evolution"
+    }
+  },
+  "limitations": [
+    "Benchmark estrutural e determinístico; não mede renderização, latência ou memória.",
+    "A1 usa uma única action para isolar o mecanismo; sistemas reais podem ter vários escritores e amplificação maior.",
+    "A2 ainda pode exigir adaptação da apresentação para exibir o campo, mas não da reconciliação do snapshot."
+  ]
+}

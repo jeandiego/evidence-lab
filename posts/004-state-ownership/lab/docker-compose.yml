@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: pet_lab
+      POSTGRES_USER: pet_lab
+      POSTGRES_PASSWORD: pet_lab
+    ports:
+      - "5438:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pet_lab -d pet_lab"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - pet-lab-data:/var/lib/postgresql/data
+
+volumes:
+  pet-lab-data:

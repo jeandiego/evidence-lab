@@ -1,0 +1,238 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-05T13:22:39.951571+00:00",
+  "comparison": "Conservative GPT classifier+judge adjudication versus local zero-shot Laya",
+  "metrics": {
+    "operations": 23,
+    "agreements": 4,
+    "disagreements": 19,
+    "agreementRate": 0.1739,
+    "baselineCounts": {
+      "avoidable": 6,
+      "simplifiable": 13,
+      "inconclusive": 2,
+      "legitimate": 2
+    },
+    "layaCounts": {
+      "avoidable": 0,
+      "simplifiable": 1,
+      "legitimate": 18,
+      "inconclusive": 4
+    },
+    "confusionMatrixRowsBaselineColumnsLaya": {
+      "avoidable": {
+        "avoidable": 0,
+        "simplifiable": 0,
+        "legitimate": 5,
+        "inconclusive": 1
+      },
+      "simplifiable": {
+        "avoidable": 0,
+        "simplifiable": 1,
+        "legitimate": 10,
+        "inconclusive": 2
+      },
+      "legitimate": {
+        "avoidable": 0,
+        "simplifiable": 0,
+        "legitimate": 2,
+        "inconclusive": 0
+      },
+      "inconclusive": {
+        "avoidable": 0,
+        "simplifiable": 0,
+        "legitimate": 1,
+        "inconclusive": 1
+      }
+    },
+    "averageLayaConfidenceOnAgreements": 0.5074,
+    "averageLayaConfidenceOnDisagreements": 0.5242,
+    "highConfidenceDisagreementsAt070": [
+      {
+        "id": "draft-add-transactions-reconciliation",
+        "baseline": "simplifiable",
+        "laya": "legitimate",
+        "layaConfidence": 0.7155,
+        "agrees": false
+      },
+      {
+        "id": "draft-remove-transactions-reconstruction",
+        "baseline": "simplifiable",
+        "laya": "legitimate",
+        "layaConfidence": 0.7304,
+        "agrees": false
+      },
+      {
+        "id": "authorization-query-hydration",
+        "baseline": "avoidable",
+        "laya": "inconclusive",
+        "layaConfidence": 0.7969,
+        "agrees": false
+      }
+    ]
+  },
+  "results": [
+    {
+      "id": "draft-query-hydration",
+      "baseline": "avoidable",
+      "laya": "legitimate",
+      "layaConfidence": 0.4949,
+      "agrees": false
+    },
+    {
+      "id": "draft-save-reconciliation",
+      "baseline": "avoidable",
+      "laya": "legitimate",
+      "layaConfidence": 0.5064,
+      "agrees": false
+    },
+    {
+      "id": "draft-add-transactions-reconciliation",
+      "baseline": "simplifiable",
+      "laya": "legitimate",
+      "layaConfidence": 0.7155,
+      "agrees": false
+    },
+    {
+      "id": "draft-remove-transactions-reconstruction",
+      "baseline": "simplifiable",
+      "laya": "legitimate",
+      "layaConfidence": 0.7304,
+      "agrees": false
+    },
+    {
+      "id": "draft-remove-home-collect-optimistic",
+      "baseline": "simplifiable",
+      "laya": "inconclusive",
+      "layaConfidence": 0.3064,
+      "agrees": false
+    },
+    {
+      "id": "patient-config-query-hydration",
+      "baseline": "avoidable",
+      "laya": "legitimate",
+      "layaConfidence": 0.5288,
+      "agrees": false
+    },
+    {
+      "id": "patient-config-update-from-input",
+      "baseline": "simplifiable",
+      "laya": "legitimate",
+      "layaConfidence": 0.5439,
+      "agrees": false
+    },
+    {
+      "id": "viewer-query-hydration",
+      "baseline": "avoidable",
+      "laya": "legitimate",
+      "layaConfidence": 0.5048,
+      "agrees": false
+    },
+    {
+      "id": "patient-health-update-from-input",
+      "baseline": "simplifiable",
+      "laya": "legitimate",
+      "layaConfidence": 0.6116,
+      "agrees": false
+    },
+    {
+      "id": "cart-add-product-partial-merge",
+      "baseline": "simplifiable",
+      "laya": "legitimate",
+      "layaConfidence": 0.4566,
+      "agrees": false
+    },
+    {
+      "id": "cart-remove-product-fanout",
+      "baseline": "simplifiable",
+      "laya": "legitimate",
+      "layaConfidence": 0.4808,
+      "agrees": false
+    },
+    {
+      "id": "coupon-post-save-cart-overwrite",
+      "baseline": "simplifiable",
+      "laya": "inconclusive",
+      "layaConfidence": 0.4377,
+      "agrees": false
+    },
+    {
+      "id": "subscription-removal-atomic-rebuild",
+      "baseline": "simplifiable",
+      "laya": "legitimate",
+      "layaConfidence": 0.4331,
+      "agrees": false
+    },
+    {
+      "id": "reserve-status-to-local-reconstruction",
+      "baseline": "simplifiable",
+      "laya": "legitimate",
+      "layaConfidence": 0.4787,
+      "agrees": false
+    },
+    {
+      "id": "health-insurance-status-hydration",
+      "baseline": "avoidable",
+      "laya": "legitimate",
+      "layaConfidence": 0.4212,
+      "agrees": false
+    },
+    {
+      "id": "payment-method-workflow-state",
+      "baseline": "inconclusive",
+      "laya": "inconclusive",
+      "layaConfidence": 0.5887,
+      "agrees": true
+    },
+    {
+      "id": "clone-draft-patient-switch",
+      "baseline": "simplifiable",
+      "laya": "legitimate",
+      "layaConfidence": 0.4786,
+      "agrees": false
+    },
+    {
+      "id": "authorization-query-hydration",
+      "baseline": "avoidable",
+      "laya": "inconclusive",
+      "layaConfidence": 0.7969,
+      "agrees": false
+    },
+    {
+      "id": "unavailable-product-removal-fanout",
+      "baseline": "simplifiable",
+      "laya": "legitimate",
+      "layaConfidence": 0.4373,
+      "agrees": false
+    },
+    {
+      "id": "unit-selection-owned-state",
+      "baseline": "inconclusive",
+      "laya": "legitimate",
+      "layaConfidence": 0.5958,
+      "agrees": false
+    },
+    {
+      "id": "reserve-cancel",
+      "baseline": "simplifiable",
+      "laya": "simplifiable",
+      "layaConfidence": 0.5261,
+      "agrees": true
+    },
+    {
+      "id": "draft-effectivation-result",
+      "baseline": "legitimate",
+      "laya": "legitimate",
+      "layaConfidence": 0.5428,
+      "agrees": true
+    },
+    {
+      "id": "coupon-operation-ui-state",
+      "baseline": "legitimate",
+      "laya": "legitimate",
+      "layaConfidence": 0.3722,
+      "agrees": true
+    }
+  ],
+  "decisionNote": "Agreement is not accuracy because the baseline is an adjudicated reference, not ground truth. Review disagreements before choosing either method."
+}

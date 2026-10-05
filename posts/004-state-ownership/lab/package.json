@@ -1,0 +1,31 @@
+{
+  "name": "evidence-lab-004-state-ownership",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:api": "npm run dev --workspace @pet-lab/api",
+    "dev:web": "npm run dev --workspace @pet-lab/web",
+    "down": "docker compose down",
+    "down:volumes": "docker compose down --volumes",
+    "db:wait": "node scripts/wait-for-postgres.mjs",
+    "db:migrate": "npm run db:migrate --workspace @pet-lab/api",
+    "db:seed": "npm run db:seed --workspace @pet-lab/api",
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "docker compose up -d db && npm run db:wait && npm run db:migrate && npm run db:seed && npm run test:unit --workspaces --if-present",
+    "test:e2e": "playwright test",
+    "benchmark:contract": "node scripts/benchmark-contract-evolution.mjs",
+    "report:paths:test": "node --test scripts/protect-report-paths.test.mjs",
+    "report:paths:audit": "set -e; for file in reports/*.json; do node scripts/protect-report-paths.mjs audit \"$file\"; done"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "concurrently": "^9.2.1",
+    "pg": "^8.16.3"
+  }
+}

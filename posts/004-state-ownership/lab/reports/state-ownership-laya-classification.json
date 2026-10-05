@@ -1,0 +1,1521 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-05T13:22:39.951571+00:00",
+  "repositoryAlias": "real-production-scheduling-app",
+  "method": {
+    "engine": "Laya local inference",
+    "packageVersion": "0.3.27",
+    "checkpoint": "convaiinnovations/laya/multilingual",
+    "device": "cpu",
+    "python": "3.12.13",
+    "torch": "2.14.1",
+    "mpsAvailable": false,
+    "labels": [
+      "avoidable",
+      "simplifiable",
+      "legitimate",
+      "inconclusive"
+    ],
+    "answerLeakageControl": "The Laya input excluded previous classifications, confidence values, rationales, counterarguments, judge decisions, and adjudication. It included deterministic metadata and local source excerpts.",
+    "loadSeconds": 4.223
+  },
+  "metrics": {
+    "operations": 23,
+    "counts": {
+      "avoidable": 0,
+      "simplifiable": 1,
+      "legitimate": 18,
+      "inconclusive": 4
+    }
+  },
+  "results": [
+    {
+      "id": "draft-query-hydration",
+      "entity": "diagnostic draft",
+      "operation": "query draft -> copy complete response into Zustand",
+      "evidence": [
+        {
+          "path": "protected-path:v1:ZnByPMM7x0SPyM2M:bP5ftAUoqu7SXriBy2Q9pA:pQSxmP5LzabR0dZ6OkEgHqnJx_SBXK18pvDTsZYwNxjFl6w",
+          "line": 49
+        },
+        {
+          "path": "protected-path:v1:cUrNEKfaunkxkN72:mecfY50UL_l90wB1i-zDkw:NyA4ant4zoQj854-Hsv9SdxDhfue",
+          "line": 176,
+          "detail": "setDraft also mirrors draft.cart.products into the top-level cart field."
+        },
+        {
+          "path": "protected-path:v1:c48LTWkGVm9xI3MV:K4BMmnSRXgF6OueTaL2B4w:UdcSEqong0rbSGyH2g2pTJ--Rk1w5GoDMUizeYI0Qq6wvgg",
+          "line": 45,
+          "detail": "The query result is written to Zustand by setDraft."
+        }
+      ],
+      "inputSha256": "0193d94535a73aaacf5ea19544eabfdd565ac3d2366af2a740448b7fdce11ab1",
+      "laya": {
+        "classification": "legitimate",
+        "confidence": 0.4949,
+        "canonicalOwner": "unclear",
+        "canonicalOwnerConfidence": 0.2925,
+        "latencyMs": 1685.99,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "legitimate",
+            "probabilities": {
+              "avoidable": 0.1652,
+              "simplifiable": 0.2381,
+              "legitimate": 0.4949,
+              "inconclusive": 0.1018
+            },
+            "confidence": 0.1201,
+            "answer_confidence": 0.4949,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "unclear",
+            "probabilities": {
+              "server": 0.2359,
+              "client": 0.2405,
+              "mixed": 0.231,
+              "unclear": 0.2925
+            },
+            "confidence": 0.0034,
+            "answer_confidence": 0.2925,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "draft-save-reconciliation",
+      "entity": "diagnostic draft",
+      "operation": "save mutation -> copy returned snapshot into draft and cart",
+      "evidence": [
+        {
+          "path": "protected-path:v1:Wjn1qhVyKEpAzLMP:elB_ybeJ_M_8IOlltvHL-Q:PG-gclqHZ1hhtexbb48IDldAD5ivg972mlTJWvbTUYE0n2I",
+          "line": 101
+        },
+        {
+          "path": "protected-path:v1:o38uer_MijvuuSKG:xGpGgUJpLa1XHHT0becZ-Q:5k2BXVDKHcbKN5CkANOvFFd2jXNL",
+          "line": 176
+        },
+        {
+          "path": "protected-path:v1:QwgHGwsM8LAtCxBz:1Rm5XxtZXjHOzEzSQqKaYQ:WMceI_3g95Cxnew7gF4qgFBtGYHE6V91b__m9PyuX9OnqNc",
+          "line": 99,
+          "detail": "The canonical draft returned by the mutation is copied into Zustand."
+        },
+        {
+          "path": "protected-path:v1:uk1fochw5-PhrQEQ:-km0CJ5GDPGwQkFNGTmCvw:4WJtR-HJnQr2qddzRoR7Z9WQrh_L",
+          "line": 180,
+          "detail": "Applying the snapshot also manually maintains the duplicated top-level cart."
+        }
+      ],
+      "inputSha256": "130b11a34d979580160a8ad4807ed5acbbee6e39993a6267708be8d7c9dd9998",
+      "laya": {
+        "classification": "legitimate",
+        "confidence": 0.5064,
+        "canonicalOwner": "unclear",
+        "canonicalOwnerConfidence": 0.3936,
+        "latencyMs": 2481.77,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "legitimate",
+            "probabilities": {
+              "avoidable": 0.0719,
+              "simplifiable": 0.1366,
+              "legitimate": 0.5064,
+              "inconclusive": 0.2851
+            },
+            "confidence": 0.1607,
+            "answer_confidence": 0.5064,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "unclear",
+            "probabilities": {
+              "server": 0.207,
+              "client": 0.1921,
+              "mixed": 0.2073,
+              "unclear": 0.3936
+            },
+            "confidence": 0.0362,
+            "answer_confidence": 0.3936,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "draft-add-transactions-reconciliation",
+      "entity": "draft transactions and cart",
+      "operation": "add-transactions mutation -> copy full draft and mirror cart",
+      "evidence": [
+        {
+          "path": "protected-path:v1:ecuSyTySwcGJ-w5m:_Zj_mivTIXnsUE_f_yXgGQ:2L9li53cId9_WZXrnKpzcDC2HahKLRFWnmLfgvo3eQXiN4s",
+          "line": 125
+        },
+        {
+          "path": "protected-path:v1:UzeWlETedex3Ao3P:n7I6Xi3QkIEzjLQ7HvBM4Q:HzfnPBoRblMN18sR2jzI4lZGPMe5",
+          "line": 184,
+          "detail": "The action copies the response and separately mirrors draft cart products to cart."
+        },
+        {
+          "path": "protected-path:v1:QeL400G0GVMVMzR8:8WQet4rGg315rgiP5NlTHg:0jwYjSdGAqQnP8-sDcWhNEEcSOnh-0TR0j96iyPZQvy3uaQ",
+          "line": 123,
+          "detail": "The mutation response is routed through a dedicated addTransactions store action."
+        }
+      ],
+      "inputSha256": "c6c290c4cf2696f4a92bee2e50be4df294e981a37b279c706351ca121716301b",
+      "laya": {
+        "classification": "legitimate",
+        "confidence": 0.7155,
+        "canonicalOwner": "unclear",
+        "canonicalOwnerConfidence": 0.5894,
+        "latencyMs": 1478.26,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "legitimate",
+            "probabilities": {
+              "avoidable": 0.0733,
+              "simplifiable": 0.1017,
+              "legitimate": 0.7155,
+              "inconclusive": 0.1094
+            },
+            "confidence": 0.3467,
+            "answer_confidence": 0.7155,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "unclear",
+            "probabilities": {
+              "server": 0.1225,
+              "client": 0.1219,
+              "mixed": 0.1662,
+              "unclear": 0.5894
+            },
+            "confidence": 0.1895,
+            "answer_confidence": 0.5894,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "draft-remove-transactions-reconstruction",
+      "entity": "draft transactions and product transaction links",
+      "operation": "status-only mutation -> manually remove transactions and clear product links",
+      "evidence": [
+        {
+          "path": "protected-path:v1:NCOCZ3J7KDNzWToh:64Ks8_iiKUo6tCJU_kW3Og:OI-lsTdoUwSHtPe3KDKhyGTCuLJQcepemfNp5jKiBS5XAac",
+          "line": 147
+        },
+        {
+          "path": "protected-path:v1:rpb_JUfIBwouLGWE:Ty-AQs2t5TYbf9zZqo1ZeA:RzWpv14oO5F_1asZfalnhfRyRr_L",
+          "line": 192,
+          "detail": "The action filters transactions, clears product transactionId values, and mirrors cart manually."
+        },
+        {
+          "path": "protected-path:v1:tiVhiPcC0io9MTMD:HphscWbPTIoMCSp68umOeQ:XYKr710tPaKxzFVfLMtF5A1PdhTW79QOo097L6s5rjzLlhg",
+          "line": 144,
+          "detail": "A successful boolean/status response triggers local removal by request IDs."
+        }
+      ],
+      "inputSha256": "9c9e695fbd6fe059e710c5bff076d5c93fe2b79963ff8f5fd9d2739f5603c4e3",
+      "laya": {
+        "classification": "legitimate",
+        "confidence": 0.7304,
+        "canonicalOwner": "unclear",
+        "canonicalOwnerConfidence": 0.408,
+        "latencyMs": 1622.89,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "legitimate",
+            "probabilities": {
+              "avoidable": 0.0941,
+              "simplifiable": 0.101,
+              "legitimate": 0.7304,
+              "inconclusive": 0.0744
+            },
+            "confidence": 0.3675,
+            "answer_confidence": 0.7304,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "unclear",
+            "probabilities": {
+              "server": 0.1442,
+              "client": 0.2082,
+              "mixed": 0.2395,
+              "unclear": 0.408
+            },
+            "confidence": 0.0521,
+            "answer_confidence": 0.408,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "draft-remove-home-collect-optimistic",
+      "entity": "draft home collection",
+      "operation": "optimistically null local field -> mutation -> refetch only on failure",
+      "evidence": [
+        {
+          "path": "protected-path:v1:wI9xaBEfEFrvpbZr:M2MEjwD5VK5LB45ETux38w:-caQ_VlQwtf3FIKBQApEHhPleTQ06AMj5MpUWhbqTOccWMw",
+          "line": 201,
+          "detail": "The local draft is patched before the mutation executes."
+        },
+        {
+          "path": "protected-path:v1:ZLTG2rouz4ZjFPoB:s3_rsBXTcaVesagK6wCHUQ:gVCGxBDSCj_uyrES6PPISeUegMRDR4l7kwtnen60_7lrjoM",
+          "line": 202,
+          "detail": "On failure, reconciliation is delegated to refreshDraft rather than a local rollback."
+        }
+      ],
+      "inputSha256": "42cd6f9e20d9fc5134e8a3b9937b5cc67f72be4306a31f70b41a6aa8d01a5055",
+      "laya": {
+        "classification": "inconclusive",
+        "confidence": 0.3064,
+        "canonicalOwner": "unclear",
+        "canonicalOwnerConfidence": 0.494,
+        "latencyMs": 692.5,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "inconclusive",
+            "probabilities": {
+              "avoidable": 0.2438,
+              "simplifiable": 0.1559,
+              "legitimate": 0.2938,
+              "inconclusive": 0.3064
+            },
+            "confidence": 0.0217,
+            "answer_confidence": 0.3064,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "unclear",
+            "probabilities": {
+              "server": 0.1492,
+              "client": 0.142,
+              "mixed": 0.2148,
+              "unclear": 0.494
+            },
+            "confidence": 0.1057,
+            "answer_confidence": 0.494,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "patient-config-query-hydration",
+      "entity": "patient configuration",
+      "operation": "query configs -> transform array -> copy object into Zustand",
+      "evidence": [
+        {
+          "path": "protected-path:v1:ZIzciG_dpwORKbOR:JIj4JETfmDdQmRRSuk_zGg:8j4zFTtu9g1Cj2fl_W8rgnXQ2TN2rQjozya4zWFO7hI1NpK_HxRZ659oERq7s5hutWf_",
+          "line": 12,
+          "detail": "The remote response is transformed and copied into patientConfigs through setPatientConfigs."
+        },
+        {
+          "path": "protected-path:v1:hMcviSP_FFGCSfxy:Q8k88l-LaLInFjGEK3fsDA:hkZt3GH6JMc3VRrjZXuCLpOqlqCz",
+          "line": 149,
+          "detail": "The store retains the transformed server configuration as durable application state."
+        }
+      ],
+      "inputSha256": "89cc03f5a959db12a5b64607475a0fad42e05b12bd0586327c4a304b7cd7c747",
+      "laya": {
+        "classification": "legitimate",
+        "confidence": 0.5288,
+        "canonicalOwner": "client",
+        "canonicalOwnerConfidence": 0.426,
+        "latencyMs": 1002.96,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "legitimate",
+            "probabilities": {
+              "avoidable": 0.1186,
+              "simplifiable": 0.2468,
+              "legitimate": 0.5288,
+              "inconclusive": 0.1058
+            },
+            "confidence": 0.154,
+            "answer_confidence": 0.5288,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "client",
+            "probabilities": {
+              "server": 0.1671,
+              "client": 0.426,
+              "mixed": 0.1457,
+              "unclear": 0.2612
+            },
+            "confidence": 0.0667,
+            "answer_confidence": 0.426,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "patient-config-update-from-input",
+      "entity": "patient configuration",
+      "operation": "update mutation -> ignore response content -> merge request input into Zustand",
+      "evidence": [
+        {
+          "path": "protected-path:v1:pojfWd9DKlovABZO:nCzTS0Me1ak54UJ1BZCaXw:TwgXMY4Hk2BNMQSCeMTjRlB4Cj7nSv4iEqzj7UFRYZZYZs8Jl8Wrk1d6dcQZj2l-BGaw",
+          "line": 25,
+          "detail": "After the mutation, Zustand is updated from patientConfigs (the request input), while the mutation response is only returned."
+        },
+        {
+          "path": "protected-path:v1:8df26Nk-uk3dhpK1:4OrzQyf7KM9RllNpH0AlXg:yscEHh77VyOMbrWY1_IuXI7AkHhq",
+          "line": 246,
+          "detail": "The action manually merges a partial configuration into the existing local copy."
+        }
+      ],
+      "inputSha256": "cb5942a6b61c249a14ae82d3f1d80be8a766d3d00e93d82bfbb263486349fe7c",
+      "laya": {
+        "classification": "legitimate",
+        "confidence": 0.5439,
+        "canonicalOwner": "unclear",
+        "canonicalOwnerConfidence": 0.4902,
+        "latencyMs": 772.79,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "legitimate",
+            "probabilities": {
+              "avoidable": 0.0432,
+              "simplifiable": 0.1927,
+              "legitimate": 0.5439,
+              "inconclusive": 0.2202
+            },
+            "confidence": 0.194,
+            "answer_confidence": 0.5439,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "unclear",
+            "probabilities": {
+              "server": 0.1888,
+              "client": 0.1734,
+              "mixed": 0.1476,
+              "unclear": 0.4902
+            },
+            "confidence": 0.098,
+            "answer_confidence": 0.4902,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "viewer-query-hydration",
+      "entity": "viewer/patient collection",
+      "operation": "viewer query -> format response -> copy to Zustand",
+      "evidence": [
+        {
+          "path": "protected-path:v1:NeFYHF6uh_qNkUyd:V3cpxCGugDUcUjszakVP5Q:Q6iye9nA8PISd-P8HzLLL2yrRcwAPUxJsEWfQ1_53LvmbC8pDg",
+          "line": 13,
+          "detail": "The query response is formatted and copied into the global viewerController."
+        },
+        {
+          "path": "protected-path:v1:1hJxIHcxLj1HZTwZ:dt5Bb99dePG7Fs8AmVG4-w:TFsZ_SLUd-NGtcDD_ph4X_4v6ar5m9l6hA-MiuK5QkNW29Xt_BPFFW4r9RCo0bqE",
+          "line": 27,
+          "detail": "After the same fetch, the currently selected patient is manually refreshed from allViewers."
+        }
+      ],
+      "inputSha256": "0e071c24495fd0c7aa47d90b8e35b45d00eb476b7a7e569e7f819f457fb8fdaf",
+      "laya": {
+        "classification": "legitimate",
+        "confidence": 0.5048,
+        "canonicalOwner": "client",
+        "canonicalOwnerConfidence": 0.5744,
+        "latencyMs": 751.13,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "legitimate",
+            "probabilities": {
+              "avoidable": 0.2015,
+              "simplifiable": 0.1805,
+              "legitimate": 0.5048,
+              "inconclusive": 0.1132
+            },
+            "confidence": 0.1175,
+            "answer_confidence": 0.5048,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "client",
+            "probabilities": {
+              "server": 0.1204,
+              "client": 0.5744,
+              "mixed": 0.1162,
+              "unclear": 0.189
+            },
+            "confidence": 0.1788,
+            "answer_confidence": 0.5744,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "patient-health-update-from-input",
+      "entity": "patient height and weight",
+      "operation": "health mutation -> apply request variables to patient and allViewers",
+      "evidence": [
+        {
+          "path": "protected-path:v1:L1jNZhv1ZZISmK3B:YLMiqtDtFC-pXB2hFWB1dw:fO6yUL3hUo1eiHyJV4AcuwAPHXd55OR28X6DGpKnWsuWEIvSZg",
+          "line": 35,
+          "detail": "After mutation success, setHeightAndWeight receives the request variables rather than the response payload."
+        },
+        {
+          "path": "protected-path:v1:akKRrBbi7poiEEua:fZv29z5FEFGqvZX_S0kjew:xL45NiVeYohMD2DhXxlfVX5kC6fp",
+          "line": 152,
+          "detail": "The action manually updates both patient and the matching entry in viewerController.allViewers."
+        },
+        {
+          "path": "protected-path:v1:h4ULbi7ksIKal5Jn:36RWOL60gR-mMuU5-gOuNQ:MNdV_hkNE4mD3BjHTSwrcaPBL9WX",
+          "line": 161
+        }
+      ],
+      "inputSha256": "21df648ccd62c4ace08516ca816503975bf7627b64cc71e8e039b7e05b6961d9",
+      "laya": {
+        "classification": "legitimate",
+        "confidence": 0.6116,
+        "canonicalOwner": "client",
+        "canonicalOwnerConfidence": 0.3361,
+        "latencyMs": 1674.32,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "legitimate",
+            "probabilities": {
+              "avoidable": 0.1483,
+              "simplifiable": 0.1713,
+              "legitimate": 0.6116,
+              "inconclusive": 0.0688
+            },
+            "confidence": 0.2281,
+            "answer_confidence": 0.6116,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "client",
+            "probabilities": {
+              "server": 0.2242,
+              "client": 0.3361,
+              "mixed": 0.1619,
+              "unclear": 0.2777
+            },
+            "confidence": 0.0245,
+            "answer_confidence": 0.3361,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "cart-add-product-partial-merge",
+      "entity": "draft cart products and product details",
+      "operation": "add-product mutation -> merge partial response with existing cart and auxiliary details",
+      "evidence": [
+        {
+          "path": "protected-path:v1:kGXQ9X4SlVNCtTzn:lahjss8BGFahxCR89Ou4Dw:_COvg8lr-RGa7HTiz-GWp4xXnIoIivqCwiOJD69e5meW",
+          "line": 28,
+          "detail": "The mutation returns status and a product collection rather than the whole draft."
+        },
+        {
+          "path": "protected-path:v1:tiMSE-Llx5Xsej6G:vijNjsu_g0cAZN3hqKLgWw:pHGSBYO5p1qJT6Ns4LV-S1UqwCDsNvjKEC9-Rrvf69jf",
+          "line": 38,
+          "detail": "A second client projection, productsDetails, is also updated from request-side product data."
+        },
+        {
+          "path": "protected-path:v1:nm-YheSrT0Dlvu7K:leyf-1i1tT_sIKTI5Tm2Mw:gGA1su9F4K-aAuAEBqDRTngZ_YQByUfS5BIoVliMOnxp",
+          "line": 46
+        },
+        {
+          "path": "protected-path:v1:TnmiP6T_kr2wHkgs:1f5HTOeO1kUYnh0AqbPjjA:sQCGUuNU-Nv4SesqOsRfIogc3JuilHqsHXv0su2VaO-o",
+          "line": 45,
+          "detail": "The code reads the current top-level cart, appends selected response products, then synthesizes a new draft snapshot."
+        }
+      ],
+      "inputSha256": "3189e8e7136c3c44c3bd47d5de40a14ff4d3840a43760377843d306f80fa2284",
+      "laya": {
+        "classification": "legitimate",
+        "confidence": 0.4566,
+        "canonicalOwner": "mixed",
+        "canonicalOwnerConfidence": 0.3243,
+        "latencyMs": 1996.79,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "legitimate",
+            "probabilities": {
+              "avoidable": 0.128,
+              "simplifiable": 0.1854,
+              "legitimate": 0.4566,
+              "inconclusive": 0.2299
+            },
+            "confidence": 0.0828,
+            "answer_confidence": 0.4566,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "mixed",
+            "probabilities": {
+              "server": 0.1801,
+              "client": 0.2637,
+              "mixed": 0.3243,
+              "unclear": 0.2319
+            },
+            "confidence": 0.0158,
+            "answer_confidence": 0.3243,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "cart-remove-product-fanout",
+      "entity": "draft cart, authorizations, and product details",
+      "operation": "status-only remove mutation -> prune products and two dependent collections",
+      "evidence": [
+        {
+          "path": "protected-path:v1:ZgAQWHFH_AeYHVZ2:NTsIX5Ekgbmu4mdctA6T5w:KF9Ot5IPTMHuKlkgaammTNyx_BcXv9Lw0HgvClJUvoGM",
+          "line": 79,
+          "detail": "A status-only mutation response initiates manual reconciliation."
+        },
+        {
+          "path": "protected-path:v1:EQJCmxlG_BuwdTA7:A84sCcwa2bR3HTBvYCEddw:fqlNqKe_HfDE5IRGoPNK9gVGAeaxtNPyk32b9i3Ky1Wm",
+          "line": 82,
+          "detail": "The next product set is derived by filtering the local cart with request IDs."
+        },
+        {
+          "path": "protected-path:v1:PYFiRpdDwdbt2fUV:G9idY4nYyZhTJhw2ImeRPw:Zcmttp1geJk2w19USi2aFp_B-cKvINkaBj8THVlZVqUF",
+          "line": 90
+        },
+        {
+          "path": "protected-path:v1:XbBwCEfaWhnmVTts:fndW3BUANOL-EErtTojwkA:TrEuE1nf5gBRvb5LFnX2rP-a8Ng63UCFHlP5lsepxg8p",
+          "line": 95,
+          "detail": "A synthesized draft is finally passed to setDraft, which mirrors cart again."
+        },
+        {
+          "path": "protected-path:v1:0Pvsy1yiEw5U92yi:dh-pA05eSAzB8cBE4yaoQA:6Avc_2OYWiGH3bWjiXDl9a3SpUhTvFaWiv4NaPnc8fye",
+          "line": 84,
+          "detail": "Two authorization collections are independently pruned based on the derived products."
+        },
+        {
+          "path": "protected-path:v1:mcGLjQs9CDsbxqfv:l1_Yd6W_-Su2IHXY5BDHWA:5kFBnGACDKrTiK_F-6l9XAO0-LzGNGy74pRYn6i--2Y3",
+          "line": 92,
+          "detail": "Product details are removed through another store action before the draft/cart update."
+        }
+      ],
+      "inputSha256": "7908d22edbd0625e4d8240b711af355beef6146624cb34f7e93a4b49462c5107",
+      "laya": {
+        "classification": "legitimate",
+        "confidence": 0.4808,
+        "canonicalOwner": "unclear",
+        "canonicalOwnerConfidence": 0.3122,
+        "latencyMs": 2921.98,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "legitimate",
+            "probabilities": {
+              "avoidable": 0.0897,
+              "simplifiable": 0.1324,
+              "legitimate": 0.4808,
+              "inconclusive": 0.2972
+            },
+            "confidence": 0.1368,
+            "answer_confidence": 0.4808,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "unclear",
+            "probabilities": {
+              "server": 0.2672,
+              "client": 0.2193,
+              "mixed": 0.2013,
+              "unclear": 0.3122
+            },
+            "confidence": 0.0107,
+            "answer_confidence": 0.3122,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "coupon-post-save-cart-overwrite",
+      "entity": "coupon-priced cart",
+      "operation": "save canonical draft -> manually overwrite cart with pre-response products",
+      "evidence": [
+        {
+          "path": "protected-path:v1:ioKtNzV8HD0gI3Rt:-iJ4NbB33R-pwfHtmtOPfA:OebVYcFhajxBUCqrnHfVbXST8mJw7zOqxKleF-tHtk-YqGzD8ACGDaYeHw",
+          "line": 111,
+          "detail": "saveDiagnosticDraft sends the reconstructed products and already applies the returned canonical draft through setDraft."
+        },
+        {
+          "path": "protected-path:v1:Sd6xXU5ycEfow8ZV:23fljsGcnKIKnr_Lb5mbUA:Ww0MOIVhjk_RHLaA1J3NHCykE1g9miliJy_4QShRxAKmuGMZJQCy3Q7SFQ",
+          "line": 112,
+          "detail": "After the canonical response path, the top-level cart is overwritten again with the request-derived products."
+        },
+        {
+          "path": "protected-path:v1:jnoK-arY70FvkHe6:-RT8nUhamaXQUz3pFyMIsg:KyVd8uS-GHBcbgumI_39qp0zRqstv2juaS1egXAn8VTcOwY3nXIkaLDFbw",
+          "line": 110,
+          "detail": "The next product collection is reconstructed from the current local cart by assigning couponApplied."
+        }
+      ],
+      "inputSha256": "4cd441bab566fe966535e3c7e984110170e2af4dda5c7780a05ff16504410511",
+      "laya": {
+        "classification": "inconclusive",
+        "confidence": 0.4377,
+        "canonicalOwner": "unclear",
+        "canonicalOwnerConfidence": 0.6098,
+        "latencyMs": 1249.92,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "inconclusive",
+            "probabilities": {
+              "avoidable": 0.1175,
+              "simplifiable": 0.1078,
+              "legitimate": 0.337,
+              "inconclusive": 0.4377
+            },
+            "confidence": 0.12,
+            "answer_confidence": 0.4377,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "unclear",
+            "probabilities": {
+              "server": 0.0609,
+              "client": 0.1852,
+              "mixed": 0.1442,
+              "unclear": 0.6098
+            },
+            "confidence": 0.2328,
+            "answer_confidence": 0.6098,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "subscription-removal-atomic-rebuild",
+      "entity": "subscription, draft, cart, unit, and payment",
+      "operation": "multi-mutation workflow -> manually assemble final cross-entity store snapshot",
+      "evidence": [
+        {
+          "path": "protected-path:v1:MKyXnoMMG_gsmQH9:MkC3o3UbA5eoUVj6N-8G9w:BPZANcAlcWz9k5wvAkCFEkPR0qZaxAZRZmAitLy5p1GiSeRQG_lx",
+          "line": 223
+        },
+        {
+          "path": "protected-path:v1:4G2Uoa4jRYLUsmRO:E-98kRh_KvRB8MJWDE_Yzg:MCVSM-RJFt8idhuoRhLiUNcSwkL9MLo7rFnHRPAloSlTws2ShLdE",
+          "line": 262,
+          "detail": "The final write must coordinate paymentMethod, paymentContext, unit, draft, and the duplicate cart."
+        },
+        {
+          "path": "protected-path:v1:miho40f43H44C9Eu:vOUaxXhg9-jF-QGVEhlwJw:PapmzIcgPoSGEj3t0o6yfl160sYzPW-6aaiqcO9sgCQUTLDxWUp6",
+          "line": 224,
+          "detail": "The operation begins with a remote product removal performed without updating the shared context."
+        },
+        {
+          "path": "protected-path:v1:ZUDuatRQ0K9dQfvZ:v9sL5hsLAFxyuPSHWOY-PA:6KGovhfKtTY59CepoeCwfTdODSz_EGvdNcQ4KJ7WMyZPIjtfIsbh",
+          "line": 228,
+          "detail": "It separately removes every transaction from the remote draft."
+        },
+        {
+          "path": "protected-path:v1:xUifL3gzq2hdBYQN:OkbdIRL2iLIKIZ_W_pGpzA:S832-g9lMFS5thbN1sbpszzKxX_Oej7M_BQwAXARwV0T7LjZCbLZ",
+          "line": 249,
+          "detail": "Unit pricing is reconstructed from additional remote queries and optionally merged with prior local rooms."
+        },
+        {
+          "path": "protected-path:v1:B7BjMGXSm-Zzd-Zt:dKDVH1ohrN7TXUN42SxcrQ:0QtmFcpC1L3GyXwdkVRB4Uj6ZOAz-BKR7nXK-eGVITvC4aNv2ThV",
+          "line": 253,
+          "detail": "Transactions and products are rebuilt client-side and persisted through multiple draft saves."
+        }
+      ],
+      "inputSha256": "27fa651902af29e3287ce84c21325ef3756a133e4af09b4e89ef47039d872f54",
+      "laya": {
+        "classification": "legitimate",
+        "confidence": 0.4331,
+        "canonicalOwner": "unclear",
+        "canonicalOwnerConfidence": 0.3499,
+        "latencyMs": 2784.41,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "legitimate",
+            "probabilities": {
+              "avoidable": 0.1004,
+              "simplifiable": 0.1546,
+              "legitimate": 0.4331,
+              "inconclusive": 0.3119
+            },
+            "confidence": 0.1018,
+            "answer_confidence": 0.4331,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "unclear",
+            "probabilities": {
+              "server": 0.2098,
+              "client": 0.2232,
+              "mixed": 0.2172,
+              "unclear": 0.3499
+            },
+            "confidence": 0.018,
+            "answer_confidence": 0.3499,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "reserve-status-to-local-reconstruction",
+      "entity": "reservation code on draft products",
+      "operation": "reservation status -> synthesize code on every bookable product in draft and cart",
+      "evidence": [
+        {
+          "path": "protected-path:v1:W8hmtY0DVL2lCOzf:ttdh1au4Gq5hTWCg9b6ehA:Fenxd-OCidklVEb-foKfQ3LR_IRsjwepggwSP4LOH-Hew8v1J2KmeQ",
+          "line": 14,
+          "detail": "A success status is mapped to a hard-coded local reserve code of 1."
+        },
+        {
+          "path": "protected-path:v1:ajBX-y8lCqDWcbv_:JFcwwvWemuK4Dac9r7Hq1A:TKQMMd2gwyBeDOKLvKpT9IRwlbdJ",
+          "line": 111,
+          "detail": "setReserveCode maps every bookable draft product, then writes both draft and cart."
+        },
+        {
+          "path": "protected-path:v1:JaPxvg1C2bqJlUIK:M27CoUuWM4w2XspKS_SQEA:XImKdpNXLWFy4bVhi2trUCpMZUlL",
+          "line": 122
+        }
+      ],
+      "inputSha256": "fe0ae9dee573f39ab6e4592fb82fb8123ce4c8c55aa27242f565d4996242ffb3",
+      "laya": {
+        "classification": "legitimate",
+        "confidence": 0.4787,
+        "canonicalOwner": "unclear",
+        "canonicalOwnerConfidence": 0.3206,
+        "latencyMs": 1449.18,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "legitimate",
+            "probabilities": {
+              "avoidable": 0.1946,
+              "simplifiable": 0.2065,
+              "legitimate": 0.4787,
+              "inconclusive": 0.1202
+            },
+            "confidence": 0.0972,
+            "answer_confidence": 0.4787,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "unclear",
+            "probabilities": {
+              "server": 0.2779,
+              "client": 0.1827,
+              "mixed": 0.2187,
+              "unclear": 0.3206
+            },
+            "confidence": 0.0164,
+            "answer_confidence": 0.3206,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "health-insurance-status-hydration",
+      "entity": "patient health-insurance validation results",
+      "operation": "remote validation -> copy result into Zustand",
+      "evidence": [
+        {
+          "path": "protected-path:v1:8tei97icm_Nezsek:iP1rS6_mDnNbnHN8ssnX3Q:-9HKIajKmEQPnTeWNMyM87s19omfd3WS9ZnD3I8gEVAmWThVAffqof88fPivavpOoeBBjCp-olbPWa8OPlUNcxaNlKjNRXUSLorP",
+          "line": 99,
+          "detail": "The remote validation result is copied into the global healthInsurances field."
+        },
+        {
+          "path": "protected-path:v1:QwAgmptH1qtqRkgE:Xt7r0SrCAK_Q8y-zs-pFeg:lOhRnEIMiapjwoqA4aPceE3g_8o4HKixu1kpJjGTDmHf_Vi3qJlmjAABmDu5X2JLRiGL0HbnIpIOEEkK9uqp8HNEDTTiMu0Pr9_g",
+          "line": 98,
+          "detail": "A local loading flag is manually set before remote validation."
+        },
+        {
+          "path": "protected-path:v1:v4xemg0iIUL9IXk0:BjttLi1gFecVV9VUTZzaPg:JH1FnTc8ObDhj6PuBg54pxhyZ3Rk",
+          "line": 220,
+          "detail": "The store action couples the response write to its own validation-loading transition."
+        }
+      ],
+      "inputSha256": "2577d0015f29eb4cc57e23be507b2d45e2b34bfabfbb51979de345d972f8dcd1",
+      "laya": {
+        "classification": "legitimate",
+        "confidence": 0.4212,
+        "canonicalOwner": "unclear",
+        "canonicalOwnerConfidence": 0.3408,
+        "latencyMs": 1188.64,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "legitimate",
+            "probabilities": {
+              "avoidable": 0.1087,
+              "simplifiable": 0.0874,
+              "legitimate": 0.4212,
+              "inconclusive": 0.3827
+            },
+            "confidence": 0.1445,
+            "answer_confidence": 0.4212,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "unclear",
+            "probabilities": {
+              "server": 0.2433,
+              "client": 0.2706,
+              "mixed": 0.1454,
+              "unclear": 0.3408
+            },
+            "confidence": 0.03,
+            "answer_confidence": 0.3408,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "payment-method-workflow-state",
+      "entity": "selected payment method and context",
+      "operation": "user selection -> update local workflow state -> synchronize draft/config remotely",
+      "evidence": [
+        {
+          "path": "protected-path:v1:91hhUCjJ-aPjsy7x:jWVsy67KK0eO7Snb6ui5_Q:afE_yIbL6zMi85qjjBp4-6Y8KshzDrB4gZmvvkGmP20PKvh6AA-HB0VwHDotofT_MA",
+          "line": 15
+        },
+        {
+          "path": "protected-path:v1:vHUoKmgptpXcyGTe:t1oYQ_Ifi84KZfIkLQSnag:8g7aSt0B40fapXdE8nlWuv4lhpNKInOD3BhSBAYhjkdiloqtW1bYvbwP10DInlZZEQ",
+          "line": 25,
+          "detail": "The global payment selection is committed before remote draft transaction synchronization."
+        },
+        {
+          "path": "protected-path:v1:jObpTkU37O-xmnVk:X-v7VMa3Qb7z6Yoga1JSZw:Dhfm9HDa4NCawhIkPDfzAUC8VMNhii7OmgD3yRQkWc3sYOLzJH5EOabl_Qx0_NLjYw",
+          "line": 18,
+          "detail": "The transition first runs guards that can remove or reconcile coupon state."
+        },
+        {
+          "path": "protected-path:v1:inHwVSOcaCq0ZBe6:pEvMafoLAxC78Q7mCOsLSA:4X1lH3SogZoXyzohwk4RjcA2iVVG0te4IpR9E3hzoCAc3B4Q1h4JS7iPR8DJsfeMjQ",
+          "line": 21,
+          "detail": "Subscription removal failure is captured but does not stop the payment transition."
+        },
+        {
+          "path": "protected-path:v1:XOeusejbA5U04hDn:Omd3Hcj8WxMf3vjFB_Gq1g:zE4WvByNSRtk8QFE-ByFtJkBxH4M7JlW02YmeOvL65WFpXbwdgs_KfmIaW-hAHXZsw",
+          "line": 27,
+          "detail": "Remote transaction synchronization failure is swallowed after error capture."
+        },
+        {
+          "path": "protected-path:v1:vSlF1LykNLX5zEHo:3Ze8fGe-mKRXivuCvAah-Q:ZqUIwYumC3ZpffrR9C3Q79HutIoTrIwuZZdzeX_Z1gRNyWe7XCMjP6p-MPnCd4-dWg",
+          "line": 31,
+          "detail": "A separate patient configuration projection is reconstructed and persisted asynchronously."
+        }
+      ],
+      "inputSha256": "4738fc1efeac117e94633ad56f7d758e34c9ecc5ca7e86ce0e41140249a8c0e9",
+      "laya": {
+        "classification": "inconclusive",
+        "confidence": 0.5887,
+        "canonicalOwner": "unclear",
+        "canonicalOwnerConfidence": 0.6913,
+        "latencyMs": 1907.61,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "inconclusive",
+            "probabilities": {
+              "avoidable": 0.0572,
+              "simplifiable": 0.0389,
+              "legitimate": 0.3152,
+              "inconclusive": 0.5887
+            },
+            "confidence": 0.3033,
+            "answer_confidence": 0.5887,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "unclear",
+            "probabilities": {
+              "server": 0.0655,
+              "client": 0.0862,
+              "mixed": 0.1571,
+              "unclear": 0.6913
+            },
+            "confidence": 0.325,
+            "answer_confidence": 0.6913,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "clone-draft-patient-switch",
+      "entity": "patient, cloned draft, cart, payment, and config",
+      "operation": "remote clone workflow -> enumerate final store fields and separately persist config",
+      "evidence": [
+        {
+          "path": "protected-path:v1:BA5R7GjcX1jMRw8d:WgWlwWrW18d1-JTk3pN3AA:wiX6KZ2i-3qIB0X7JKp8_eCWObXFA3hZWYtAx5D2VFwG3dssjfvRcG6J9q8",
+          "line": 91
+        },
+        {
+          "path": "protected-path:v1:EipNWEUfQTWQ9LAF:iMtkgktmfYGEXDQRV4gmmw:AGdythHLTnTLlkrgnn4oenZA413EPhU8dAk0TcLKNqRuxWvH-o4sKzctPPk",
+          "line": 113,
+          "detail": "patient, draft, paymentMethod, paymentContext, and duplicate cart are manually coordinated in one store update."
+        },
+        {
+          "path": "protected-path:v1:MhI9tMLhyxGf1PZA:sUVlpF-3ry9vNh5nwNwOeQ:aF4WsD_--YcQM6PJDCiCiHDkxjE5Q_9xorS-cvzqAWBZGwZBK56-toir5pA",
+          "line": 93,
+          "detail": "A target-patient remote draft is fetched, then repeatedly reassigned through client orchestration."
+        },
+        {
+          "path": "protected-path:v1:O6TMchcP5THve_re:vLNk0vnQe9XiuGtvm8tgFQ:g3OD9h3pWRAOFvjzUt1y2TLp7M8hx_Ku0LigptoKdaR32RvUjJF588vJGik",
+          "line": 98,
+          "detail": "Transactions, products, and details are cloned through separate remote operations."
+        },
+        {
+          "path": "protected-path:v1:MdYAhSasLdE8EW7R:GppkHTDJUdcA323CySCGZg:U_XkqnEzyrFEkQDJDZzmfi37DT88vt_P3Tllll5jJzmuAvDewOrWz0SCSYc",
+          "line": 100,
+          "detail": "Detail-clone failure is tolerated, preserving a partially cloned draft."
+        },
+        {
+          "path": "protected-path:v1:MZ63uSmF3twU7a9W:Lb4SUl7MNMfqTrrjDxNr9A:3KSHzv8BE5Gw-b_HhxyYs5OzqtHsM8S__aNsqmtJ2yRpRTGMlW_OWBIK_No",
+          "line": 112,
+          "detail": "The original draft is remotely cleaned before the new context is published."
+        },
+        {
+          "path": "protected-path:v1:LTU_r52Um5y5tVac:owTKT0Bjhsd0or_Ghz6IMQ:hBxq9ov8FpziH7yhFGd2-oEpPXScZrNGAiXY7toAHlllTcwxXvO3Rfbgs_Q",
+          "line": 114,
+          "detail": "A separate remote patient-config update must also remember selected patient, payment, height, and weight projections."
+        }
+      ],
+      "inputSha256": "6c421cf9882f515e27275cdbb0cae882ebcd1ab8f8a7b265d7ec76550170b5b3",
+      "laya": {
+        "classification": "legitimate",
+        "confidence": 0.4786,
+        "canonicalOwner": "unclear",
+        "canonicalOwnerConfidence": 0.4671,
+        "latencyMs": 2864.93,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "legitimate",
+            "probabilities": {
+              "avoidable": 0.102,
+              "simplifiable": 0.1327,
+              "legitimate": 0.4786,
+              "inconclusive": 0.2867
+            },
+            "confidence": 0.1259,
+            "answer_confidence": 0.4786,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "unclear",
+            "probabilities": {
+              "server": 0.1002,
+              "client": 0.2657,
+              "mixed": 0.167,
+              "unclear": 0.4671
+            },
+            "confidence": 0.1076,
+            "answer_confidence": 0.4671,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "authorization-query-hydration",
+      "entity": "previous authorizations",
+      "operation": "authorization query -> split response by type -> copy both collections into Zustand",
+      "evidence": [
+        {
+          "path": "protected-path:v1:e5oZD5_Do9g-XXXU:kiv7lYhtbADNmaRAbRXXTQ:V_6qeyfSPb8d9jk1hRno79RJFRbrbgrODZL2zg",
+          "line": 480
+        },
+        {
+          "path": "protected-path:v1:0HfwaCpMIQ5lDPnO:yU9iVNGVZa4ACg496L3uLA:BMvM4i33YEGs3Q_lipR4K2ytdQzeBqc-jDo1Rw",
+          "line": 483,
+          "detail": "Whether to query is derived from the selected unit and scheduling context."
+        },
+        {
+          "path": "protected-path:v1:waCawWC0qiTy4QYu:SeY2JupPcz3cKovS_iykfQ:JeRypD2if6yQyVrv0-rD5pLoqMbT1GSYJcmKsw",
+          "line": 484,
+          "detail": "Prior authorization is fetched remotely for the unit."
+        },
+        {
+          "path": "protected-path:v1:XzEEwSmTwdth0Fiw:xIhqL71Lb-MZ9gwk9gatlg:XpUvjFxxwB8Tq7bcNtBj5zzlMgjXirWSmK-9vQ",
+          "line": 485,
+          "detail": "The response is transformed into nac and patient projections."
+        },
+        {
+          "path": "protected-path:v1:BVkTvfjj6C9c3-XH:hUNnmwMJx3JBATI7fHO4vw:lU8Nl1v8Be1Bjva8zD-L3JVknxoROhEdjrQT6A",
+          "line": 486,
+          "detail": "Those remote projections are copied into global authorization state."
+        },
+        {
+          "path": "protected-path:v1:ZuZ82rEjUuC8lMyB:YXrfurDHGChwvSUW2NB9tQ:nJiDJFlgPo30mvB730Op0aO3t6d7BBS4XCya2Q",
+          "line": 489,
+          "detail": "The global copy must also be explicitly cleared when the query predicate is false."
+        }
+      ],
+      "inputSha256": "72f9b51140c8640a4e0b9923c219eb117af033f672124f9561682f8128b5b336",
+      "laya": {
+        "classification": "inconclusive",
+        "confidence": 0.7969,
+        "canonicalOwner": "unclear",
+        "canonicalOwnerConfidence": 0.4322,
+        "latencyMs": 2585.57,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "inconclusive",
+            "probabilities": {
+              "avoidable": 0.0163,
+              "simplifiable": 0.0173,
+              "legitimate": 0.1695,
+              "inconclusive": 0.7969
+            },
+            "confidence": 0.5534,
+            "answer_confidence": 0.7969,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "unclear",
+            "probabilities": {
+              "server": 0.085,
+              "client": 0.432,
+              "mixed": 0.0508,
+              "unclear": 0.4322
+            },
+            "confidence": 0.2166,
+            "answer_confidence": 0.4322,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "unavailable-product-removal-fanout",
+      "entity": "products across cart, selected unit, and units collection",
+      "operation": "remove unavailable products remotely -> manually prune three UI/domain representations",
+      "evidence": [
+        {
+          "path": "protected-path:v1:DKsYi-5FOCpcQjZE:M-bhP3PKQBAwHWWZ6mVZUQ:FlG2pXbd6mIYd78YUkvEBFuqyUTFI5DUxKIBrQ",
+          "line": 512
+        },
+        {
+          "path": "protected-path:v1:qFRzXCUoXySH9af5:18k0RMFH2rkyIhtiCUmpDw:l27S_WuRypBl3wzeWZsvPH0OPNM7uX5N2FQzdA",
+          "line": 523,
+          "detail": "After success, the selected unit's exams are independently filtered from the same removed-product set."
+        },
+        {
+          "path": "protected-path:v1:w0Dw6-aMACkfNKk5:8p08sNfhVQj4Vigh2TW9Vw:eYJFC6HRld20GcY-FwuEqKOKPesmJWhyl7IZuA",
+          "line": 544,
+          "detail": "The global selected-unit representation is updated separately from unitsCollection."
+        },
+        {
+          "path": "protected-path:v1:XQOfv-olYlVjo1c1:4Hs_k5ps6G-dC9D3RNHM0Q:GnfPtWGnNjx4FdEs1GekPggNSL2Y8jzDUrGAkg",
+          "line": 518,
+          "detail": "The unavailable-products projection is stored before the remote removal is confirmed."
+        },
+        {
+          "path": "protected-path:v1:yGkJg8C0s95LGQcV:oDCnhPl2n70njd5DLTZgNA:Sfek_W9tE3hjcSF8OPEaBpmK9CiYCdcRSHyMPg",
+          "line": 519,
+          "detail": "The operation delegates to product removal, which already reconciles draft, cart, authorization, and product details."
+        },
+        {
+          "path": "protected-path:v1:dRx0auXuNSmbjfrw:4V29HnoFNCbLzxjuIeJplg:wwynDd5bcRGW6B-weI9-FdBzvrWvF2Q-DwC_2w",
+          "line": 524,
+          "detail": "Every unit in a separate page-level unitsCollection projection is traversed and filtered manually."
+        }
+      ],
+      "inputSha256": "80457f2361b029dbb4818c116637123c5f51127f348eae0ae639b7e38c49bd60",
+      "laya": {
+        "classification": "legitimate",
+        "confidence": 0.4373,
+        "canonicalOwner": "unclear",
+        "canonicalOwnerConfidence": 0.3811,
+        "latencyMs": 4110.97,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "legitimate",
+            "probabilities": {
+              "avoidable": 0.041,
+              "simplifiable": 0.1211,
+              "legitimate": 0.4373,
+              "inconclusive": 0.4007
+            },
+            "confidence": 0.1959,
+            "answer_confidence": 0.4373,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "unclear",
+            "probabilities": {
+              "server": 0.1749,
+              "client": 0.2251,
+              "mixed": 0.2188,
+              "unclear": 0.3811
+            },
+            "confidence": 0.0328,
+            "answer_confidence": 0.3811,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "unit-selection-owned-state",
+      "entity": "currently selected unit and slot-enriched availability",
+      "operation": "select availability result -> store chosen unit globally",
+      "evidence": [
+        {
+          "path": "protected-path:v1:-0p-rUsMMeYdcaXc:J66y4K3MqELD5py6UBTrQQ:wz7wj9PHCPOpSQSEBz28tU6iA4R1PCHwD_7B07915ckF",
+          "line": 208,
+          "detail": "The operation derives a unit from the draft cart, unit details, product checks, payment data, and existing rooms."
+        },
+        {
+          "path": "protected-path:v1:B06EDBY2ico359h8:7oy1o8cH-XYaSqgPicGLiQ:tVImfU7f2mYYsTqyBePyTnAOfGIvAd9em-IDOp6VM1jm",
+          "line": 228,
+          "detail": "The composed result is written to the global store."
+        },
+        {
+          "path": "protected-path:v1:e0uISyx0RzfY3y6O:01wfu1wHTAsBGH_gOZcQZg:aEFkvMHjl82_EaoqmqrgVQugAuJGZLKZm8s1IruhLjr_",
+          "line": 224,
+          "detail": "The remote response is converted and optionally merged with rooms from the prior local unit."
+        }
+      ],
+      "inputSha256": "8b840cb8d33affa072d74c5547971bf050d2dd532be4862e5d09916ab4bb5b41",
+      "laya": {
+        "classification": "legitimate",
+        "confidence": 0.5958,
+        "canonicalOwner": "unclear",
+        "canonicalOwnerConfidence": 0.3974,
+        "latencyMs": 1227.97,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "legitimate",
+            "probabilities": {
+              "avoidable": 0.0707,
+              "simplifiable": 0.114,
+              "legitimate": 0.5958,
+              "inconclusive": 0.2194
+            },
+            "confidence": 0.2237,
+            "answer_confidence": 0.5958,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "unclear",
+            "probabilities": {
+              "server": 0.2336,
+              "client": 0.214,
+              "mixed": 0.155,
+              "unclear": 0.3974
+            },
+            "confidence": 0.0439,
+            "answer_confidence": 0.3974,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "reserve-cancel",
+      "entity": "reservation code on draft products",
+      "operation": "Optimistically clear reservation codes before cancellation mutation",
+      "evidence": [
+        {
+          "path": "protected-path:v1:_9AcKiASBDT3jVze:TP42soSDOJMKCFR3Q6pP5g:AvUGnJLhnK5HWICX2Vq_nJbeAb0eHDE4YCGatvDmVC4CMlY-6Vzk-w",
+          "line": 35,
+          "detail": "The local reservation code is cleared before the remote cancellation runs."
+        },
+        {
+          "path": "protected-path:v1:tW-ecDqxpLJFhhCc:N74KQrhFaZ8cRLZCfFnpTw:bLEfVR7vYvqosB-95cSL2BV_dj9l8vL5oJLLvfnCysr34QwFPQVHug",
+          "line": 36,
+          "detail": "The failure handler reports and rethrows but does not restore or refetch the cleared reservation state."
+        }
+      ],
+      "inputSha256": "00b90b34c8f023e26d2758b4a09a801a0cc84dc043d0f61db653f44aa793efbc",
+      "laya": {
+        "classification": "simplifiable",
+        "confidence": 0.5261,
+        "canonicalOwner": "mixed",
+        "canonicalOwnerConfidence": 0.4047,
+        "latencyMs": 520.42,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "simplifiable",
+            "probabilities": {
+              "avoidable": 0.0905,
+              "simplifiable": 0.5261,
+              "legitimate": 0.262,
+              "inconclusive": 0.1213
+            },
+            "confidence": 0.1617,
+            "answer_confidence": 0.5261,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "mixed",
+            "probabilities": {
+              "server": 0.2102,
+              "client": 0.1645,
+              "mixed": 0.4047,
+              "unclear": 0.2206
+            },
+            "confidence": 0.0448,
+            "answer_confidence": 0.4047,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "draft-effectivation-result",
+      "entity": "scheduling completion result",
+      "operation": "Store scheduling result after effectivating a draft",
+      "evidence": [
+        {
+          "path": "protected-path:v1:TbsVH7AhUss8jruz:0oZBDbMaZLSiw5VypkRdyA:xwaUWJg5PLy_Jw6ccIt5UEZ7Xbxj7Lp50hsJcHIzto4ktXg",
+          "line": 172,
+          "detail": "The mutation result's effectivate payload is stored as scheduledData."
+        },
+        {
+          "path": "protected-path:v1:gIZbXVdXq03nw8oQ:21mZPfX3wC0zza1XnYCubg:uM2MzrpWyNJghMT7Y7rEPtn4Uj21",
+          "line": 325,
+          "detail": "scheduledData has a direct setter and participates in the client scheduling completion flow."
+        }
+      ],
+      "inputSha256": "07207e7522636a37609e6a97ec9180a7bd7e26b982521362579705e3cbc07344",
+      "laya": {
+        "classification": "legitimate",
+        "confidence": 0.5428,
+        "canonicalOwner": "unclear",
+        "canonicalOwnerConfidence": 0.3384,
+        "latencyMs": 965.65,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "legitimate",
+            "probabilities": {
+              "avoidable": 0.1294,
+              "simplifiable": 0.2235,
+              "legitimate": 0.5428,
+              "inconclusive": 0.1042
+            },
+            "confidence": 0.1583,
+            "answer_confidence": 0.5428,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "unclear",
+            "probabilities": {
+              "server": 0.1864,
+              "client": 0.2381,
+              "mixed": 0.2371,
+              "unclear": 0.3384
+            },
+            "confidence": 0.017,
+            "answer_confidence": 0.3384,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "coupon-operation-ui-state",
+      "entity": "coupon interaction UI state",
+      "operation": "Track coupon interaction status around remote validation and application",
+      "evidence": [
+        {
+          "path": "protected-path:v1:EBRBDCr9SbwuBfmy:C8MqbBeYBUOzbm21Mn09eA:JUuAHciTlOXjftU2oofiTQlbfdkvDWAzEvrxxPNxDfktNIVmXQc",
+          "line": 71,
+          "detail": "Coupon display and operation states are component-local state machines."
+        },
+        {
+          "path": "protected-path:v1:8_xWWRwiqiX3Wr6r:kQoCqnGukxgjeb9-hV3K6g:VRZH3OYFo3M7uoWWT0Z7pjdiaM6UXdjsy1ohFG3ZMkTYFTae1Io",
+          "line": 137,
+          "detail": "Applying status, invalid-code state, and toast/dialog behavior model transient user interaction rather than a server snapshot."
+        }
+      ],
+      "inputSha256": "30fc921fc6345cd1ea47bdf41e222af0803a79fd4cf3352ed0663d781a0bf289",
+      "laya": {
+        "classification": "legitimate",
+        "confidence": 0.3722,
+        "canonicalOwner": "client",
+        "canonicalOwnerConfidence": 0.3897,
+        "latencyMs": 886.36,
+        "rawAnswers": {
+          "classification": {
+            "type": "choice",
+            "choice": "legitimate",
+            "probabilities": {
+              "avoidable": 0.0957,
+              "simplifiable": 0.1993,
+              "legitimate": 0.3722,
+              "inconclusive": 0.3328
+            },
+            "confidence": 0.0766,
+            "answer_confidence": 0.3722,
+            "action": {
+              "act_probability": 1
+            }
+          },
+          "canonical_owner": {
+            "type": "choice",
+            "choice": "client",
+            "probabilities": {
+              "server": 0.1271,
+              "client": 0.3897,
+              "mixed": 0.155,
+              "unclear": 0.3281
+            },
+            "confidence": 0.0737,
+            "answer_confidence": 0.3897,
+            "action": {
+              "act_probability": 1
+            }
+          }
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Zero-shot classification; the checkpoint was not fine-tuned or calibrated for state-ownership audits.",
+    "Candidate discovery came from the existing audit, so this run evaluates classification rather than recall.",
+    "Laya is non-generative and supplies labels/probabilities, not independent code-review rationales.",
+    "The official PyTorch runtime did not expose Apple MPS in this environment, so inference used CPU."
+  ]
+}

@@ -1,0 +1,532 @@
+{
+  "schemaVersion": "1.0.0",
+  "repositoryAlias": "real-production-scheduling-app",
+  "pass": "classifier",
+  "method": {
+    "unitOfCount": "one remote operation plus its client-side reconciliation path",
+    "excluded": [
+      "pure UI setters",
+      "loading flags without remote entity duplication",
+      "read-only store access",
+      "repeated calls to the same operation"
+    ],
+    "labels": {
+      "avoidable": "The remote representation can remain under a server-state owner; the Zustand copy/reconciliation point can be removed.",
+      "simplifiable": "Some local transition or projection remains useful, but reconciliation can be centralized, replaced by canonical response/cache invalidation, or reduced.",
+      "legitimate": "The state is primarily a client-owned workflow/UI choice.",
+      "inconclusive": "Ownership or backend contract is insufficiently clear from repository evidence."
+    }
+  },
+  "items": [
+    {
+      "id": "draft-query-hydration",
+      "entity": "diagnostic draft",
+      "operation": "query draft -> copy complete response into Zustand",
+      "evidence": [
+        {
+          "path": "protected-path:v1:2J-U2lr1BPseHBgl:ji_Wt1CM_XwkumrraIXXUw:pGnAzN0kYjHLFzjoLPj41VQEBZShzNqjHpzh-b3iRk6nq1Y",
+          "line": 49
+        },
+        {
+          "path": "protected-path:v1:tWRfxRWqIOmcPv3A:bkCVN_m1egtBBYLOIeI7iQ:07yJJGluhjOa2U7nW2odEjlyjsyM",
+          "line": 176
+        }
+      ],
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "remote query response",
+        "scheduleStore.draft",
+        "scheduleStore.cart"
+      ],
+      "classification": "avoidable",
+      "confidence": 0.94,
+      "reason": "The complete remote draft is copied into Zustand; setDraft then manually mirrors draft.cart.products into cart.",
+      "counterargument": "The multi-page flow may need persistence and imperative access, but a server-state cache can provide both without a second mutable representation."
+    },
+    {
+      "id": "draft-save-reconciliation",
+      "entity": "diagnostic draft",
+      "operation": "save mutation -> copy returned snapshot into draft and cart",
+      "evidence": [
+        {
+          "path": "protected-path:v1:V2_7kNWnCugxyTPI:hmTWJj0DOr6Cxt8p-TLcgw:qgAzkXU6P8wSCI0atd5O-qZIx-juto-Bae6iZe5HNdTA12s",
+          "line": 101
+        },
+        {
+          "path": "protected-path:v1:Lr7YMz2ufM2tKqPN:8vQpFVdfSMheSoOIWppcNQ:nXcko0FlCnJ79NSTL8J8QYTotxrs",
+          "line": 176
+        }
+      ],
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "mutation response",
+        "scheduleStore.draft",
+        "scheduleStore.cart"
+      ],
+      "classification": "avoidable",
+      "confidence": 0.95,
+      "reason": "A canonical mutation response is already available, yet it is copied to a second owner and mirrored by a handwritten store rule.",
+      "counterargument": "Central setDraft reduces caller duplication, although it does not remove the duplicate source of truth."
+    },
+    {
+      "id": "draft-add-transactions-reconciliation",
+      "entity": "draft transactions and cart",
+      "operation": "add-transactions mutation -> copy full draft and mirror cart",
+      "evidence": [
+        {
+          "path": "protected-path:v1:0TBkWOBdmxItD3Dx:XjNmOpqxW_08wFtMRJb8cg:uUPrFY-4a9hK8m-9NHyj1zXUx1_7Xc-jgDaSRHp7lTUTOu8",
+          "line": 125
+        },
+        {
+          "path": "protected-path:v1:oqIaWWOk4OSue2eJ:GT94yg5tutBhgjFAnmcLMg:TzorwKzPyRH6WJ-Q0GafIJ8w36-f",
+          "line": 184
+        }
+      ],
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "mutation response",
+        "scheduleStore.draft",
+        "scheduleStore.cart"
+      ],
+      "classification": "avoidable",
+      "confidence": 0.93,
+      "reason": "The returned draft is copied into Zustand through a second action that repeats the cart mirroring rule.",
+      "counterargument": "The separate action gives useful devtools semantics but could wrap a canonical cache update instead."
+    },
+    {
+      "id": "draft-remove-transactions-reconstruction",
+      "entity": "draft transactions and product transaction links",
+      "operation": "status-only mutation -> manually remove transactions and clear product links",
+      "evidence": [
+        {
+          "path": "protected-path:v1:1tpoJlnsYoW7D15a:Gqh3GPlFUUFz7nue-bm4JA:UGWh_-z36ZpLrblcn9pE9NlVl1pzKkN7ju_ieT2RoEd_a0I",
+          "line": 147
+        },
+        {
+          "path": "protected-path:v1:FnbVNTG1wlOTIBaA:n4FmCHaXYfEPtdYNLG5fmQ:-Xc4JG_EN4Nz_ZBGvSsJdJwKv9PJ",
+          "line": 192
+        }
+      ],
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "server draft",
+        "scheduleStore.draft.transactions",
+        "scheduleStore.draft.cart.products",
+        "scheduleStore.cart"
+      ],
+      "classification": "simplifiable",
+      "confidence": 0.96,
+      "reason": "The mutation returns only status, so the client reconstructs all affected representations and must know every derived field to clear.",
+      "counterargument": "A local optimistic projection can avoid a refetch; the risk can still be reduced with an entity-level cache updater and rollback."
+    },
+    {
+      "id": "draft-remove-home-collect-optimistic",
+      "entity": "draft home collection",
+      "operation": "optimistically null local field -> mutation -> refetch only on failure",
+      "evidence": [
+        {
+          "path": "protected-path:v1:AD3RrFF9yLPTfR9d:LLtpvym773-R8mGeTl3WRQ:xsMGRkHjkTcW9GzZ_KXaEdn8KynNwKSHkDEAZFMnkZnfMcE",
+          "line": 201
+        }
+      ],
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "server draft.homeCollect",
+        "scheduleStore.draft.homeCollect"
+      ],
+      "classification": "simplifiable",
+      "confidence": 0.88,
+      "reason": "This is a valid optimistic interaction, but handwritten ownership and rollback are spread across Zustand and a remote refresh helper.",
+      "counterargument": "Optimism is latency-sensitive and cannot be eliminated; only its reconciliation mechanism can be standardized."
+    },
+    {
+      "id": "patient-config-query-hydration",
+      "entity": "patient configuration",
+      "operation": "query configs -> transform array -> copy object into Zustand",
+      "evidence": [
+        {
+          "path": "protected-path:v1:DlQqmkugNIMpDuiG:vq8I4IWlOvn96wnoR0yi1g:njLN5G6C-jYvT2OeEEHkK6c96VOHV8hseYffBFzzbntYbfcBdalXlcHqsppXOXdjEBr5",
+          "line": 12
+        }
+      ],
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "remote config array",
+        "scheduleStore.patientConfigs object"
+      ],
+      "classification": "avoidable",
+      "confidence": 0.93,
+      "reason": "Server-owned preferences are transformed and hydrated into a global store rather than selected from one server-state owner.",
+      "counterargument": "The object projection is convenient for consumers; it can remain a selector without becoming another mutable owner."
+    },
+    {
+      "id": "patient-config-update-from-input",
+      "entity": "patient configuration",
+      "operation": "update mutation -> ignore response content -> merge request input into Zustand",
+      "evidence": [
+        {
+          "path": "protected-path:v1:ekUvYOL1r8wft9Zo:QKXWjlOKrVmDvMztufRwPw:6nREjvDAW2eFYvNrGklrwlOpP4Uc35q-vKajLPIbSVU2dkvpmWEZ7YtoCigdxI0zH3ft",
+          "line": 25
+        },
+        {
+          "path": "protected-path:v1:pUUipCYQ2oRAwFTW:qoxBRpn8isNVzD3ddNiVIg:LBWle9Vb-cqZ2BWRbUlBWxfM24fp",
+          "line": 246
+        }
+      ],
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "mutation response",
+        "request input",
+        "scheduleStore.patientConfigs"
+      ],
+      "classification": "simplifiable",
+      "confidence": 0.99,
+      "reason": "The local state is reconstructed from what the client requested, not reconciled from what the server persisted; new server normalization or derived fields require manual action changes.",
+      "counterargument": "If the mutation contract guarantees exact echo semantics, input-based update may be safe, but that invariant is not encoded locally."
+    },
+    {
+      "id": "viewer-query-hydration",
+      "entity": "viewer/patient collection",
+      "operation": "viewer query -> format response -> copy to Zustand",
+      "evidence": [
+        {
+          "path": "protected-path:v1:a9a5RhgoIU0kdNzD:rsZxzZQDApDQl4nuYT1yoQ:b4tr36BsGRCZX_kYDVOItuwUo2iZaHc2aFcdWJbrX04hOWgMrw",
+          "line": 13
+        }
+      ],
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "viewer query response",
+        "scheduleStore.viewerController.allViewers"
+      ],
+      "classification": "avoidable",
+      "confidence": 0.9,
+      "reason": "The fetched collection is server state copied into Zustand after formatting.",
+      "counterargument": "Authentication bootstrap and cross-route availability may justify long cache lifetime, but not necessarily a separate mutable store."
+    },
+    {
+      "id": "patient-health-update-from-input",
+      "entity": "patient height and weight",
+      "operation": "health mutation -> apply request variables to patient and allViewers",
+      "evidence": [
+        {
+          "path": "protected-path:v1:_AiTWIdFTHF9JnyL:t8mocQqsmE_izpt94BndXQ:OLdZQ54w1y29qBuCsrYtfif_yMDtJNjXVW6FxA0BdUVHPnsQ0w",
+          "line": 35
+        },
+        {
+          "path": "protected-path:v1:8tOIoVmgfTzAzFca:eCTBEDZ3JzOZkLe_tN4S4A:8Vyfc4Q1rytTWJ8V2dE8psqQxaPU",
+          "line": 152
+        },
+        {
+          "path": "protected-path:v1:ko9bFNmt_5GczxEF:95lCUN6qjUM4sJQ99YwCsA:cz5Bzp5mUMjPAiLuN2fDbIuO9sX_",
+          "line": 161
+        }
+      ],
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "server patient",
+        "scheduleStore.patient",
+        "scheduleStore.viewerController.allViewers"
+      ],
+      "classification": "simplifiable",
+      "confidence": 0.98,
+      "reason": "One mutation requires handwritten fan-out to two local patient representations and uses inputs instead of canonical returned patient data.",
+      "counterargument": "The mutation may return only a status, making an optimistic patch reasonable; a normalized single entity would still remove the two-copy fan-out."
+    },
+    {
+      "id": "cart-add-product-partial-merge",
+      "entity": "draft cart products and product details",
+      "operation": "add-product mutation -> merge partial response with existing cart and auxiliary details",
+      "evidence": [
+        {
+          "path": "protected-path:v1:MgcTzGUrJsN4RTpt:vItXP-wLfBz_vsaIjmr3kg:9-W_n3_gcwDwTWvIM2bhiCBjLOA6FAq5WTHtvAv15_zE",
+          "line": 28
+        },
+        {
+          "path": "protected-path:v1:07FJxNJyxsYGssmx:oMEQHCkCaoGz6zyVjzLsTw:Zk6R3VdFpIqP_xISrRZYG0kCyEeyoEgBfJu3jDS9dyYl",
+          "line": 38
+        },
+        {
+          "path": "protected-path:v1:xhBdJPyIyCWPDxcN:E9tCGOXzkDI8ozKQkmnGEw:pQikCFrO5gh9WSsnwwha8vwQV6Q435yOSU2CtUJDS2z7",
+          "line": 46
+        }
+      ],
+      "canonicalOwner": "mixed",
+      "duplicatedRepresentations": [
+        "mutation product response",
+        "scheduleStore.draft.cart.products",
+        "scheduleStore.cart",
+        "scheduleStore.productsDetails"
+      ],
+      "classification": "simplifiable",
+      "confidence": 0.96,
+      "reason": "The operation manually joins response products, existing cart, and request-side metadata, then relies on setDraft to mirror another copy.",
+      "counterargument": "Product category metadata is absent from the mutation response and may legitimately be client-enriched; normalization can centralize rather than eliminate the projection."
+    },
+    {
+      "id": "cart-remove-product-fanout",
+      "entity": "draft cart, authorizations, and product details",
+      "operation": "status-only remove mutation -> prune products and two dependent collections",
+      "evidence": [
+        {
+          "path": "protected-path:v1:uUbAnS07E1V91awP:kP58K5q7-5PQ9dSoS8QRYQ:4bn78IrfvevxV7DDtGbRKJaSbnplaSobGvK2gU5EzFrB",
+          "line": 79
+        },
+        {
+          "path": "protected-path:v1:j8zKIBUlOkKz530U:kL48sKlNKnocOuYXNMJLCA:8GJQh_9yT6NBcRFmBqB11B5_WRjsKj5BQ5OKMBmGvtAe",
+          "line": 82
+        },
+        {
+          "path": "protected-path:v1:L0RU0iMz372oTQw4:55_tl2vV3APDMS3Avc7iew:U_d64hgPv7fW2xLwBCI6N6CAOzVx5XI3L_SA41XopI7P",
+          "line": 90
+        },
+        {
+          "path": "protected-path:v1:iCAkmHhhEr-PMUvZ:Ms-lXOtV0Ev44v6XXwa0mg:m1D4QwrE-RI8XPEgUsTw0UHhNOMNVk6qOX38QeHco1uo",
+          "line": 95
+        }
+      ],
+      "canonicalOwner": "mixed",
+      "duplicatedRepresentations": [
+        "server draft products",
+        "scheduleStore.draft.cart.products",
+        "scheduleStore.cart",
+        "scheduleStore.authorization",
+        "scheduleStore.productsDetails"
+      ],
+      "classification": "simplifiable",
+      "confidence": 0.98,
+      "reason": "A single remote removal fans out into manual filters across multiple related local representations; every new dependent representation extends this operation.",
+      "counterargument": "Authorization and display metadata may be local projections, but they should derive from one normalized product set rather than require imperative pruning."
+    },
+    {
+      "id": "coupon-post-save-cart-overwrite",
+      "entity": "coupon-priced cart",
+      "operation": "save canonical draft -> manually overwrite cart with pre-response products",
+      "evidence": [
+        {
+          "path": "protected-path:v1:s4s_MtDqO1bnX1Pk:Wa7ILKY944qY9DWk-UDo7w:DZ48pc6FiuZP8AFlzhcRTAlIa8klIQrhtd8kuHLtLHBVsIiwIb4xXAXMGg",
+          "line": 111
+        },
+        {
+          "path": "protected-path:v1:AcRyoGJT9nh603Tw:eTqwugfgsjow0L9gFDsRzA:vBRPr5CyuA-61H6cYVX4cK3FBqKjKSEMoz0IdBTgU9hY9B1OGfABSgsh7g",
+          "line": 112
+        }
+      ],
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "saveDiagnosticDraft response applied to draft/cart",
+        "locally mapped products",
+        "scheduleStore.cart"
+      ],
+      "classification": "avoidable",
+      "confidence": 0.99,
+      "reason": "saveDiagnosticDraft already applies the returned snapshot, after which cart is overwritten with the request-side projection, creating a direct hybrid-snapshot risk.",
+      "counterargument": "The overwrite may preserve coupon data omitted by the response, which would expose an API contract gap; it still should be explicit and tested rather than silently replace canonical data."
+    },
+    {
+      "id": "subscription-removal-atomic-rebuild",
+      "entity": "subscription, draft, cart, unit, and payment",
+      "operation": "multi-mutation workflow -> manually assemble final cross-entity store snapshot",
+      "evidence": [
+        {
+          "path": "protected-path:v1:bd6sxKKAvg4L7aPI:zLV9pM2fHNKVpVRvdJjJIg:TZDsswUukulzEIJazoSF_UR4Usoi2hYf7SLPuZQ4qD5gu00xqMAW",
+          "line": 223
+        },
+        {
+          "path": "protected-path:v1:v-2uEKDwnNlrcfsf:S0fkr_cl6DMwb3gbmr2WQA:a5UXPSGuoKqORQuhmJ6NaTXePbPSxjJuowVFyH3Dw0RH7Fm6s2p_",
+          "line": 262
+        }
+      ],
+      "canonicalOwner": "mixed",
+      "duplicatedRepresentations": [
+        "server draft",
+        "scheduleStore.draft",
+        "scheduleStore.cart",
+        "scheduleStore.unit",
+        "scheduleStore.paymentMethod"
+      ],
+      "classification": "simplifiable",
+      "confidence": 0.91,
+      "reason": "The workflow legitimately coordinates several remote calls, but final consistency depends on one handwritten object enumerating every affected store representation.",
+      "counterargument": "No single backend response represents the full client workflow, so some orchestration is inherently client-owned."
+    },
+    {
+      "id": "reserve-status-to-local-reconstruction",
+      "entity": "reservation code on draft products",
+      "operation": "reservation status -> synthesize code on every bookable product in draft and cart",
+      "evidence": [
+        {
+          "path": "protected-path:v1:hSyj-rWPkqS_l1me:J7up61OeKH1A4pfkiFWPkQ:6jO7OsZ7yN-k3LT3zyFeNZacVVy9QiV4YGUMdkI9MCUdMwj6pU6QDA",
+          "line": 14
+        },
+        {
+          "path": "protected-path:v1:MTB-ge5g-lTnxvR8:PGWQw-i46ugurYFBwKtHGQ:A_839uzB6ajoshO3bCIZl-aGFOEb",
+          "line": 111
+        },
+        {
+          "path": "protected-path:v1:OqpS6MtvvU4KTX-C:x8i8TlX5liYa03QxHHLgCA:J77C0X_aQgSI6PVKfrNDsKyeibbG",
+          "line": 122
+        }
+      ],
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "server reservation",
+        "scheduleStore.draft.cart.products[].schedule.code",
+        "scheduleStore.cart[].schedule.code"
+      ],
+      "classification": "simplifiable",
+      "confidence": 0.97,
+      "reason": "A status response is translated into a magic local code and fanned out over two product representations; contract evolution must update this client rule.",
+      "counterargument": "If the API intentionally exposes only reservation status, a local projection is necessary; cache invalidation or a typed projection can reduce risk."
+    },
+    {
+      "id": "health-insurance-status-hydration",
+      "entity": "patient health-insurance validation results",
+      "operation": "remote validation -> copy result into Zustand",
+      "evidence": [
+        {
+          "path": "protected-path:v1:MCi9IJoQWvcj6UFS:yw1LxwXkriaMuJYxuwiZZg:UJABV6IEBYDOpcuw-eahRixoudlAn5LPGbiIAfpGIhGifwgLveBu3P8MKVfbpjFC0iLJazaIoLO0xo5OG-Y1bYUBCBWVZg_i55ps",
+          "line": 99
+        }
+      ],
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "remote validation result",
+        "scheduleStore.healthInsurances"
+      ],
+      "classification": "avoidable",
+      "confidence": 0.84,
+      "reason": "The async remote result is globally copied and manually coupled to a loading flag instead of being owned by a query result.",
+      "counterargument": "The result may combine several endpoints and business filters, making a composed client cache entry more appropriate than a raw query cache."
+    },
+    {
+      "id": "payment-method-workflow-state",
+      "entity": "selected payment method and context",
+      "operation": "user selection -> update local workflow state -> synchronize draft/config remotely",
+      "evidence": [
+        {
+          "path": "protected-path:v1:k8dMalf_HQ5R_vKG:PYzMM7SuFNP1a9e8QxY_Zw:8_PT_TaSNhRRkpYLPG7BU66Nb72aVaBOJ52oLlWJ6QpMPJgvmvnUjlrmw6pIrwJ35Q",
+          "line": 15
+        },
+        {
+          "path": "protected-path:v1:f-4EvYq4azLBrEd_:q1KuIKY7cAD0YU5BlO6mjg:qBybll5Sx__Og57D9DRz-tWUo3N5phRJTjXrfvqQhybkdEJCEjgx6t7Wqj9coGNOmw",
+          "line": 25
+        }
+      ],
+      "canonicalOwner": "client workflow",
+      "duplicatedRepresentations": [
+        "scheduleStore.paymentMethod",
+        "scheduleStore.paymentContext",
+        "draft transactions",
+        "patient config"
+      ],
+      "classification": "legitimate",
+      "confidence": 0.78,
+      "reason": "The immediate selection and derived UI context are client-owned workflow state, although their remote side effects could be consolidated.",
+      "counterargument": "Because draft transactions and preferences persist the choice, the server may ultimately be canonical; repository contracts do not establish a single owner."
+    },
+    {
+      "id": "clone-draft-patient-switch",
+      "entity": "patient, cloned draft, cart, payment, and config",
+      "operation": "remote clone workflow -> enumerate final store fields and separately persist config",
+      "evidence": [
+        {
+          "path": "protected-path:v1:qHy0-TYssxF0jNck:NHJ0AVKz0JMwabx3CMS8ug:gFObsdX6ei5Pva5KSN9I8h31v3EvTWf01AJnqc6saZvhBmGY6gUw6imOW6Y",
+          "line": 91
+        },
+        {
+          "path": "protected-path:v1:oj6Dg7PgMaUp_TT5:GTEJrUz626pILsUfh-r61Q:036LtI-VDHkyIpF3bX1L7On4a6Zz2s0QSQokQkClypzGIwtzslUqAFSYFxo",
+          "line": 113
+        }
+      ],
+      "canonicalOwner": "mixed",
+      "duplicatedRepresentations": [
+        "remote cloned draft",
+        "scheduleStore.draft",
+        "scheduleStore.cart",
+        "scheduleStore.patient",
+        "scheduleStore.paymentMethod",
+        "remote patient config"
+      ],
+      "classification": "simplifiable",
+      "confidence": 0.93,
+      "reason": "After several remote operations, consistency depends on manually listing each affected representation and issuing a separate config update.",
+      "counterargument": "Patient switching is a client transaction spanning backend resources, so orchestration remains necessary even if server-state copies move out of Zustand."
+    },
+    {
+      "id": "authorization-query-hydration",
+      "entity": "previous authorizations",
+      "operation": "authorization query -> split response by type -> copy both collections into Zustand",
+      "evidence": [
+        {
+          "path": "protected-path:v1:y0OgJrcIo3CFnQwz:cRaknJYXtvvtZR813svD1A:VA-QP0ycD9H6FBz3UIjADV4vf3LAJSxpZcFQlw",
+          "line": 480
+        }
+      ],
+      "canonicalOwner": "server",
+      "duplicatedRepresentations": [
+        "remote authorization response",
+        "scheduleStore.authorization.nac",
+        "scheduleStore.authorization.patient"
+      ],
+      "classification": "avoidable",
+      "confidence": 0.88,
+      "reason": "A server response is transformed into two global collections that can be derived from one cached response.",
+      "counterargument": "Downstream pages may need the classification without rerunning the query; a cached selector can satisfy this need."
+    },
+    {
+      "id": "unavailable-product-removal-fanout",
+      "entity": "products across cart, selected unit, and units collection",
+      "operation": "remove unavailable products remotely -> manually prune three UI/domain representations",
+      "evidence": [
+        {
+          "path": "protected-path:v1:zNHRgwhM8GfxKQBG:JFwhTklHMyoKfgbFZ8Y5cg:iP7wXnlyMPBoMOzk0HYN6UfITpXREc48eMQShg",
+          "line": 512
+        },
+        {
+          "path": "protected-path:v1:IsuncVRfBp06FVCi:nHYa1_mN4vCAm1X5TPit_w:acHgvdikaTjQx8gG1QrBvgALVFTDQe5Tccod5A",
+          "line": 523
+        },
+        {
+          "path": "protected-path:v1:BCUCcpLrFIlTiHue:5VYEU4xiXl_McDfv_rzX6Q:8g4byx4yVfSbB8GtEJr0t-3ABz0ACk05N69Dyg",
+          "line": 544
+        }
+      ],
+      "canonicalOwner": "mixed",
+      "duplicatedRepresentations": [
+        "server draft products",
+        "scheduleStore.draft/cart",
+        "scheduleStore.unit.exams",
+        "unit page unitsCollection[].unit.exams"
+      ],
+      "classification": "simplifiable",
+      "confidence": 0.97,
+      "reason": "One product removal requires coordinated filtering in the store and page-local collection; a missed representation leaves a visually plausible stale unit/product combination.",
+      "counterargument": "The unit search collection is a local view projection and may require an optimistic update, but it can derive from canonical product IDs or use centralized cache updates."
+    },
+    {
+      "id": "unit-selection-owned-state",
+      "entity": "currently selected unit and slot-enriched availability",
+      "operation": "select availability result -> store chosen unit globally",
+      "evidence": [
+        {
+          "path": "protected-path:v1:WFEQAprdH-UeSV-Y:3phetfid5zhxf9hE2yI4dg:HNcJAGoQhEWTZxS2jMjef5TXHshofW0I7HL9STAZJZWs",
+          "line": 208
+        },
+        {
+          "path": "protected-path:v1:d5taXGr9W6kWhskE:nEc6jM3XoC0PrswSjEtMOQ:IQn-_6YZnGaQ-Cfxkm-pGkF1kUUWYhvMD36EDeCdCM2I",
+          "line": 228
+        }
+      ],
+      "canonicalOwner": "unclear",
+      "duplicatedRepresentations": [
+        "unit details/availability query results",
+        "scheduleStore.unit"
+      ],
+      "classification": "inconclusive",
+      "confidence": 0.67,
+      "reason": "The raw data is remote, but the identity of the currently selected unit is client workflow state and rooms may be deliberately preserved locally.",
+      "counterargument": "Store only the selected unit ID and derive the full entity from server-state cache, avoiding a mutable copied unit snapshot."
+    }
+  ]
+}
