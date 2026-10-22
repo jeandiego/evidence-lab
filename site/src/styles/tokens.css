@@ -23,6 +23,8 @@
   --code-border: #141518;
   --code-meta: #aab3c2;
   --media-bg: #d8d2c5;
+  /* Falha nos diagramas: o error do brand no claro; no escuro, uma versão clara (7,4:1 sobre o ink) */
+  --dg-fail: #a3311f;
   --media-filter: none;
 
   --font-sans: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
@@ -55,6 +57,7 @@
   --code-border: rgb(243 240 233 / 0.1);
   --code-meta: #aab3c2;
   --media-bg: #0d0e10;
+  --dg-fail: #e0907f;
   /* capas claras dos vídeos não ofuscam a leitura no escuro */
   --media-filter: brightness(0.82) contrast(1.02);
 }

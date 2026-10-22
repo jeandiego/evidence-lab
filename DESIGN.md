@@ -22,6 +22,8 @@ colors:
   night-rule-strong: "rgb(243 240 233 / 0.72)"
   night-code-well: "#0d0e10"
   night-code-bar: "#101114"
+  diagram-fail: "#a3311f"
+  night-diagram-fail: "#e0907f"
 typography:
   issue-number:
     fontFamily: "IBM Plex Mono, ui-monospace, monospace"
@@ -212,6 +214,16 @@ Expressive Code with `vitesse-dark`, radius 0, Geist Mono 0.84rem / 1.7, UI labe
 
 Ink links (see The Ink Link Rule), external links with a small masked arrow. List markers in neutral-600. Blockquote: a one-pixel strong rule on the left. Inline code: Geist Mono at 0.86em on a 6–8 % ink/paper wash, no radius. Tables bounded by strong rules, mono uppercase heads, tabular numerals.
 
+### Diagrams
+
+Figures inside prose are inline SVG read from `post/assets/*.svg` by `site/src/lib/rehype-diagrams.mjs`: an image alone in a paragraph, `![alt](./assets/x.svg "Figura N. Legenda")`, becomes a `<figure class="diagram">`. Inline, because the SVG reads the page tokens (`--paper`, `--ink`, `--ink-soft`, `--ink-muted`, `--rule`, `--surface`) and so follows the header's `data-theme`; an `<img>` cannot. The SVG carries no hex value except the light fallback after each `var()`, and its sources are generated (for post 005, `posts/005-fetch-interceptor-tradeoffs/design/diagrams/build.py`).
+
+Roles. A node is a square paper field with a 1px ink stroke. The focal node, the one thing the figure is about, is the ink field with paper text, the brand's ink field inverted. A store is a surface fill with a muted stroke. A call is an ink line; a response, or a link the consumer does not know about, is a muted dashed line. Failure is the only coloured role: `--dg-fail`, the brand error `#A3311F` in light and `#E0907F` in dark (7.4:1 on the ink field), used on failure messages and nowhere else. Labels are Plex Mono 10px, uppercase, tracked 0.06em, on a paper mask 8px clear of the line; names are Instrument Sans 600.
+
+Frame. A 720-unit viewBox (the measure), a 640px minimum width and the table's scroll fade below that. Hairlines above and below, a meta-type caption under the frame. Connectors are orthogonal on a 4px grid, and no label sits on its own line (the diagram-design skill's layout rules).
+
+**The No-Copper Diagram Rule.** Copper never appears in a diagram; the issue keyword stays the only copper per view. Emphasis comes from inversion, weight and dash, never from a hue.
+
 ### Footer
 
 The landing page's footer, tightened: a full-bleed ink field that rises out of the paper through the brand grain edge (eased oklab ramp plus film grain), with a shorter band (10rem mobile, 14rem from 768px; the brand uses 16/24rem). Inside: the lockup and one line about the lab; a "Links" label over one horizontal row of links (Synko · Work, GitHub, RSS), right-aligned on desktop and wrapping below the brand on mobile; a closing bar with "© YYYY Synko Lab" and PT/EN. No company data. Text is paper, labels navy-200, rules paper at 22 %.
@@ -234,10 +246,12 @@ Brand motion tokens: 120ms for hover and colour, 240ms for reveals and theme cha
 - **Do** keep one copper keyword per view and links in ink.
 - **Do** give every colour role a dark counterpart from the ink field.
 - **Do** keep fonts self-hosted.
+- **Do** draw diagrams as inline SVG on the page tokens, so they follow the theme toggle.
 
 ### Don't:
 
 - **Don't** round corners, add shadows, glass or blur.
+- **Don't** colour a diagram element with copper, navy or a framework colour; failure is its only coloured role.
 - **Don't** reintroduce wine or evidence orange on the reading surface.
 - **Don't** typeset "SYNKO" in a font.
 - **Don't** render the issue list as thumbnail cards.

@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap'
 import expressiveCode from 'astro-expressive-code'
 import { rehypeRepoLinks } from './src/lib/rehype-repo-links.mjs'
 import { rehypeTables } from './src/lib/rehype-tables.mjs'
+import { rehypeDiagrams } from './src/lib/rehype-diagrams.mjs'
 
 export default defineConfig({
   site: 'https://lab.synko.digital',
@@ -53,7 +54,7 @@ export default defineConfig({
   ],
   markdown: {
     processor: unified({
-      rehypePlugins: [rehypeRepoLinks, rehypeTables],
+      rehypePlugins: [rehypeRepoLinks, rehypeDiagrams, rehypeTables],
     }),
   },
   vite: {

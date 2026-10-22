@@ -169,8 +169,8 @@ const heroVideo = demoUrl ? undefined : video
 </Base>
 
 <script>
-  // Tabelas largas: esmaece o lado que ainda tem conteúdo para rolar.
-  for (const scroller of document.querySelectorAll<HTMLElement>('.table-scroll')) {
+  // Tabelas e diagramas largos: esmaece o lado que ainda tem conteúdo para rolar.
+  for (const scroller of document.querySelectorAll<HTMLElement>('.table-scroll, .diagram-scroll')) {
     const sync = () => {
       scroller.toggleAttribute('data-more-left', scroller.scrollLeft > 1)
       scroller.toggleAttribute('data-more-right', scroller.scrollLeft + scroller.clientWidth < scroller.scrollWidth - 1)
