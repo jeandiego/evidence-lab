@@ -1,0 +1,6219 @@
+{
+  "method": "Usuários simulados no Node: cada um tem localStorage, window e __LAB__ próprios (AsyncLocalStorage) e M clients Apollo dos MFEs (código real de apps/catalog/src/apollo e dos pacotes de auth). O token já está vencido e as M requests saem com offsets aleatórios em [0, windowMs]. A API é a real (rotação de refresh token ligada, refresh com 150 ms de latência).",
+  "limits": [
+    "Não há navegador, single-spa nem React: o que escala é a lógica de auth, não a renderização.",
+    "Não modela várias abas (navigator.locks não existe no Node): o auth-fetch usa só o dedupe dentro da aba.",
+    "Parâmetros são do lab (latência do refresh, número de MFEs, janela de colisão). Os números não são calibrados com a produção.",
+    "A variante patch é instalada no root (sem o atraso do patch carregado como MFE)."
+  ],
+  "environment": {
+    "node": "v24.11.1",
+    "os": "darwin 25.6.0 arm64",
+    "cpus": "Apple M3 Pro",
+    "apollo": "3.14.1",
+    "usersPerCell": 1000,
+    "inflightBudget": 400,
+    "startedAt": "2026-10-21T21:56:10.056Z",
+    "minutes": 9.3
+  },
+  "cells": [
+    {
+      "scenario": "A",
+      "variant": "baseline",
+      "mfes": 2,
+      "windowMs": 0,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "loggedOut": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 2,
+      "refreshCallsHistogram": {
+        "2": 1000
+      },
+      "meanFailedRequestsPerUser": 1,
+      "server": {
+        "refreshCalls": 2000,
+        "refreshFailed": 1000,
+        "refreshReused": 1000,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 50,
+        "unauthorized": 0
+      },
+      "seconds": 1.5
+    },
+    {
+      "scenario": "A",
+      "variant": "patch",
+      "mfes": 2,
+      "windowMs": 0,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.5
+    },
+    {
+      "scenario": "A",
+      "variant": "utility",
+      "mfes": 2,
+      "windowMs": 0,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.5
+    },
+    {
+      "scenario": "A",
+      "variant": "baseline",
+      "mfes": 2,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "loggedOut": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 2,
+      "refreshCallsHistogram": {
+        "2": 1000
+      },
+      "meanFailedRequestsPerUser": 1,
+      "server": {
+        "refreshCalls": 2000,
+        "refreshFailed": 1000,
+        "refreshReused": 1000,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 50,
+        "unauthorized": 0
+      },
+      "seconds": 1.5
+    },
+    {
+      "scenario": "A",
+      "variant": "patch",
+      "mfes": 2,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.7
+    },
+    {
+      "scenario": "A",
+      "variant": "utility",
+      "mfes": 2,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.5
+    },
+    {
+      "scenario": "A",
+      "variant": "baseline",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 56,
+        "n": 1000,
+        "pct": 5.6,
+        "ci95": [
+          4.3,
+          7.2
+        ]
+      },
+      "loggedOut": {
+        "k": 944,
+        "n": 1000,
+        "pct": 94.4,
+        "ci95": [
+          92.8,
+          95.7
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 944,
+        "n": 1000,
+        "pct": 94.4,
+        "ci95": [
+          92.8,
+          95.7
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1.94,
+      "refreshCallsHistogram": {
+        "1": 56,
+        "2": 944
+      },
+      "meanFailedRequestsPerUser": 0.94,
+      "server": {
+        "refreshCalls": 1944,
+        "refreshFailed": 944,
+        "refreshReused": 944,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 48.6,
+        "unauthorized": 0
+      },
+      "seconds": 1.7
+    },
+    {
+      "scenario": "A",
+      "variant": "patch",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.6
+    },
+    {
+      "scenario": "A",
+      "variant": "utility",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.6
+    },
+    {
+      "scenario": "A",
+      "variant": "baseline",
+      "mfes": 5,
+      "windowMs": 0,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "loggedOut": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 5,
+      "refreshCallsHistogram": {
+        "5": 1000
+      },
+      "meanFailedRequestsPerUser": 4,
+      "server": {
+        "refreshCalls": 5000,
+        "refreshFailed": 4000,
+        "refreshReused": 4000,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 80,
+        "unauthorized": 0
+      },
+      "seconds": 2.8
+    },
+    {
+      "scenario": "A",
+      "variant": "patch",
+      "mfes": 5,
+      "windowMs": 0,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 2.9
+    },
+    {
+      "scenario": "A",
+      "variant": "utility",
+      "mfes": 5,
+      "windowMs": 0,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 3.1
+    },
+    {
+      "scenario": "A",
+      "variant": "baseline",
+      "mfes": 5,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "loggedOut": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 5,
+      "refreshCallsHistogram": {
+        "5": 1000
+      },
+      "meanFailedRequestsPerUser": 4,
+      "server": {
+        "refreshCalls": 5000,
+        "refreshFailed": 4000,
+        "refreshReused": 4000,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 80,
+        "unauthorized": 0
+      },
+      "seconds": 3.2
+    },
+    {
+      "scenario": "A",
+      "variant": "patch",
+      "mfes": 5,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 3
+    },
+    {
+      "scenario": "A",
+      "variant": "utility",
+      "mfes": 5,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 2.9
+    },
+    {
+      "scenario": "A",
+      "variant": "baseline",
+      "mfes": 5,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 5,
+        "n": 1000,
+        "pct": 0.5,
+        "ci95": [
+          0.2,
+          1.2
+        ]
+      },
+      "loggedOut": {
+        "k": 995,
+        "n": 1000,
+        "pct": 99.5,
+        "ci95": [
+          98.8,
+          99.8
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 995,
+        "n": 1000,
+        "pct": 99.5,
+        "ci95": [
+          98.8,
+          99.8
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 4.53,
+      "refreshCallsHistogram": {
+        "1": 5,
+        "2": 15,
+        "3": 79,
+        "4": 244,
+        "5": 657
+      },
+      "meanFailedRequestsPerUser": 3.66,
+      "server": {
+        "refreshCalls": 4533,
+        "refreshFailed": 3533,
+        "refreshReused": 3533,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 77.9,
+        "unauthorized": 130
+      },
+      "seconds": 5.2
+    },
+    {
+      "scenario": "A",
+      "variant": "patch",
+      "mfes": 5,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 3.4
+    },
+    {
+      "scenario": "A",
+      "variant": "utility",
+      "mfes": 5,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 3.2
+    },
+    {
+      "scenario": "A",
+      "variant": "baseline",
+      "mfes": 10,
+      "windowMs": 0,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "loggedOut": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 10,
+      "refreshCallsHistogram": {
+        "10": 1000
+      },
+      "meanFailedRequestsPerUser": 9,
+      "server": {
+        "refreshCalls": 10000,
+        "refreshFailed": 9000,
+        "refreshReused": 9000,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 90,
+        "unauthorized": 0
+      },
+      "seconds": 6.3
+    },
+    {
+      "scenario": "A",
+      "variant": "patch",
+      "mfes": 10,
+      "windowMs": 0,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 5.7
+    },
+    {
+      "scenario": "A",
+      "variant": "utility",
+      "mfes": 10,
+      "windowMs": 0,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 5.6
+    },
+    {
+      "scenario": "A",
+      "variant": "baseline",
+      "mfes": 10,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "loggedOut": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 10,
+      "refreshCallsHistogram": {
+        "10": 1000
+      },
+      "meanFailedRequestsPerUser": 9,
+      "server": {
+        "refreshCalls": 10000,
+        "refreshFailed": 9000,
+        "refreshReused": 9000,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 90,
+        "unauthorized": 0
+      },
+      "seconds": 5.4
+    },
+    {
+      "scenario": "A",
+      "variant": "patch",
+      "mfes": 10,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 6.3
+    },
+    {
+      "scenario": "A",
+      "variant": "utility",
+      "mfes": 10,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 6.7
+    },
+    {
+      "scenario": "A",
+      "variant": "baseline",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "loggedOut": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 8.63,
+      "refreshCallsHistogram": {
+        "3": 1,
+        "4": 1,
+        "5": 7,
+        "6": 58,
+        "7": 113,
+        "8": 232,
+        "9": 292,
+        "10": 296
+      },
+      "meanFailedRequestsPerUser": 8.34,
+      "server": {
+        "refreshCalls": 8625,
+        "refreshFailed": 7625,
+        "refreshReused": 7625,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 88.4,
+        "unauthorized": 710
+      },
+      "seconds": 7.9
+    },
+    {
+      "scenario": "A",
+      "variant": "patch",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 7
+    },
+    {
+      "scenario": "A",
+      "variant": "utility",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 6.5
+    },
+    {
+      "scenario": "A",
+      "variant": "baseline",
+      "mfes": 20,
+      "windowMs": 0,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "loggedOut": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 20,
+      "refreshCallsHistogram": {
+        "20": 1000
+      },
+      "meanFailedRequestsPerUser": 19,
+      "server": {
+        "refreshCalls": 20000,
+        "refreshFailed": 19000,
+        "refreshReused": 19000,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 95,
+        "unauthorized": 0
+      },
+      "seconds": 11.1
+    },
+    {
+      "scenario": "A",
+      "variant": "patch",
+      "mfes": 20,
+      "windowMs": 0,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 11.6
+    },
+    {
+      "scenario": "A",
+      "variant": "utility",
+      "mfes": 20,
+      "windowMs": 0,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 11.7
+    },
+    {
+      "scenario": "A",
+      "variant": "baseline",
+      "mfes": 20,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "loggedOut": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 20,
+      "refreshCallsHistogram": {
+        "20": 1000
+      },
+      "meanFailedRequestsPerUser": 19,
+      "server": {
+        "refreshCalls": 20000,
+        "refreshFailed": 19000,
+        "refreshReused": 19000,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 95,
+        "unauthorized": 0
+      },
+      "seconds": 11.8
+    },
+    {
+      "scenario": "A",
+      "variant": "patch",
+      "mfes": 20,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 12.1
+    },
+    {
+      "scenario": "A",
+      "variant": "utility",
+      "mfes": 20,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 13.3
+    },
+    {
+      "scenario": "A",
+      "variant": "baseline",
+      "mfes": 20,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "loggedOut": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 16.53,
+      "refreshCallsHistogram": {
+        "9": 1,
+        "10": 7,
+        "11": 6,
+        "12": 9,
+        "13": 47,
+        "14": 93,
+        "15": 151,
+        "16": 168,
+        "17": 161,
+        "18": 189,
+        "19": 86,
+        "20": 82
+      },
+      "meanFailedRequestsPerUser": 18.08,
+      "server": {
+        "refreshCalls": 16532,
+        "refreshFailed": 15532,
+        "refreshReused": 15532,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 94,
+        "unauthorized": 2550
+      },
+      "seconds": 17.8
+    },
+    {
+      "scenario": "A",
+      "variant": "patch",
+      "mfes": 20,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 15.7
+    },
+    {
+      "scenario": "A",
+      "variant": "utility",
+      "mfes": 20,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 15.3
+    },
+    {
+      "scenario": "B",
+      "variant": "baseline",
+      "mfes": 2,
+      "windowMs": 50,
+      "refreshFailRate": 0.05,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "loggedOut": {
+        "k": 969,
+        "n": 1000,
+        "pct": 96.9,
+        "ci95": [
+          95.6,
+          97.8
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 2,
+      "refreshCallsHistogram": {
+        "2": 1000
+      },
+      "meanFailedRequestsPerUser": 1,
+      "server": {
+        "refreshCalls": 2000,
+        "refreshFailed": 1001,
+        "refreshReused": 919,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 50,
+        "unauthorized": 0
+      },
+      "seconds": 1.5
+    },
+    {
+      "scenario": "B",
+      "variant": "patch",
+      "mfes": 2,
+      "windowMs": 50,
+      "refreshFailRate": 0.05,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 956,
+        "n": 1000,
+        "pct": 95.6,
+        "ci95": [
+          94.1,
+          96.7
+        ]
+      },
+      "loggedOut": {
+        "k": 44,
+        "n": 1000,
+        "pct": 4.4,
+        "ci95": [
+          3.3,
+          5.9
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 44,
+        "n": 1000,
+        "pct": 4.4,
+        "ci95": [
+          3.3,
+          5.9
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0.09,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 44,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 4.4,
+        "unauthorized": 0
+      },
+      "seconds": 1.5
+    },
+    {
+      "scenario": "B",
+      "variant": "utility",
+      "mfes": 2,
+      "windowMs": 50,
+      "refreshFailRate": 0.05,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 964,
+        "n": 1000,
+        "pct": 96.4,
+        "ci95": [
+          95.1,
+          97.4
+        ]
+      },
+      "loggedOut": {
+        "k": 36,
+        "n": 1000,
+        "pct": 3.6,
+        "ci95": [
+          2.6,
+          4.9
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 36,
+        "n": 1000,
+        "pct": 3.6,
+        "ci95": [
+          2.6,
+          4.9
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0.07,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 36,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 3.6,
+        "unauthorized": 0
+      },
+      "seconds": 2.1
+    },
+    {
+      "scenario": "B",
+      "variant": "baseline",
+      "mfes": 10,
+      "windowMs": 50,
+      "refreshFailRate": 0.05,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "loggedOut": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 10,
+      "refreshCallsHistogram": {
+        "10": 1000
+      },
+      "meanFailedRequestsPerUser": 9,
+      "server": {
+        "refreshCalls": 10000,
+        "refreshFailed": 9000,
+        "refreshReused": 8517,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 90,
+        "unauthorized": 0
+      },
+      "seconds": 5.5
+    },
+    {
+      "scenario": "B",
+      "variant": "patch",
+      "mfes": 10,
+      "windowMs": 50,
+      "refreshFailRate": 0.05,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 953,
+        "n": 1000,
+        "pct": 95.3,
+        "ci95": [
+          93.8,
+          96.4
+        ]
+      },
+      "loggedOut": {
+        "k": 47,
+        "n": 1000,
+        "pct": 4.7,
+        "ci95": [
+          3.6,
+          6.2
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 47,
+        "n": 1000,
+        "pct": 4.7,
+        "ci95": [
+          3.6,
+          6.2
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0.47,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 47,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 4.7,
+        "unauthorized": 0
+      },
+      "seconds": 6.3
+    },
+    {
+      "scenario": "B",
+      "variant": "utility",
+      "mfes": 10,
+      "windowMs": 50,
+      "refreshFailRate": 0.05,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 950,
+        "n": 1000,
+        "pct": 95,
+        "ci95": [
+          93.5,
+          96.2
+        ]
+      },
+      "loggedOut": {
+        "k": 50,
+        "n": 1000,
+        "pct": 5,
+        "ci95": [
+          3.8,
+          6.5
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 50,
+        "n": 1000,
+        "pct": 5,
+        "ci95": [
+          3.8,
+          6.5
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0.5,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 50,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 5,
+        "unauthorized": 0
+      },
+      "seconds": 5.6
+    },
+    {
+      "scenario": "B",
+      "variant": "baseline",
+      "mfes": 2,
+      "windowMs": 50,
+      "refreshFailRate": 0.2,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "loggedOut": {
+        "k": 840,
+        "n": 1000,
+        "pct": 84,
+        "ci95": [
+          81.6,
+          86.1
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 2,
+      "refreshCallsHistogram": {
+        "2": 1000
+      },
+      "meanFailedRequestsPerUser": 1.04,
+      "server": {
+        "refreshCalls": 2000,
+        "refreshFailed": 1037,
+        "refreshReused": 647,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 51.9,
+        "unauthorized": 0
+      },
+      "seconds": 1.5
+    },
+    {
+      "scenario": "B",
+      "variant": "patch",
+      "mfes": 2,
+      "windowMs": 50,
+      "refreshFailRate": 0.2,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 784,
+        "n": 1000,
+        "pct": 78.4,
+        "ci95": [
+          75.7,
+          80.8
+        ]
+      },
+      "loggedOut": {
+        "k": 216,
+        "n": 1000,
+        "pct": 21.6,
+        "ci95": [
+          19.2,
+          24.3
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 216,
+        "n": 1000,
+        "pct": 21.6,
+        "ci95": [
+          19.2,
+          24.3
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0.43,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 216,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 21.6,
+        "unauthorized": 0
+      },
+      "seconds": 1.4
+    },
+    {
+      "scenario": "B",
+      "variant": "utility",
+      "mfes": 2,
+      "windowMs": 50,
+      "refreshFailRate": 0.2,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 810,
+        "n": 1000,
+        "pct": 81,
+        "ci95": [
+          78.5,
+          83.3
+        ]
+      },
+      "loggedOut": {
+        "k": 190,
+        "n": 1000,
+        "pct": 19,
+        "ci95": [
+          16.7,
+          21.5
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 190,
+        "n": 1000,
+        "pct": 19,
+        "ci95": [
+          16.7,
+          21.5
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0.38,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 190,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 19,
+        "unauthorized": 0
+      },
+      "seconds": 2.5
+    },
+    {
+      "scenario": "B",
+      "variant": "baseline",
+      "mfes": 10,
+      "windowMs": 50,
+      "refreshFailRate": 0.2,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "loggedOut": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 10,
+      "refreshCallsHistogram": {
+        "10": 1000
+      },
+      "meanFailedRequestsPerUser": 9,
+      "server": {
+        "refreshCalls": 10000,
+        "refreshFailed": 9000,
+        "refreshReused": 7049,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 90,
+        "unauthorized": 0
+      },
+      "seconds": 5.4
+    },
+    {
+      "scenario": "B",
+      "variant": "patch",
+      "mfes": 10,
+      "windowMs": 50,
+      "refreshFailRate": 0.2,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 800,
+        "n": 1000,
+        "pct": 80,
+        "ci95": [
+          77.4,
+          82.4
+        ]
+      },
+      "loggedOut": {
+        "k": 200,
+        "n": 1000,
+        "pct": 20,
+        "ci95": [
+          17.6,
+          22.6
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 200,
+        "n": 1000,
+        "pct": 20,
+        "ci95": [
+          17.6,
+          22.6
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 2,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 200,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 20,
+        "unauthorized": 0
+      },
+      "seconds": 5.2
+    },
+    {
+      "scenario": "B",
+      "variant": "utility",
+      "mfes": 10,
+      "windowMs": 50,
+      "refreshFailRate": 0.2,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 815,
+        "n": 1000,
+        "pct": 81.5,
+        "ci95": [
+          79,
+          83.8
+        ]
+      },
+      "loggedOut": {
+        "k": 185,
+        "n": 1000,
+        "pct": 18.5,
+        "ci95": [
+          16.2,
+          21
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 185,
+        "n": 1000,
+        "pct": 18.5,
+        "ci95": [
+          16.2,
+          21
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 1.85,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 185,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 18.5,
+        "unauthorized": 0
+      },
+      "seconds": 5.4
+    },
+    {
+      "scenario": "C",
+      "variant": "baseline",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0.1,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 804,
+        "n": 1000,
+        "pct": 80.4,
+        "ci95": [
+          77.8,
+          82.7
+        ]
+      },
+      "loggedOut": {
+        "k": 196,
+        "n": 1000,
+        "pct": 19.6,
+        "ci95": [
+          17.3,
+          22.2
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 196,
+        "n": 1000,
+        "pct": 19.6,
+        "ci95": [
+          17.3,
+          22.2
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1.94,
+      "refreshCallsHistogram": {
+        "1": 56,
+        "2": 944
+      },
+      "meanFailedRequestsPerUser": 0.2,
+      "server": {
+        "refreshCalls": 1944,
+        "refreshFailed": 196,
+        "refreshReused": 196,
+        "refreshOverlapped": 748,
+        "refreshErrorRate": 10.1,
+        "unauthorized": 0
+      },
+      "seconds": 1.8
+    },
+    {
+      "scenario": "C",
+      "variant": "patch",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0.1,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.6
+    },
+    {
+      "scenario": "C",
+      "variant": "utility",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0.1,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.6
+    },
+    {
+      "scenario": "C",
+      "variant": "baseline",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0.1,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 57,
+        "n": 1000,
+        "pct": 5.7,
+        "ci95": [
+          4.4,
+          7.3
+        ]
+      },
+      "loggedOut": {
+        "k": 943,
+        "n": 1000,
+        "pct": 94.3,
+        "ci95": [
+          92.7,
+          95.6
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 943,
+        "n": 1000,
+        "pct": 94.3,
+        "ci95": [
+          92.7,
+          95.6
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 8.58,
+      "refreshCallsHistogram": {
+        "4": 5,
+        "5": 7,
+        "6": 55,
+        "7": 142,
+        "8": 218,
+        "9": 276,
+        "10": 297
+      },
+      "meanFailedRequestsPerUser": 2.64,
+      "server": {
+        "refreshCalls": 8577,
+        "refreshFailed": 2598,
+        "refreshReused": 2598,
+        "refreshOverlapped": 4979,
+        "refreshErrorRate": 30.3,
+        "unauthorized": 43
+      },
+      "seconds": 8.5
+    },
+    {
+      "scenario": "C",
+      "variant": "patch",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0.1,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 6.7
+    },
+    {
+      "scenario": "C",
+      "variant": "utility",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0.1,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 6.4
+    },
+    {
+      "scenario": "C",
+      "variant": "baseline",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0.5,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 975,
+        "n": 1000,
+        "pct": 97.5,
+        "ci95": [
+          96.3,
+          98.3
+        ]
+      },
+      "loggedOut": {
+        "k": 25,
+        "n": 1000,
+        "pct": 2.5,
+        "ci95": [
+          1.7,
+          3.7
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 25,
+        "n": 1000,
+        "pct": 2.5,
+        "ci95": [
+          1.7,
+          3.7
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1.9,
+      "refreshCallsHistogram": {
+        "1": 103,
+        "2": 897
+      },
+      "meanFailedRequestsPerUser": 0.03,
+      "server": {
+        "refreshCalls": 1897,
+        "refreshFailed": 25,
+        "refreshReused": 25,
+        "refreshOverlapped": 872,
+        "refreshErrorRate": 1.3,
+        "unauthorized": 0
+      },
+      "seconds": 2.4
+    },
+    {
+      "scenario": "C",
+      "variant": "patch",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0.5,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.7
+    },
+    {
+      "scenario": "C",
+      "variant": "utility",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0.5,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.6
+    },
+    {
+      "scenario": "C",
+      "variant": "baseline",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0.5,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 989,
+        "n": 1000,
+        "pct": 98.9,
+        "ci95": [
+          98,
+          99.4
+        ]
+      },
+      "loggedOut": {
+        "k": 11,
+        "n": 1000,
+        "pct": 1.1,
+        "ci95": [
+          0.6,
+          2
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 11,
+        "n": 1000,
+        "pct": 1.1,
+        "ci95": [
+          0.6,
+          2
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 8.52,
+      "refreshCallsHistogram": {
+        "4": 2,
+        "5": 19,
+        "6": 38,
+        "7": 143,
+        "8": 252,
+        "9": 284,
+        "10": 262
+      },
+      "meanFailedRequestsPerUser": 0.04,
+      "server": {
+        "refreshCalls": 8524,
+        "refreshFailed": 38,
+        "refreshReused": 38,
+        "refreshOverlapped": 7486,
+        "refreshErrorRate": 0.4,
+        "unauthorized": 0
+      },
+      "seconds": 9.3
+    },
+    {
+      "scenario": "C",
+      "variant": "patch",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0.5,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 6.2
+    },
+    {
+      "scenario": "C",
+      "variant": "utility",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0.5,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 6.5
+    },
+    {
+      "scenario": "C",
+      "variant": "baseline",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 5,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1.96,
+      "refreshCallsHistogram": {
+        "1": 41,
+        "2": 959
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1959,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 959,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.9
+    },
+    {
+      "scenario": "C",
+      "variant": "patch",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 5,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.6
+    },
+    {
+      "scenario": "C",
+      "variant": "utility",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 5,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.6
+    },
+    {
+      "scenario": "C",
+      "variant": "baseline",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 5,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 8.54,
+      "refreshCallsHistogram": {
+        "1": 1,
+        "2": 2,
+        "3": 5,
+        "4": 9,
+        "5": 12,
+        "6": 46,
+        "7": 134,
+        "8": 206,
+        "9": 292,
+        "10": 293
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 8536,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 7536,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 9.5
+    },
+    {
+      "scenario": "C",
+      "variant": "patch",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 5,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 6.6
+    },
+    {
+      "scenario": "C",
+      "variant": "utility",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 5,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 6.1
+    },
+    {
+      "scenario": "D",
+      "variant": "baseline",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 50,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 507,
+        "n": 1000,
+        "pct": 50.7,
+        "ci95": [
+          47.6,
+          53.8
+        ]
+      },
+      "loggedOut": {
+        "k": 493,
+        "n": 1000,
+        "pct": 49.3,
+        "ci95": [
+          46.2,
+          52.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 493,
+        "n": 1000,
+        "pct": 49.3,
+        "ci95": [
+          46.2,
+          52.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1.49,
+      "refreshCallsHistogram": {
+        "1": 507,
+        "2": 493
+      },
+      "meanFailedRequestsPerUser": 0.49,
+      "server": {
+        "refreshCalls": 1493,
+        "refreshFailed": 493,
+        "refreshReused": 493,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 33,
+        "unauthorized": 0
+      },
+      "seconds": 1.2
+    },
+    {
+      "scenario": "D",
+      "variant": "patch",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 50,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.5
+    },
+    {
+      "scenario": "D",
+      "variant": "utility",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 50,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.2
+    },
+    {
+      "scenario": "D",
+      "variant": "baseline",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 50,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 45,
+        "n": 1000,
+        "pct": 4.5,
+        "ci95": [
+          3.4,
+          6
+        ]
+      },
+      "loggedOut": {
+        "k": 955,
+        "n": 1000,
+        "pct": 95.5,
+        "ci95": [
+          94,
+          96.6
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 955,
+        "n": 1000,
+        "pct": 95.5,
+        "ci95": [
+          94,
+          96.6
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 3.66,
+      "refreshCallsHistogram": {
+        "1": 45,
+        "2": 167,
+        "3": 280,
+        "4": 236,
+        "5": 165,
+        "6": 80,
+        "7": 21,
+        "8": 6
+      },
+      "meanFailedRequestsPerUser": 7.76,
+      "server": {
+        "refreshCalls": 3663,
+        "refreshFailed": 2663,
+        "refreshReused": 2663,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 72.7,
+        "unauthorized": 5095
+      },
+      "seconds": 4.9
+    },
+    {
+      "scenario": "D",
+      "variant": "patch",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 50,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 6.5
+    },
+    {
+      "scenario": "D",
+      "variant": "utility",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 50,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 5.9
+    },
+    {
+      "scenario": "D",
+      "variant": "baseline",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 53,
+        "n": 1000,
+        "pct": 5.3,
+        "ci95": [
+          4.1,
+          6.9
+        ]
+      },
+      "loggedOut": {
+        "k": 947,
+        "n": 1000,
+        "pct": 94.7,
+        "ci95": [
+          93.1,
+          95.9
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 947,
+        "n": 1000,
+        "pct": 94.7,
+        "ci95": [
+          93.1,
+          95.9
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1.95,
+      "refreshCallsHistogram": {
+        "1": 53,
+        "2": 947
+      },
+      "meanFailedRequestsPerUser": 0.95,
+      "server": {
+        "refreshCalls": 1947,
+        "refreshFailed": 947,
+        "refreshReused": 947,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 48.6,
+        "unauthorized": 0
+      },
+      "seconds": 1.7
+    },
+    {
+      "scenario": "D",
+      "variant": "patch",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 2.6
+    },
+    {
+      "scenario": "D",
+      "variant": "utility",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.6
+    },
+    {
+      "scenario": "D",
+      "variant": "baseline",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "loggedOut": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 8.6,
+      "refreshCallsHistogram": {
+        "4": 2,
+        "5": 17,
+        "6": 48,
+        "7": 116,
+        "8": 230,
+        "9": 303,
+        "10": 284
+      },
+      "meanFailedRequestsPerUser": 8.3,
+      "server": {
+        "refreshCalls": 8600,
+        "refreshFailed": 7600,
+        "refreshReused": 7600,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 88.4,
+        "unauthorized": 705
+      },
+      "seconds": 7.8
+    },
+    {
+      "scenario": "D",
+      "variant": "patch",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 6.8
+    },
+    {
+      "scenario": "D",
+      "variant": "utility",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 6.2
+    },
+    {
+      "scenario": "D",
+      "variant": "baseline",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 500,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 7,
+        "n": 1000,
+        "pct": 0.7,
+        "ci95": [
+          0.3,
+          1.4
+        ]
+      },
+      "loggedOut": {
+        "k": 988,
+        "n": 1000,
+        "pct": 98.8,
+        "ci95": [
+          97.9,
+          99.3
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 993,
+        "n": 1000,
+        "pct": 99.3,
+        "ci95": [
+          98.6,
+          99.7
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1.99,
+      "refreshCallsHistogram": {
+        "1": 7,
+        "2": 993
+      },
+      "meanFailedRequestsPerUser": 0.99,
+      "server": {
+        "refreshCalls": 1993,
+        "refreshFailed": 993,
+        "refreshReused": 993,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 49.8,
+        "unauthorized": 0
+      },
+      "seconds": 4.5
+    },
+    {
+      "scenario": "D",
+      "variant": "patch",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 500,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 3.5
+    },
+    {
+      "scenario": "D",
+      "variant": "utility",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 500,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 3.4
+    },
+    {
+      "scenario": "D",
+      "variant": "baseline",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 500,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "loggedOut": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 10,
+      "refreshCallsHistogram": {
+        "10": 1000
+      },
+      "meanFailedRequestsPerUser": 9,
+      "server": {
+        "refreshCalls": 10000,
+        "refreshFailed": 9000,
+        "refreshReused": 9000,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 90,
+        "unauthorized": 0
+      },
+      "seconds": 17.3
+    },
+    {
+      "scenario": "D",
+      "variant": "patch",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 500,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 15
+    },
+    {
+      "scenario": "D",
+      "variant": "utility",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 500,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 15.1
+    },
+    {
+      "scenario": "D",
+      "variant": "baseline",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 1000,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "loggedOut": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 2,
+      "refreshCallsHistogram": {
+        "2": 1000
+      },
+      "meanFailedRequestsPerUser": 1,
+      "server": {
+        "refreshCalls": 2000,
+        "refreshFailed": 1000,
+        "refreshReused": 1000,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 50,
+        "unauthorized": 0
+      },
+      "seconds": 5.9
+    },
+    {
+      "scenario": "D",
+      "variant": "patch",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 1000,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 5.8
+    },
+    {
+      "scenario": "D",
+      "variant": "utility",
+      "mfes": 2,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 1000,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 5.9
+    },
+    {
+      "scenario": "D",
+      "variant": "baseline",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 1000,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "loggedOut": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 10,
+      "refreshCallsHistogram": {
+        "10": 1000
+      },
+      "meanFailedRequestsPerUser": 9,
+      "server": {
+        "refreshCalls": 10000,
+        "refreshFailed": 9000,
+        "refreshReused": 9000,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 90,
+        "unauthorized": 0
+      },
+      "seconds": 29.8
+    },
+    {
+      "scenario": "D",
+      "variant": "patch",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 1000,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 27
+    },
+    {
+      "scenario": "D",
+      "variant": "utility",
+      "mfes": 10,
+      "windowMs": 200,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 1000,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 27.4
+    },
+    {
+      "scenario": "E",
+      "variant": "baseline",
+      "mfes": 2,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "rotation": false,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 2,
+      "refreshCallsHistogram": {
+        "2": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 2000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.8
+    },
+    {
+      "scenario": "E",
+      "variant": "patch",
+      "mfes": 2,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "rotation": false,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.5
+    },
+    {
+      "scenario": "E",
+      "variant": "utility",
+      "mfes": 2,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "rotation": false,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 1.6
+    },
+    {
+      "scenario": "E",
+      "variant": "baseline",
+      "mfes": 5,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "rotation": false,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 5,
+      "refreshCallsHistogram": {
+        "5": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 5000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 4.8
+    },
+    {
+      "scenario": "E",
+      "variant": "patch",
+      "mfes": 5,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "rotation": false,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 3.7
+    },
+    {
+      "scenario": "E",
+      "variant": "utility",
+      "mfes": 5,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "rotation": false,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 4
+    },
+    {
+      "scenario": "E",
+      "variant": "baseline",
+      "mfes": 10,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "rotation": false,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 10,
+      "refreshCallsHistogram": {
+        "10": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 10000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 9.1
+    },
+    {
+      "scenario": "E",
+      "variant": "patch",
+      "mfes": 10,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "rotation": false,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 5.9
+    },
+    {
+      "scenario": "E",
+      "variant": "utility",
+      "mfes": 10,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "rotation": false,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 6.8
+    },
+    {
+      "scenario": "E",
+      "variant": "baseline",
+      "mfes": 20,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "rotation": false,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 20,
+      "refreshCallsHistogram": {
+        "20": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 20000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 18.1
+    },
+    {
+      "scenario": "E",
+      "variant": "patch",
+      "mfes": 20,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "rotation": false,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 12.2
+    },
+    {
+      "scenario": "E",
+      "variant": "utility",
+      "mfes": 20,
+      "windowMs": 50,
+      "refreshFailRate": 0,
+      "rotationLeewaySec": 0,
+      "refreshLatencyMs": 150,
+      "rotation": false,
+      "users": 1000,
+      "allRequestsOk": {
+        "k": 1000,
+        "n": 1000,
+        "pct": 100,
+        "ci95": [
+          99.6,
+          100
+        ]
+      },
+      "loggedOut": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withFailedRefresh": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "withPendingRequest": {
+        "k": 0,
+        "n": 1000,
+        "pct": 0,
+        "ci95": [
+          0,
+          0.4
+        ]
+      },
+      "meanRefreshCallsPerUser": 1,
+      "refreshCallsHistogram": {
+        "1": 1000
+      },
+      "meanFailedRequestsPerUser": 0,
+      "server": {
+        "refreshCalls": 1000,
+        "refreshFailed": 0,
+        "refreshReused": 0,
+        "refreshOverlapped": 0,
+        "refreshErrorRate": 0,
+        "unauthorized": 0
+      },
+      "seconds": 12.1
+    }
+  ],
+  "mergedScenarios": [
+    "E"
+  ]
+}

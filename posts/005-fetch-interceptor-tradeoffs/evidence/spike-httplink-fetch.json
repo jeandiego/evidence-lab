@@ -1,0 +1,22 @@
+{
+  "question": "O HttpLink resolve o fetch global na criação do link ou a cada request?",
+  "method": "troca globalThis.fetch por tracers em 3 momentos e registra qual recebeu a chamada",
+  "environment": {
+    "node": "v24.11.1",
+    "os": "darwin 25.6.0",
+    "arch": "arm64"
+  },
+  "calls": {
+    "apollo3@3.14.1": [
+      "patched-before-first-request",
+      "patched-after-first-request",
+      "patched-before-link"
+    ],
+    "apollo4@4.3.5": [
+      "patched-before-first-request",
+      "patched-after-first-request",
+      "patched-before-link"
+    ]
+  },
+  "conclusion": "ambas as versões leem o fetch global a cada request; um patch instalado depois de criar o client ainda vale"
+}

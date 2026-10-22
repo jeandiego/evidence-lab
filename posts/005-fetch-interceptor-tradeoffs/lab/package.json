@@ -1,0 +1,29 @@
+{
+  "name": "evidence-lab-005-fetch-interceptor",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "up": "npm run build && node scripts/dev.mjs",
+    "stop": "node scripts/stop.mjs",
+    "dev": "node scripts/dev.mjs",
+    "serve": "node scripts/serve.mjs",
+    "dev:api": "npm run dev --workspace @shop-lab/api",
+    "benchmark": "npm run build && node scripts/benchmark.mjs",
+    "scale": "node --import ./scripts/scale/register.mjs scripts/scale/scale.mjs"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "playwright": "^1.56.1",
+    "tailwindcss": "^4.1.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.0.0"
+  }
+}

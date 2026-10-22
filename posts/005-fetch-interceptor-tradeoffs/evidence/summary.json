@@ -1,0 +1,158 @@
+{
+  "S1": {
+    "title": "Dois MFEs com token expirado ao mesmo tempo",
+    "n": 15,
+    "variants": {
+      "baseline": {
+        "trialsRun": 15,
+        "trialErrors": 0,
+        "meanRefreshCalls": 2,
+        "pctTrialsWithFailedRefresh": "100% (15/15)",
+        "pctBothOk": "0% (0/15)",
+        "pctSessionLost": "100% (15/15)"
+      },
+      "patch": {
+        "trialsRun": 15,
+        "trialErrors": 0,
+        "meanRefreshCalls": 1,
+        "pctTrialsWithFailedRefresh": "0% (0/15)",
+        "pctBothOk": "100% (15/15)",
+        "pctSessionLost": "0% (0/15)"
+      },
+      "utility": {
+        "trialsRun": 15,
+        "trialErrors": 0,
+        "meanRefreshCalls": 1,
+        "pctTrialsWithFailedRefresh": "0% (0/15)",
+        "pctBothOk": "100% (15/15)",
+        "pctSessionLost": "0% (0/15)"
+      }
+    }
+  },
+  "S2": {
+    "title": "Ordem de carga: requests disparadas na montagem, com o patch vindo do root ou de um MFE",
+    "n": 20,
+    "variants": {
+      "baseline": {
+        "trialsRun": 20,
+        "trialErrors": 0,
+        "pctBothFirstRequestsOk": "45% (9/20)",
+        "meanUnauthorized": 0,
+        "meanRefreshCalls": 1.55
+      },
+      "patch (root)": {
+        "trialsRun": 20,
+        "trialErrors": 0,
+        "pctBothFirstRequestsOk": "100% (20/20)",
+        "meanUnauthorized": 0,
+        "meanRefreshCalls": 1
+      },
+      "patch (parcel)": {
+        "trialsRun": 20,
+        "trialErrors": 0,
+        "pctBothFirstRequestsOk": "30% (6/20)",
+        "meanUnauthorized": 1.25,
+        "meanRefreshCalls": 0.45
+      },
+      "utility": {
+        "trialsRun": 20,
+        "trialErrors": 0,
+        "pctBothFirstRequestsOk": "100% (20/20)",
+        "meanUnauthorized": 0,
+        "meanRefreshCalls": 1
+      }
+    }
+  },
+  "S5": {
+    "title": "Duas abas com token expirado ao mesmo tempo",
+    "n": 10,
+    "variants": {
+      "baseline": {
+        "trialsRun": 10,
+        "trialErrors": 0,
+        "meanRefreshCalls": 4,
+        "pctTrialsWithFailedRefresh": "100% (10/10)",
+        "pctAllFourOk": "0% (0/10)",
+        "pctSessionLost": "100% (10/10)"
+      },
+      "patch": {
+        "trialsRun": 10,
+        "trialErrors": 0,
+        "meanRefreshCalls": 1,
+        "pctTrialsWithFailedRefresh": "0% (0/10)",
+        "pctAllFourOk": "100% (10/10)",
+        "pctSessionLost": "0% (0/10)"
+      },
+      "utility": {
+        "trialsRun": 10,
+        "trialErrors": 0,
+        "meanRefreshCalls": 1,
+        "pctTrialsWithFailedRefresh": "0% (0/10)",
+        "pctAllFourOk": "100% (10/10)",
+        "pctSessionLost": "0% (0/10)"
+      }
+    }
+  },
+  "S6": {
+    "title": "Token revogado no servidor com exp ainda válido (401)",
+    "n": 10,
+    "variants": {
+      "baseline": {
+        "trialsRun": 10,
+        "trialErrors": 0,
+        "pctBothOk": "0% (0/10)",
+        "meanRefreshCalls": 0
+      },
+      "patch": {
+        "trialsRun": 10,
+        "trialErrors": 0,
+        "pctBothOk": "100% (10/10)",
+        "meanRefreshCalls": 1
+      },
+      "utility": {
+        "trialsRun": 10,
+        "trialErrors": 0,
+        "pctBothOk": "100% (10/10)",
+        "meanRefreshCalls": 1
+      }
+    }
+  },
+  "S8": {
+    "title": "utility com uma cópia empacotada de authFetch no cart (singleton quebrado), com e sem navigator.locks",
+    "n": 15,
+    "variants": {
+      "utility (import map)": {
+        "trialsRun": 15,
+        "trialErrors": 0,
+        "meanRefreshCalls": 1,
+        "pctTrialsWithFailedRefresh": "0% (0/15)",
+        "pctBothOk": "100% (15/15)",
+        "pctSessionLost": "0% (0/15)"
+      },
+      "utility (cópia no cart)": {
+        "trialsRun": 15,
+        "trialErrors": 0,
+        "meanRefreshCalls": 1,
+        "pctTrialsWithFailedRefresh": "0% (0/15)",
+        "pctBothOk": "100% (15/15)",
+        "pctSessionLost": "0% (0/15)"
+      },
+      "utility (import map, sem locks)": {
+        "trialsRun": 15,
+        "trialErrors": 0,
+        "meanRefreshCalls": 1,
+        "pctTrialsWithFailedRefresh": "0% (0/15)",
+        "pctBothOk": "100% (15/15)",
+        "pctSessionLost": "0% (0/15)"
+      },
+      "utility (cópia no cart, sem locks)": {
+        "trialsRun": 15,
+        "trialErrors": 0,
+        "meanRefreshCalls": 2,
+        "pctTrialsWithFailedRefresh": "100% (15/15)",
+        "pctBothOk": "0% (0/15)",
+        "pctSessionLost": "100% (15/15)"
+      }
+    }
+  }
+}

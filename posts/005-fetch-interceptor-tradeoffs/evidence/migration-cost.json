@@ -1,0 +1,50 @@
+{
+  "note": "Mede só os arquivos de client. Não inclui external no build, entrada no import map, testes, PR e deploy de cada MFE.",
+  "mfes": 2,
+  "perMfe": {
+    "catalog": {
+      "baseline -> plain (patch)": {
+        "added": 2,
+        "removed": 43
+      },
+      "baseline -> utility": {
+        "added": 3,
+        "removed": 43
+      },
+      "clientLoc": {
+        "baseline": 42,
+        "plain": 3,
+        "utility": 5
+      }
+    },
+    "cart": {
+      "baseline -> plain (patch)": {
+        "added": 2,
+        "removed": 43
+      },
+      "baseline -> utility": {
+        "added": 3,
+        "removed": 43
+      },
+      "clientLoc": {
+        "baseline": 42,
+        "plain": 3,
+        "utility": 5
+      }
+    }
+  },
+  "totalForTwoMfes": {
+    "baseline -> plain (patch)": {
+      "added": 4,
+      "removed": 86
+    },
+    "baseline -> utility": {
+      "added": 6,
+      "removed": 86
+    }
+  },
+  "authLayerLoc": {
+    "auth-fetch (patch e utility)": 107
+  },
+  "projection": "Para N MFEs com a mesma forma, o total cresce linearmente (N/2 vezes o total acima). É uma conta, não uma medição."
+}

@@ -1,0 +1,22 @@
+{
+  "startedAt": "2026-10-21T21:34:06.869Z",
+  "node": "v24.11.1",
+  "os": "darwin 25.6.0 arm64",
+  "cpus": "Apple M3 Pro",
+  "chromium": "141.0.7390.37",
+  "playwright": "1.56.1",
+  "apolloClient": "3.14.1",
+  "singleSpa": "6.0.3",
+  "apiPort": "4192",
+  "apiDefaults": {
+    "accessTtlSec": 5,
+    "refreshTtlSec": 600,
+    "rotation": true,
+    "failRefresh": false,
+    "refreshFailRate": 0,
+    "latencyMs": 40,
+    "refreshLatencyMs": 150,
+    "revokedBefore": 0
+  },
+  "finishedAt": "2026-10-21T21:36:40.586Z"
+}

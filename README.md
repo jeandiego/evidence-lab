@@ -40,3 +40,4 @@ posts/<NNN>-<slug>/
 | 001 | [legacy-modernization-lab](posts/001-legacy-modernization-lab/) | rascunho | Modernizar um legado não é atualizar tudo — é descobrir onde o custo compra alguma coisa |
 | 002 | [form-abstractions-dx](posts/002-form-abstractions-dx/) | em revisão | Uma abstração local pode dar a React uma DX de framework, mas transfere o custo para a infraestrutura da equipe |
 | 003 | [guarded-handlers](posts/003-guarded-handlers/) | em revisão | Guards composáveis centralizam pré-condições recorrentes; para uma condição local, um `if` continua mais simples |
+| 005 | [fetch-interceptor-tradeoffs](posts/005-fetch-interceptor-tradeoffs/) | em revisão | Quando N microfrontends renovam o mesmo token por conta própria, a colisão derruba sessões e multiplica chamadas por N; patch no shell e módulo compartilhado resolvem, e a diferença está em quem paga e no que cada um esconde |

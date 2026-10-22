@@ -1,0 +1,2436 @@
+{
+  "S1": {
+    "title": "Dois MFEs com token expirado ao mesmo tempo",
+    "n": 15,
+    "variants": {
+      "baseline": [
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: refresh failed"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: refresh failed"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: refresh failed"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: refresh failed"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: refresh failed"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: refresh failed"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: refresh failed"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: refresh failed"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: refresh failed"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: refresh failed"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: refresh failed"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: refresh failed"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: refresh failed"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: refresh failed"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: refresh failed"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        }
+      ],
+      "patch": [
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        }
+      ],
+      "utility": [
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        }
+      ]
+    }
+  },
+  "S2": {
+    "title": "Ordem de carga: requests disparadas na montagem, com o patch vindo do root ou de um MFE",
+    "n": 20,
+    "variants": {
+      "baseline": [
+        {
+          "seed": 1,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 2,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 2
+        },
+        {
+          "seed": 3,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 4,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 5,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "error"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 2
+        },
+        {
+          "seed": 6,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 7,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "error"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 2
+        },
+        {
+          "seed": 8,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 9,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 10,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 11,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "error"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 2
+        },
+        {
+          "seed": 12,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 2
+        },
+        {
+          "seed": 13,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 2
+        },
+        {
+          "seed": 14,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 2
+        },
+        {
+          "seed": 15,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "error"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 2
+        },
+        {
+          "seed": 16,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 17,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 18,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "error"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 2
+        },
+        {
+          "seed": 19,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "error"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 2
+        },
+        {
+          "seed": 20,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 2
+        }
+      ],
+      "patch (root)": [
+        {
+          "seed": 1,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 2,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 3,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 4,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 5,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 6,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 7,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 8,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 9,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 10,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 11,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 12,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 13,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 14,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 15,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 16,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 17,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 18,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 19,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 20,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        }
+      ],
+      "patch (parcel)": [
+        {
+          "seed": 1,
+          "firstOutcomes": {
+            "catalog": "error",
+            "cart": "error"
+          },
+          "unauthorized": 2,
+          "refreshCalls": 0
+        },
+        {
+          "seed": 2,
+          "firstOutcomes": {
+            "cart": "error",
+            "catalog": "error"
+          },
+          "unauthorized": 2,
+          "refreshCalls": 0
+        },
+        {
+          "seed": 3,
+          "firstOutcomes": {
+            "catalog": "error",
+            "cart": "error"
+          },
+          "unauthorized": 2,
+          "refreshCalls": 0
+        },
+        {
+          "seed": 4,
+          "firstOutcomes": {
+            "cart": "error",
+            "catalog": "error"
+          },
+          "unauthorized": 2,
+          "refreshCalls": 0
+        },
+        {
+          "seed": 5,
+          "firstOutcomes": {
+            "cart": "error",
+            "catalog": "error"
+          },
+          "unauthorized": 2,
+          "refreshCalls": 0
+        },
+        {
+          "seed": 6,
+          "firstOutcomes": {
+            "catalog": "error",
+            "cart": "ok"
+          },
+          "unauthorized": 1,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 7,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 8,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 9,
+          "firstOutcomes": {
+            "cart": "error",
+            "catalog": "ok"
+          },
+          "unauthorized": 1,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 10,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 11,
+          "firstOutcomes": {
+            "catalog": "error",
+            "cart": "error"
+          },
+          "unauthorized": 2,
+          "refreshCalls": 0
+        },
+        {
+          "seed": 12,
+          "firstOutcomes": {
+            "catalog": "error",
+            "cart": "ok"
+          },
+          "unauthorized": 1,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 13,
+          "firstOutcomes": {
+            "cart": "error",
+            "catalog": "error"
+          },
+          "unauthorized": 2,
+          "refreshCalls": 0
+        },
+        {
+          "seed": 14,
+          "firstOutcomes": {
+            "catalog": "error",
+            "cart": "error"
+          },
+          "unauthorized": 2,
+          "refreshCalls": 0
+        },
+        {
+          "seed": 15,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 16,
+          "firstOutcomes": {
+            "catalog": "error",
+            "cart": "error"
+          },
+          "unauthorized": 2,
+          "refreshCalls": 0
+        },
+        {
+          "seed": 17,
+          "firstOutcomes": {
+            "catalog": "error",
+            "cart": "error"
+          },
+          "unauthorized": 2,
+          "refreshCalls": 0
+        },
+        {
+          "seed": 18,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 19,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 20,
+          "firstOutcomes": {
+            "catalog": "error",
+            "cart": "error"
+          },
+          "unauthorized": 2,
+          "refreshCalls": 0
+        }
+      ],
+      "utility": [
+        {
+          "seed": 1,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 2,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 3,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 4,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 5,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 6,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 7,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 8,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 9,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 10,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 11,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 12,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 13,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 14,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 15,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 16,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 17,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 18,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 19,
+          "firstOutcomes": {
+            "catalog": "ok",
+            "cart": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        },
+        {
+          "seed": 20,
+          "firstOutcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "unauthorized": 0,
+          "refreshCalls": 1
+        }
+      ]
+    }
+  },
+  "S5": {
+    "title": "Duas abas com token expirado ao mesmo tempo",
+    "n": 10,
+    "variants": {
+      "baseline": [
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "error",
+            "b.cart": "error",
+            "b.catalog": "error"
+          },
+          "refreshCalls": 4,
+          "refreshFailed": 3,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "a.cart": "error",
+            "a.catalog": "error",
+            "b.cart": "ok",
+            "b.catalog": "error"
+          },
+          "refreshCalls": 4,
+          "refreshFailed": 3,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "error",
+            "b.cart": "error",
+            "b.catalog": "error"
+          },
+          "refreshCalls": 4,
+          "refreshFailed": 3,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "a.cart": "error",
+            "a.catalog": "error",
+            "b.cart": "ok",
+            "b.catalog": "error"
+          },
+          "refreshCalls": 4,
+          "refreshFailed": 3,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "error",
+            "b.cart": "error",
+            "b.catalog": "error"
+          },
+          "refreshCalls": 4,
+          "refreshFailed": 3,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "error",
+            "b.cart": "error",
+            "b.catalog": "error"
+          },
+          "refreshCalls": 4,
+          "refreshFailed": 3,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "a.cart": "error",
+            "a.catalog": "error",
+            "b.cart": "ok",
+            "b.catalog": "error"
+          },
+          "refreshCalls": 4,
+          "refreshFailed": 3,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "error",
+            "b.cart": "error",
+            "b.catalog": "error"
+          },
+          "refreshCalls": 4,
+          "refreshFailed": 3,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "error",
+            "b.cart": "error",
+            "b.catalog": "error"
+          },
+          "refreshCalls": 4,
+          "refreshFailed": 3,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "a.cart": "error",
+            "a.catalog": "error",
+            "b.cart": "ok",
+            "b.catalog": "error"
+          },
+          "refreshCalls": 4,
+          "refreshFailed": 3,
+          "sessionLost": true
+        }
+      ],
+      "patch": [
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        }
+      ],
+      "utility": [
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "a.cart": "ok",
+            "a.catalog": "ok",
+            "b.cart": "ok",
+            "b.catalog": "ok"
+          },
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        }
+      ]
+    }
+  },
+  "S6": {
+    "title": "Token revogado no servidor com exp ainda válido (401)",
+    "n": 10,
+    "variants": {
+      "baseline": [
+        {
+          "outcomes": {
+            "cart": "error",
+            "catalog": "error"
+          },
+          "refreshCalls": 0
+        },
+        {
+          "outcomes": {
+            "cart": "error",
+            "catalog": "error"
+          },
+          "refreshCalls": 0
+        },
+        {
+          "outcomes": {
+            "cart": "error",
+            "catalog": "error"
+          },
+          "refreshCalls": 0
+        },
+        {
+          "outcomes": {
+            "cart": "error",
+            "catalog": "error"
+          },
+          "refreshCalls": 0
+        },
+        {
+          "outcomes": {
+            "cart": "error",
+            "catalog": "error"
+          },
+          "refreshCalls": 0
+        },
+        {
+          "outcomes": {
+            "cart": "error",
+            "catalog": "error"
+          },
+          "refreshCalls": 0
+        },
+        {
+          "outcomes": {
+            "cart": "error",
+            "catalog": "error"
+          },
+          "refreshCalls": 0
+        },
+        {
+          "outcomes": {
+            "cart": "error",
+            "catalog": "error"
+          },
+          "refreshCalls": 0
+        },
+        {
+          "outcomes": {
+            "cart": "error",
+            "catalog": "error"
+          },
+          "refreshCalls": 0
+        },
+        {
+          "outcomes": {
+            "cart": "error",
+            "catalog": "error"
+          },
+          "refreshCalls": 0
+        }
+      ],
+      "patch": [
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        }
+      ],
+      "utility": [
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "refreshCalls": 1
+        }
+      ]
+    }
+  },
+  "S8": {
+    "title": "utility com uma cópia empacotada de authFetch no cart (singleton quebrado), com e sem navigator.locks",
+    "n": 15,
+    "variants": {
+      "utility (import map)": [
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        }
+      ],
+      "utility (cópia no cart)": [
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        }
+      ],
+      "utility (import map, sem locks)": [
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "ok"
+          },
+          "details": {},
+          "refreshCalls": 1,
+          "refreshFailed": 0,
+          "sessionLost": false
+        }
+      ],
+      "utility (cópia no cart, sem locks)": [
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: session expired"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: session expired"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: session expired"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: session expired"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: session expired"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: session expired"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: session expired"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: session expired"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: session expired"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: session expired"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: session expired"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: session expired"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: session expired"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: session expired"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        },
+        {
+          "outcomes": {
+            "cart": "ok",
+            "catalog": "error"
+          },
+          "details": {
+            "catalog": "ApolloError: session expired"
+          },
+          "refreshCalls": 2,
+          "refreshFailed": 1,
+          "sessionLost": true
+        }
+      ]
+    }
+  }
+}
