@@ -1,4 +1,4 @@
-# site/ — blog do Evidence Lab
+# site/ — blog do Synko Lab
 
 Blog em Astro publicado em `https://lab.synko.digital`. Lê o conteúdo dos posts
 (`../posts/*/post/post.md` e `post.<lang>.md`) e nunca importa código de `lab/`

@@ -37,7 +37,8 @@ const strings = {
     allEditions: 'Todas as edições',
     empty: 'Nenhuma edição publicada ainda.',
     onlyIn: 'Em português',
-    footer: 'Evidence Lab é o laboratório de engenharia da Synko.',
+    footer: 'O laboratório público de engenharia da Synko.',
+    links: 'Links',
   },
   en: {
     siteDescription:
@@ -71,7 +72,8 @@ const strings = {
     allEditions: 'All issues',
     empty: 'No issues published yet.',
     onlyIn: 'In Portuguese',
-    footer: 'Evidence Lab is the engineering lab of Synko.',
+    footer: 'The public engineering lab of Synko.',
+    links: 'Links',
   },
 } as const
 

@@ -1,78 +1,235 @@
 ---
 import { url } from '../lib/url'
-import { t, type Lang } from '../lib/i18n'
+import { LANGS, t, type Lang } from '../lib/i18n'
 import { REPO_URL, WORK_URL } from '../lib/repo'
+import Lockup from './Lockup.astro'
 
 interface Props {
   lang: Lang
+  alternates: Partial<Record<Lang, string>>
 }
 
-const { lang } = Astro.props
+const { lang, alternates } = Astro.props
 const strings = t(lang)
+const langLabel: Record<Lang, string> = { 'pt-br': 'PT', en: 'EN' }
+const links = [
+  { href: WORK_URL, label: `Synko · ${strings.work}`, external: true },
+  { href: REPO_URL, label: 'GitHub', external: true },
+  { href: url(`${lang}/rss.xml`), label: strings.rss, external: false },
+]
 ---
 
+<!-- Campo ink que sobe do paper pela grain edge do brand (synko-brand/foundations/grain.css), com faixa mais curta. -->
 <footer class="site-footer">
-  <div class="container site-footer__row">
-    <p class="site-footer__note">
-      <span class="site-footer__brand">Evidence Lab</span>
-      {strings.footer}
-    </p>
-    <ul class="site-footer__links">
-      <li><a href={WORK_URL}>Synko · {strings.work}</a></li>
-      <li><a href={REPO_URL}>GitHub</a></li>
-      <li><a href={url(`${lang}/rss.xml`)}>{strings.rss}</a></li>
-    </ul>
+  <div class="container site-footer__inner">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <Lockup class="site-footer__lockup" />
+        <p>{strings.footer}</p>
+      </div>
+
+      <nav class="site-footer__nav" aria-labelledby="footer-links">
+        <h2 id="footer-links" class="site-footer__label">{strings.links}</h2>
+        <ul>
+          {
+            links.map(link => (
+              <li>
+                <a href={link.href} rel={link.external ? 'noreferrer' : undefined}>
+                  {link.label}
+                  {link.external && ' ↗'}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+
+    <div class="site-footer__bar">
+      <p class="site-footer__label">© {new Date().getFullYear()} Synko Lab</p>
+      <ul class="site-footer__langs" aria-label={strings.language}>
+        {
+          LANGS.map(code => (
+            <li>
+              <a href={alternates[code] ?? url(code)} hreflang={code} lang={code} aria-current={code === lang ? 'true' : undefined}>
+                {langLabel[code]}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
   </div>
 </footer>
 
 <style>
   .site-footer {
-    margin-top: clamp(80px, 12vw, 160px);
-    border-top: 1px solid var(--rule);
+    /* Faixa da grain edge: 10rem no celular, 14rem a partir de 768px (o brand usa 16/24rem). */
+    --grain-h: 10rem;
+    --field: #141518;
+    --line: rgb(243 240 233 / 0.22);
+    --ramp:
+      var(--paper) 0%,
+      color-mix(in oklab, var(--field) 0.9%, var(--paper)) 10%,
+      color-mix(in oklab, var(--field) 5.8%, var(--paper)) 20%,
+      color-mix(in oklab, var(--field) 16.3%, var(--paper)) 30%,
+      color-mix(in oklab, var(--field) 31.7%, var(--paper)) 40%,
+      color-mix(in oklab, var(--field) 50%, var(--paper)) 50%,
+      color-mix(in oklab, var(--field) 68.3%, var(--paper)) 60%,
+      color-mix(in oklab, var(--field) 83.7%, var(--paper)) 70%,
+      color-mix(in oklab, var(--field) 94.2%, var(--paper)) 80%,
+      color-mix(in oklab, var(--field) 99.1%, var(--paper)) 90%,
+      var(--field) 100%;
+    position: relative;
+    margin-top: clamp(56px, 8vw, 104px);
+    padding-top: calc(var(--grain-h) * 0.8);
+    background: linear-gradient(to bottom, var(--ramp)) top / 100% var(--grain-h) no-repeat, var(--field);
+    color: #f3f0e9;
   }
 
-  .site-footer__row {
+  /* Grão do brand (preto e branco em alpha baixo), forte no meio da faixa e sumindo nas pontas. */
+  .site-footer::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: var(--grain-h);
+    pointer-events: none;
+    background: url('/textures/grain.png') 0 0 / 256px 256px repeat;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 40%, #000 60%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 40%, #000 60%, transparent 100%);
+  }
+
+  /*
+    Escuro: a página já é ink, então o campo é navy. O grão usa só o alpha do tile,
+    pintado num navy quase preto, para que nenhum ponto claro apareça.
+  */
+  :global([data-theme='dark']) .site-footer {
+    --field: #15243d;
+  }
+
+  :global([data-theme='dark']) .site-footer::before {
+    background: #070b13;
+    -webkit-mask-image: url('/textures/grain.png'), linear-gradient(to bottom, transparent 0%, #000 40%, #000 60%, transparent 100%);
+    -webkit-mask-size: 256px 256px, 100% 100%;
+    -webkit-mask-repeat: repeat, no-repeat;
+    -webkit-mask-composite: source-in;
+    mask-image: url('/textures/grain.png'), linear-gradient(to bottom, transparent 0%, #000 40%, #000 60%, transparent 100%);
+    mask-size: 256px 256px, 100% 100%;
+    mask-repeat: repeat, no-repeat;
+    mask-composite: intersect;
+  }
+
+  @media (min-width: 768px) {
+    .site-footer {
+      --grain-h: 14rem;
+    }
+  }
+
+  .site-footer__inner {
+    position: relative;
+    display: grid;
+    gap: 40px;
+    padding-bottom: 28px;
+  }
+
+  .site-footer__top {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
+    align-items: end;
     justify-content: space-between;
-    gap: 16px 32px;
-    padding-block: 30px 42px;
-  }
-
-  .site-footer__note {
-    margin: 0;
-    color: var(--ink-muted);
-    font-size: 0.9rem;
+    gap: 32px 48px;
   }
 
   .site-footer__brand {
-    margin-right: 10px;
-    color: var(--ink);
-    font-weight: 560;
+    display: grid;
+    gap: 18px;
+    align-content: start;
   }
 
-  .site-footer__links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 24px;
+  .site-footer__lockup {
+    display: block;
+    width: auto;
+    height: 24px;
+  }
+
+  .site-footer__brand p {
+    max-width: 32ch;
     margin: 0;
-    padding: 0;
-    list-style: none;
+    color: #aab3c2;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .site-footer__label {
+    margin: 0;
+    color: #aab3c2;
     font-family: var(--font-mono);
     font-size: 0.72rem;
-    font-weight: 600;
+    font-weight: 400;
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
 
-  .site-footer__links a {
-    color: var(--ink-muted);
-    text-decoration: none;
-    transition: color 160ms var(--ease-out);
+  .site-footer__nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 28px;
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
   }
 
-  .site-footer__links a:hover {
-    color: var(--wine-text);
+  .site-footer__nav a {
+    display: inline-block;
+    padding-block: 6px;
+    color: inherit;
+    font-size: 0.875rem;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 0.2em;
+    transition: text-decoration-color var(--fast) var(--ease);
+  }
+
+  .site-footer__nav a:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .site-footer__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+
+  .site-footer__langs {
+    display: flex;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-footer__langs a {
+    display: inline-grid;
+    place-items: center;
+    min-width: 32px;
+    min-height: 32px;
+    color: #aab3c2;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+  }
+
+  .site-footer__langs a[aria-current='true'] {
+    color: #f3f0e9;
+    text-decoration: underline;
+    text-underline-offset: 0.5em;
+  }
+
+  .site-footer :focus-visible {
+    outline-color: #f3f0e9;
   }
 </style>

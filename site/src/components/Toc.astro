@@ -74,7 +74,7 @@ const items = headings.filter(h => h.depth === 2 || h.depth === 3)
     border-right: 1.3px solid currentColor;
     border-bottom: 1.3px solid currentColor;
     transform: rotate(45deg) translateY(-2px);
-    transition: transform 200ms var(--ease-out);
+    transition: transform var(--fast) var(--ease);
   }
 
   .toc__details[open] .toc__summary::after {
@@ -95,7 +95,7 @@ const items = headings.filter(h => h.depth === 2 || h.depth === 3)
     border-left: 1px solid transparent;
     color: var(--ink-muted);
     text-decoration: none;
-    transition: color 160ms var(--ease-out), border-color 160ms var(--ease-out);
+    transition: color var(--fast) var(--ease), border-color var(--fast) var(--ease);
   }
 
   .toc__item--sub a {
@@ -108,8 +108,8 @@ const items = headings.filter(h => h.depth === 2 || h.depth === 3)
   }
 
   .toc__item a[aria-current] {
-    color: var(--wine-text);
-    border-left-color: var(--wine);
+    color: var(--ink);
+    border-left-color: var(--ink);
   }
 
   @media (min-width: 1100px) {

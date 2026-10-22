@@ -3,10 +3,10 @@ import { url } from '../lib/url'
 import Base from '../layouts/Base.astro'
 ---
 
-<Base lang="pt-br" title="Página não encontrada · Evidence Lab" description="Esta página não existe no Evidence Lab.">
+<Base lang="pt-br" title="Página não encontrada · Synko Lab" description="Esta página não existe no Synko Lab.">
   <section class="not-found container">
     <p class="not-found__code" aria-hidden="true">404</p>
-    <h1>Esta página não existe no Evidence Lab.</h1>
+    <h1>Esta página não existe no Synko Lab.</h1>
     <p>
       <a href={url('pt-br')}>Ver as edições</a> · <a href={url('en')}>See the issues</a>
     </p>
@@ -20,10 +20,10 @@ import Base from '../layouts/Base.astro'
 
   .not-found__code {
     margin: 0;
-    color: var(--spark);
+    color: var(--ink-muted);
     font-family: var(--font-mono);
     font-size: 0.8rem;
-    font-weight: 600;
+    font-weight: 500;
     letter-spacing: 0.08em;
   }
 
@@ -31,12 +31,12 @@ import Base from '../layouts/Base.astro'
     max-width: 20ch;
     margin: 16px 0 24px;
     font-size: clamp(2rem, 1.4rem + 2.4vw, 3.2rem);
-    font-weight: 330;
+    font-weight: 500;
     line-height: 1.05;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.025em;
   }
 
   a {
-    color: var(--wine-text);
+    color: var(--ink);
   }
 </style>

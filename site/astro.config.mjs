@@ -18,13 +18,13 @@ export default defineConfig({
       // Trechos completos quebram linha em vez de rolar na horizontal.
       defaultProps: { wrap: true, preserveIndent: true },
       styleOverrides: {
-        borderRadius: '12px',
+        borderRadius: '0',
         borderColor: 'var(--code-border)',
         codeFontFamily: "'Geist Mono Variable', ui-monospace, monospace",
         codeFontSize: '0.84rem',
         codeLineHeight: '1.7',
         codeBackground: 'var(--code-bg)',
-        uiFontFamily: "'Geist Mono Variable', ui-monospace, monospace",
+        uiFontFamily: "'IBM Plex Mono', ui-monospace, monospace",
         uiFontSize: '0.72rem',
         frames: {
           editorBackground: 'var(--code-bg)',
@@ -42,8 +42,8 @@ export default defineConfig({
           frameBoxShadowCssValue: 'none',
           inlineButtonForeground: 'var(--code-meta)',
           inlineButtonBorder: 'var(--code-border)',
-          tooltipSuccessBackground: 'var(--spark)',
-          tooltipSuccessForeground: '#1e1b18',
+          tooltipSuccessBackground: '#f3f0e9',
+          tooltipSuccessForeground: '#141518',
         },
       },
     }),

@@ -2,6 +2,7 @@
 import { url } from '../lib/url'
 import { LANGS, t, type Lang } from '../lib/i18n'
 import { WORK_URL } from '../lib/repo'
+import Lockup from './Lockup.astro'
 
 interface Props {
   lang: Lang
@@ -16,9 +17,9 @@ const langLabel: Record<Lang, string> = { 'pt-br': 'PT', en: 'EN' }
 
 <header class="site-header" data-issue={issue ? '' : undefined}>
   <div class="container site-header__row">
-    <a class="brand" href={url(lang)}>
-      <span class="brand__dot" aria-hidden="true"></span>
-      <span class="brand__name">Evidence Lab</span>
+    <a class="brand" href={url(lang)} aria-label="Synko Lab">
+      <Lockup class="brand__lockup" preserveAspectRatio="xMinYMid slice" animated />
+      <span class="brand__name" aria-hidden="true">Lab</span>
     </a>
 
     {
@@ -94,10 +95,9 @@ const langLabel: Record<Lang, string> = { 'pt-br': 'PT', en: 'EN' }
     position: sticky;
     top: 0;
     z-index: 50;
-    background: var(--header-bg);
+    background: var(--paper);
     border-bottom: 1px solid var(--rule);
-    backdrop-filter: saturate(1.4) blur(10px);
-    -webkit-backdrop-filter: saturate(1.4) blur(10px);
+    transition: background-color var(--base) var(--ease);
   }
 
   .site-header__row {
@@ -111,24 +111,30 @@ const langLabel: Record<Lang, string> = { 'pt-br': 'PT', en: 'EN' }
   .brand {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     flex: none;
     color: var(--ink);
-    font-size: 0.98rem;
-    font-weight: 560;
-    letter-spacing: -0.01em;
     text-decoration: none;
   }
 
-  .brand__dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--spark);
+  /* Lockup em altura par para o contato cair num canto de pixel (brand §3.4). */
+  .brand__lockup {
+    display: block;
+    width: auto;
+    height: 22px;
   }
 
   .brand__name {
-    transition: opacity 240ms var(--ease-out);
+    padding-left: 12px;
+    border-left: 1px solid var(--rule);
+    color: var(--ink-muted);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    line-height: 22px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: opacity var(--base) var(--ease);
   }
 
   .header-issue {
@@ -140,27 +146,20 @@ const langLabel: Record<Lang, string> = { 'pt-br': 'PT', en: 'EN' }
     padding-left: 24px;
     border-left: 1px solid var(--rule);
     opacity: 0;
-    transform: translateY(6px);
-    filter: blur(3px);
-    transition:
-      opacity 320ms var(--ease-out),
-      transform 420ms var(--ease-out),
-      filter 320ms var(--ease-out);
+    transition: opacity var(--base) var(--ease);
     pointer-events: none;
   }
 
   .is-reading .header-issue {
     opacity: 1;
-    transform: none;
-    filter: none;
   }
 
   .header-issue__number {
     flex: none;
-    color: var(--wine-text);
+    color: var(--ink-muted);
     font-family: var(--font-mono);
     font-size: 0.72rem;
-    font-weight: 600;
+    font-weight: 500;
     letter-spacing: 0.06em;
   }
 
@@ -188,8 +187,7 @@ const langLabel: Record<Lang, string> = { 'pt-br': 'PT', en: 'EN' }
     color: var(--ink-soft);
     font-size: 0.9rem;
     text-decoration: none;
-    border-radius: 9px;
-    transition: color 160ms var(--ease-out), background-color 160ms var(--ease-out);
+    transition: color var(--fast) var(--ease), background-color var(--fast) var(--ease);
   }
 
   .site-nav__link .icon {
@@ -219,10 +217,10 @@ const langLabel: Record<Lang, string> = { 'pt-br': 'PT', en: 'EN' }
     color: var(--ink-muted);
     font-family: var(--font-mono);
     font-size: 0.72rem;
-    font-weight: 600;
+    font-weight: 500;
     letter-spacing: 0.06em;
     text-decoration: none;
-    transition: color 160ms var(--ease-out);
+    transition: color var(--fast) var(--ease);
   }
 
   .lang-switch a:hover {
@@ -230,7 +228,7 @@ const langLabel: Record<Lang, string> = { 'pt-br': 'PT', en: 'EN' }
   }
 
   .lang-switch a[aria-current='true'] {
-    color: var(--wine-text);
+    color: var(--ink);
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 0.5em;
@@ -245,9 +243,8 @@ const langLabel: Record<Lang, string> = { 'pt-br': 'PT', en: 'EN' }
     color: var(--ink-soft);
     background: transparent;
     border: 1px solid var(--rule);
-    border-radius: 9px;
     cursor: pointer;
-    transition: color 160ms var(--ease-out), border-color 160ms var(--ease-out), background-color 160ms var(--ease-out);
+    transition: color var(--fast) var(--ease), border-color var(--fast) var(--ease), background-color var(--fast) var(--ease);
   }
 
   .theme-toggle:hover {
@@ -260,7 +257,7 @@ const langLabel: Record<Lang, string> = { 'pt-br': 'PT', en: 'EN' }
     grid-area: 1 / 1;
     width: 18px;
     height: 18px;
-    transition: opacity 240ms var(--ease-out), transform 360ms var(--ease-out);
+    transition: opacity var(--base) var(--ease), transform var(--base) var(--ease);
   }
 
   .theme-toggle__moon {
@@ -283,10 +280,19 @@ const langLabel: Record<Lang, string> = { 'pt-br': 'PT', en: 'EN' }
       gap: 12px;
     }
 
+    /* Só o símbolo no celular: a largura corta o viewBox e o wordmark some. */
+    .brand__lockup {
+      width: 22px;
+    }
+
+    .brand__lockup :global(.wordmark) {
+      display: none;
+    }
+
     /* No celular a marca cede lugar ao número da edição durante a leitura. */
     .header-issue {
       position: absolute;
-      left: calc(var(--gutter) + 18px);
+      left: var(--gutter);
       padding-left: 0;
       border-left: 0;
     }
@@ -295,8 +301,12 @@ const langLabel: Record<Lang, string> = { 'pt-br': 'PT', en: 'EN' }
       display: none;
     }
 
-    .is-reading .brand__name {
+    .is-reading .brand {
       opacity: 0;
+    }
+
+    .brand {
+      transition: opacity var(--base) var(--ease);
     }
 
     .site-nav__link {

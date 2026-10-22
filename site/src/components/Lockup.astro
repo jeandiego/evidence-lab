@@ -1,0 +1,64 @@
+---
+// Lockup Synko (brand/assets/logo/svg/synko-lockup-black.svg) em currentColor. Nunca digitar "SYNKO" em fonte.
+import type { HTMLAttributes } from 'astro/types'
+
+type Props = HTMLAttributes<'svg'> & { animated?: boolean }
+
+const { animated, class: className, ...rest } = Astro.props
+---
+
+<svg viewBox="0 0 4988.73 1008" aria-hidden="true" class:list={[className, { 'is-animated': animated }]} {...rest}><g fill="currentColor"><g><rect class="square square--a" x="0" y="504" width="504" height="504"/><rect class="square square--b" x="504" y="0" width="504" height="504"/></g><g class="wordmark" transform="translate(1411.2 879)"><path d="M312.93 9Q176.67 9 95.2 -53.37Q13.73 -115.73 0 -230H129.87Q137.93 -165.33 187.73 -129.57Q237.53 -93.8 317.8 -93.8Q384.07 -93.8 419.17 -117.8Q454.27 -141.8 454.27 -184.13Q454.27 -222.87 432.4 -246.37Q410.53 -269.87 359.4 -284.47L228.87 -322.8Q128.8 -352.6 82.23 -401.77Q35.67 -450.93 35.67 -525.33Q35.67 -588.47 67.97 -634.63Q100.27 -680.8 159.13 -705.9Q218 -731 296.8 -731Q418 -731 490.33 -672.3Q562.67 -613.6 572.67 -514H442.8Q432 -572.87 392.97 -600.53Q353.93 -628.2 289.67 -628.2Q232.33 -628.2 198.93 -605.8Q165.53 -583.4 165.53 -544.33Q165.53 -513.27 185.47 -490.3Q205.4 -467.33 260.73 -451L393.4 -411.87Q493.53 -382.87 538.83 -332.63Q584.13 -282.4 584.13 -205.67Q584.13 -102.47 512.73 -46.73Q441.33 9 312.93 9Z"/><path d="M888.27 0V-300.33L618.94 -720H781.27L999.94 -348.33H926.01L1143.94 -720H1292.41L1023.07 -300.33V0Z"/><path d="M1426.53 0V-720H1595.13L1939.93 -92L1900.8 -82.67V-720H2031.6V0H1863L1518.2 -628L1557.33 -637.33V0Z"/><path d="M2233.2 0L2368 0L2368 -720L2233.2 -720ZM2368 -375L2713 -720L2884.57 -720L2539.57 -375L2914.57 0L2743 0Z"/><path d="M3237.39 10Q3162.57 10 3100.25 -16.68Q3037.94 -43.36 2992.61 -92.77Q2947.27 -142.18 2922.26 -210.73Q2897.25 -279.29 2897.25 -363Q2897.25 -473.78 2940.16 -556.24Q2983.07 -638.71 3059.88 -684.36Q3136.7 -730 3236.39 -730Q3338.08 -730 3414.59 -684.42Q3491.1 -638.83 3534.31 -556Q3577.53 -473.17 3577.53 -362Q3577.53 -278.9 3552.52 -210.37Q3527.51 -141.83 3482.17 -92.59Q3436.83 -43.36 3374.41 -16.68Q3311.99 10 3237.39 10ZM3236.39 -97.53Q3298.03 -97.53 3344.31 -130.63Q3390.59 -163.72 3416.66 -223.52Q3442.73 -283.31 3442.73 -364Q3442.73 -443.69 3417.07 -501.79Q3391.42 -559.89 3345.14 -591.18Q3298.86 -622.47 3236.39 -622.47Q3174.69 -622.47 3128.52 -591.2Q3082.36 -559.93 3057.2 -502.29Q3032.05 -444.64 3032.05 -364Q3032.05 -282.48 3057.7 -222.77Q3083.36 -163.07 3129.44 -130.3Q3175.52 -97.53 3236.39 -97.53Z"/></g></g></svg>
+
+<style>
+  /*
+    Movimento de contato do brand (§12): os quadrados se afastam pela diagonal e voltam a se
+    tocar, parando exatamente no contato. Loop longo e de propósito: 12s, quase todo em contato.
+    O brand prevê o logo sem loop; o loop foi pedido para o header do lab.
+  */
+  .is-animated {
+    overflow: visible;
+  }
+
+  .is-animated .square {
+    animation: 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  .is-animated .square--a {
+    animation-name: contact-a;
+  }
+
+  .is-animated .square--b {
+    animation-name: contact-b;
+  }
+
+  /* 4% de 12s = 480ms, a duração de contato do brand. Distância: 0,35 do quadrado. */
+  @keyframes contact-a {
+    0%,
+    96%,
+    100% {
+      transform: translate(-176px, 176px);
+    }
+    4%,
+    90% {
+      transform: none;
+    }
+  }
+
+  @keyframes contact-b {
+    0%,
+    96%,
+    100% {
+      transform: translate(176px, -176px);
+    }
+    4%,
+    90% {
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .is-animated .square {
+      animation: none;
+    }
+  }
+</style>

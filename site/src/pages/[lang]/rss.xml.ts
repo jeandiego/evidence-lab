@@ -11,7 +11,7 @@ export async function GET(context: APIContext) {
   const lang = context.params.lang as Lang
   const posts = await postsFor(lang)
   return rss({
-    title: 'Evidence Lab · Synko',
+    title: 'Synko Lab',
     description: t(lang).siteDescription,
     site: context.site!,
     items: posts.map(post => ({

@@ -8,14 +8,14 @@ web
 
 ## Users
 
-O Evidence Lab atende dois públicos principais, sem hierarquia entre eles:
+O Synko Lab atende dois públicos principais, sem hierarquia entre eles:
 
 - outros engenheiros, que precisam compreender, reproduzir e contestar os experimentos;
 - recrutadores e lideranças técnicas, que avaliam profundidade de raciocínio, qualidade de execução e capacidade de comunicar decisões de engenharia.
 
 ## Product Purpose
 
-O Evidence Lab é um laboratório público de engenharia e o repositório de evidências dos artigos publicados no blog e adaptados para o LinkedIn.
+O Synko Lab é um laboratório público de engenharia e o repositório de evidências dos artigos publicados no blog e adaptados para o LinkedIn.
 
 Seus três objetivos têm o mesmo peso:
 
@@ -51,10 +51,10 @@ Cada publicação conecta uma tese curta a código executável, metodologia expl
 
 ## Brand Commitments
 
-- A identidade pública é Evidence Lab, alinhada à marca pessoal Synko/Jean Diego.
+- A identidade pública é Synko Lab, o laboratório de engenharia da Synko (Jean Diego).
 - A voz é técnica, direta, segura e intelectualmente honesta.
 - A apresentação deve comunicar publicação técnica e engenharia editorial, não um dashboard genérico ou uma ferramenta de IA.
-- A referência visual vinculante existente está em `/Users/jeandiego/Dev/synko-lp/app/globals.css`.
+- A referência visual vinculante é o Synko Brand System v1.0 em `/Users/jeandiego/synko/brand-synko/brand` (`SYNKO_DESIGN_SYSTEM.md`, `foundations/`).
 - A identidade evita cores oficiais de frameworks como linguagem dominante; marcas de terceiros podem aparecer apenas como sinais locais e discretos.
 
 ## Evidence on Hand
@@ -63,7 +63,7 @@ Cada publicação conecta uma tese curta a código executável, metodologia expl
 - Template estrutural de posts: `templates/post-template/`.
 - Labs, metodologia, dados e textos: `posts/`.
 - Implementação visual de referência aprovada: `posts/002-form-abstractions-dx/lab/`.
-- Tokens e compromissos visuais da marca: `/Users/jeandiego/Dev/synko-lp/app/globals.css`.
+- Tokens e compromissos visuais da marca: `/Users/jeandiego/synko/brand-synko/brand/foundations/`.
 - Não há autorização para fabricar benchmarks, depoimentos, usuários, resultados ou provas ausentes.
 
 ## Product Principles
