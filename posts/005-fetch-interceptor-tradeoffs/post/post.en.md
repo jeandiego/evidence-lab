@@ -10,7 +10,10 @@ status: review
 thesis: "When N microfrontends try to renew the same token at the same time, strict rotation can drop the session and generate up to N calls where one would do. A patch in the shell and a shared module both fix the collision; the difference is who pays and what each one hides."
 tags: [single-spa, microfrontends, authentication, jwt, architecture, frontend]
 demo:
-  kind: none
+  kind: video
+# Vídeo para o LinkedIn e hero do site; a capa alimenta o card OG.
+video: ./assets/reel-005.mp4
+poster: ./assets/reel-005-poster.jpg
 evidence:
   - ../evidence/summary.json
   - ../evidence/benchmark.json

@@ -10,7 +10,10 @@ status: review
 thesis: "Quando N microfrontends tentam renovar o mesmo token ao mesmo tempo, uma rotação estrita pode derrubar a sessão e gerar até N chamadas onde uma bastaria. Um patch no shell e um módulo compartilhado resolvem a colisão; a diferença está em quem paga o custo e no que cada um esconde."
 tags: [single-spa, microfrontends, authentication, jwt, architecture, frontend]
 demo:
-  kind: none
+  kind: video
+# Vídeo para o LinkedIn e hero do site; a capa alimenta o card OG.
+video: ./assets/reel-005.mp4
+poster: ./assets/reel-005-poster.jpg
 evidence:
   - ../evidence/summary.json
   - ../evidence/benchmark.json

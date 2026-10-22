@@ -3,7 +3,8 @@
 **Afirmação central:** quando N microfrontends renovam o mesmo token cada um por conta própria, a colisão derruba sessões e multiplica as chamadas de refresh por N. Um patch em `window.fetch` no shell e um módulo compartilhado resolvem; a diferença está em quem paga o custo e no que cada um esconde.
 
 **Estado:** em revisão
-**Link:** a preencher após a publicação no LinkedIn
+**Artigo:** <https://lab.synko.digital/pt-br/005-fetch-interceptor-tradeoffs/> (en: `/en/`)
+**LinkedIn:** a preencher após a publicação
 
 ## O que este repositório prova
 
@@ -34,7 +35,17 @@ npm run benchmark   # navegador, com Playwright: S1, S2, S5, S6, S8
 npm run scale       # usuários simulados no Node (cenários A a E)
 ```
 
-Os diagramas do artigo vêm de `design/diagrams/build.py`.
+Os diagramas do artigo vêm de `design/diagrams/build.py` (SVGs em `post/assets/`, em português e inglês).
+
+O vídeo (`post/assets/reel-005.mp4`, 1080×1350, 15 s) é feito a partir de uma gravação real do lab. Com o lab no ar (`npm run up`):
+
+```bash
+cd motion
+node record.mjs     # grava baseline e patch: frames, cliques, requests e contadores
+node render.mjs     # renderiza out/reel-005.mp4 com o som sintetizado
+```
+
+`post/assets/reel-005.mp4` é essa saída reencodada para a web (H.264, cerca de 2,7 MB).
 
 ## Resultados
 
