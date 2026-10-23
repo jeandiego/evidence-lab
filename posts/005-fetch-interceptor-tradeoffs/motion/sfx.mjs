@@ -58,67 +58,69 @@ export function writeSfx(path) {
   const pRef = net("patch").find((r) => r.op === "refreshToken");
 
   // Cama harmônica: tensa até o patch, abre em maior quando os dois MFEs voltam.
-  pad(0, 6.05, [55, 82.4, 110, 130.8], 0.09);
-  pad(6.0, 9.4, [55, 82.4, 110, 123.5, 164.8], 0.08);
-  pad(9.15, 14.9, [55, 110, 138.6, 164.8, 220, 277.2], 0.085);
+  pad(0, 14.65, [55, 82.4, 110, 130.8], 0.09);
+  pad(14.55, 21.8, [55, 82.4, 110, 123.5, 164.8], 0.08);
+  pad(21.4, 29.95, [55, 110, 138.6, 164.8, 220, 277.2], 0.085);
 
-  // Ato 1
-  whoosh(0.45, 1.0, true, 0.55);
-  boom(0.95, 0.7);
+  // Ato 1: a tela entra, o usuário navega, o token vence.
+  whoosh(1.0, 1.8, true, 0.5);
+  boom(2.0, 0.65);
   for (const c of tl.clicks) click(c.t, (c.at.x / 1280) * 1.2 - 0.6);
-  whoosh(2.12, 0.32, true, 0.4);
-  buzz(tl.clicks.find((c) => c.name === "expireToken").t + 0.04, 0.22, 0.18, 0.3);
+  whoosh(3.65, 0.6, true, 0.18);
+  chime(tl.clicks.find((c) => c.name === "addToCart").t + 0.25, [1318.5, 1760], 0.08);
+  whoosh(5.4, 0.7, true, 0.28);
+  buzz(tl.clicks.find((c) => c.name === "expireToken").t + 0.05, 0.3, 0.18, 0.3);
 
   // Ato 2: câmera lenta. Catálogo à esquerda, carrinho à direita.
-  whoosh(3.12, 0.34, false, 0.35);
-  whoosh(3.66, 0.3, true, 0.3);
+  whoosh(7.7, 0.7, false, 0.28);
+  whoosh(9.15, 0.6, true, 0.25);
   for (let ms = 0; ms <= tl.slowMs; ms += 20) tick(tl.slow.baseline.from + (ms / tl.slowMs) * (tl.slow.baseline.to - tl.slow.baseline.from));
   ping(ok.vStart, 1318.5, -0.6);
-  ping(bad.vStart + 0.012, 1318.5, 0.6);
-  swept(ok.vStart, ok.vEnd - ok.vStart, 180, 2400, { gain: 0.28, verb: 0.3 });
+  ping(bad.vStart + 0.02, 1318.5, 0.6);
+  swept(ok.vStart, ok.vEnd - ok.vStart, 180, 2400, { gain: 0.24, verb: 0.3 });
   chime(ok.vEnd, [1318.5, 1975.5], 0.12);
-  buzz(bad.vEnd, 0.42, 0.34, 0.5);
+  buzz(bad.vEnd, 0.5, 0.34, 0.5);
   boom(bad.vEnd, 0.85, 70);
   const prod = net("baseline").find((r) => r.op === "products");
   ping(prod.vStart, 1568, -0.6, 0.15);
   ping(prod.vEnd, 1975.5, -0.6, 0.15);
-  whoosh(5.32, 0.36, true, 0.35);
-  buzz(5.44, 0.3, 0.2, 0);
+  whoosh(12.55, 0.7, true, 0.3);
+  buzz(13.2, 0.35, 0.2, 0);
 
   // Transição e ato 3
-  whoosh(5.9, 0.24, false, 0.6);
-  boom(6.0, 0.8, 120);
-  swept(6.0, 0.5, 9000, 900, { gain: 0.3, verb: 0.4 });
-  chime(6.62, [880, 1318.5, 1760], 0.1, 0.06);
-  for (let k = 0; k < 7; k++) tick(6.32 + k * 0.093, 0.07); // as linhas do código entrando
-  whoosh(7.18, 0.3, false, 0.35);
-  whoosh(7.62, 0.3, true, 0.3);
+  whoosh(14.45, 0.4, false, 0.55);
+  boom(14.6, 0.8, 120);
+  swept(14.6, 0.8, 9000, 900, { gain: 0.28, verb: 0.4 });
+  chime(15.7, [880, 1318.5, 1760], 0.1, 0.08);
+  for (let k = 0; k < 7; k++) tick(15.4 + k * 0.214, 0.07); // as linhas do código entrando
+  whoosh(17.9, 0.7, false, 0.3);
+  whoosh(19.0, 0.6, true, 0.25);
   for (let ms = 0; ms <= tl.slowMs; ms += 20) tick(tl.slow.patch.from + (ms / tl.slowMs) * (tl.slow.patch.to - tl.slow.patch.from));
-  ping(tl.slow.patch.from + 0.08, 1318.5, -0.6, 0.16);
-  ping(tl.slow.patch.from + 0.09, 1318.5, 0.6, 0.16);
+  ping(tl.slow.patch.from + 0.12, 1318.5, -0.6, 0.16);
+  ping(tl.slow.patch.from + 0.14, 1318.5, 0.6, 0.16);
   ping(pRef.vStart, 1760, 0, 0.24);
   // Riser enquanto o único refresh está em voo; resolve quando o token novo volta.
-  swept(pRef.vStart, pRef.vEnd - pRef.vStart, 150, 7000, { gain: 0.36, verb: 0.35 });
+  swept(pRef.vStart, pRef.vEnd - pRef.vStart, 150, 7000, { gain: 0.32, verb: 0.35 });
   add(pRef.vStart, pRef.vEnd - pRef.vStart, (t, u) => sine(220 * Math.pow(4, u), t) * u * u * 0.5, { gain: 0.16, verb: 0.3 });
   boom(pRef.vEnd, 1, 110);
-  chime(pRef.vEnd, [880, 1108.7, 1318.5, 1760, 2217.5], 0.16, 0.035);
+  chime(pRef.vEnd, [880, 1108.7, 1318.5, 1760, 2217.5], 0.16, 0.05);
   for (const r of net("patch").filter((x) => x.op !== "refreshToken")) {
     const pan = r.op === "cart" ? 0.6 : -0.6;
     ping(r.vStart, 1760, pan, 0.14);
     ping(r.vEnd, 2217.5, pan, 0.14);
   }
-  whoosh(10.08, 0.32, true, 0.35);
-  chime(10.3, [1318.5, 1760], 0.12);
+  whoosh(22.95, 0.7, true, 0.28);
+  chime(23.5, [1318.5, 1760], 0.12, 0.08);
 
   // Ato 4 e cartela
-  whoosh(11.22, 0.45, false, 0.4);
-  chime(11.6, [659.3, 880], 0.1, 0.12);
-  whoosh(12.85, 0.7, false, 0.45);
-  boom(12.97, 0.9, 80);
-  boom(13.12, 0.95, 100);
-  chime(13.56, [440, 554.4, 659.3], 0.12, 0.05);
-  boom(13.72, 0.8, 70);
-  chime(13.72, [880, 1108.7, 1318.5, 1760, 2217.5, 2637], 0.13, 0.04);
+  whoosh(24.9, 0.8, false, 0.32);
+  chime(25.6, [659.3, 880], 0.1, 0.25);
+  whoosh(27.9, 1.1, false, 0.4);
+  boom(27.6, 0.9, 80);
+  boom(27.85, 0.95, 100);
+  chime(28.4, [440, 554.4, 659.3], 0.12, 0.07);
+  boom(28.6, 0.8, 70);
+  chime(28.6, [880, 1108.7, 1318.5, 1760, 2217.5, 2637], 0.13, 0.05);
 
   // Reverb: combs paralelos no bus de envio, um pouco diferentes por canal.
   const comb = (src, out, delays, fb) => {

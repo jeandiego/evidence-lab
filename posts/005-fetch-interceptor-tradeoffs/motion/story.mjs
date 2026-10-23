@@ -7,7 +7,7 @@ const log = { baseline: read("./footage/baseline/log.json"), patch: read("./foot
 const S1 = read("../evidence/summary.json").S1.variants;
 
 export const FPS = 60;
-export const DURATION = 15;
+export const DURATION = 30;
 export const SIZE = { width: 1080, height: 1350 };
 
 const mark = (take, name) => log[take].marks.find((m) => m.name === name);
@@ -16,32 +16,37 @@ const back = { baseline: mark("baseline", "back").t, patch: mark("patch", "back"
 // Janelas em câmera lenta: os primeiros SLOW_MS depois do clique em "Voltar".
 const SLOW_MS = 240;
 export const SLOW = {
-  baseline: { from: 3.45, to: 5.15 },
-  patch: { from: 7.4, to: 9.9 },
+  baseline: { from: 8.8, to: 12.2 },
+  patch: { from: 18.6, to: 22.6 },
 };
 for (const [k, w] of Object.entries(SLOW)) w.factor = Math.round(((w.to - w.from) * 1000) / SLOW_MS);
 
-// Tempo do vídeo (s) -> tempo da gravação (ms), linear por trechos.
+// Tempo do vídeo (s) -> tempo da gravação (ms), linear por trechos. Fora da câmera lenta, a gravação nunca é
+// acelerada: entre um clique e outro ela roda em velocidade real ou mais devagar (a tela está parada).
 const srcMap = {
   baseline: [
-    [0, mark("baseline", "openProduct").t - 600],
-    [1.25, mark("baseline", "openProduct").t],
-    [1.9, mark("baseline", "addToCart").t + 520],
-    [2.5, mark("baseline", "expireToken").t],
-    [3.0, mark("baseline", "expireToken").t + 560],
-    [3.45 - 0.45, back.baseline - 480],
+    [0, mark("baseline", "openProduct").t - 1180],
+    [3.3, mark("baseline", "openProduct").t],
+    [4.4, mark("baseline", "addToCart").t],
+    [6.4, mark("baseline", "expireToken").t],
     [SLOW.baseline.from, back.baseline],
     [SLOW.baseline.to, back.baseline + SLOW_MS],
-    [6.0, back.baseline + 1500],
+    [14.6, back.baseline + 1500],
   ],
   patch: [
-    [6.0, back.patch - 820],
+    [14.6, back.patch - 1500],
     [SLOW.patch.from, back.patch],
     [SLOW.patch.to, back.patch + SLOW_MS],
-    [11.0, back.patch + 1300],
-    [15.0, back.patch + 2100],
+    [24.4, back.patch + 1300],
+    [30.0, back.patch + 2100],
   ],
 };
+// Nenhum trecho fora da câmera lenta pode andar mais rápido que a gravação.
+for (const pairs of Object.values(srcMap))
+  for (let i = 1; i < pairs.length; i++) {
+    const [[t0, m0], [t1, m1]] = [pairs[i - 1], pairs[i]];
+    console.assert((m1 - m0) / 1000 <= (t1 - t0) + 1e-9, `trecho acelerado em ${t0}s -> ${t1}s`);
+  }
 const interp = (pairs, x, a = 0, b = 1) => {
   if (x <= pairs[0][a]) return pairs[0][b];
   for (let i = 1; i < pairs.length; i++) {
