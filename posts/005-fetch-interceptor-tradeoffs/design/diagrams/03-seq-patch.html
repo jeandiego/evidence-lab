@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patch no shell: window.fetch no orquestrador</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --color-paper:#f5f5f5; --color-ink:#2d3142; --color-muted:#4f5d75; --color-accent:#bf4520;
+      --font-sans:'Geist', system-ui, sans-serif; --font-serif:'Instrument Serif','Noto Serif',serif;
+      --font-mono:'Geist Mono', ui-monospace, monospace; }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+      min-height: 100vh; display:flex; justify-content:center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: .66rem; font-weight: 500; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--color-muted); margin-bottom: .5rem; }
+    h1 { font-family: var(--font-serif); font-size: clamp(1.5rem, 2.4vw + .75rem, 2rem); font-weight: 400;
+      letter-spacing: -.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    .cards { display: grid; grid-template-columns: 1.1fr .9fr; gap: 16px; margin-top: 24px; }
+    .card { background: #fff; border: 1px solid rgba(45,49,66,.12); border-radius: 6px; padding: 16px 18px; }
+    .card h2 { font-family: var(--font-mono); font-size: .62rem; font-weight: 500; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--color-muted); margin-bottom: .6rem; }
+    .card p, .card li { font-size: .88rem; line-height: 1.55; }
+    .card ul { padding-left: 1.1rem; }
+    .card code { font-family: var(--font-mono); font-size: .8rem; }
+    table { border-collapse: collapse; width: 100%; font-size: .84rem; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid rgba(45,49,66,.12); vertical-align: top; }
+    th { font-family: var(--font-mono); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--color-muted); font-weight: 500; }
+    td code { font-family: var(--font-mono); font-size: .78rem; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+</style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Sequência · cenário S1 · token expirado nos dois MFEs</p>
+    <h1>Patch no shell: window.fetch no orquestrador</h1>
+    <div class="diagram-container">
+      <svg viewBox="0 0 960 636" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="seq-patch-title seq-patch-desc">
+        <title id="seq-patch-title">Patch no shell: window.fetch no orquestrador</title>
+        <desc id="seq-patch-desc">Sequência do cenário S1 com o patch no shell: um refresh serve os dois MFEs e a falha rejeita todas as requests com AuthExpiredError.</desc>
+        <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/></marker>
+      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#bf4520"/></marker>
+      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#2e5aa8"/></marker>
+      <marker id="arrow-open" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polyline points="0 0, 8 3, 0 6" fill="none" stroke="#4f5d75" stroke-width="1.2"/></marker>
+    </defs>
+        <rect width="100%" height="100%" fill="#f5f5f5"/>
+<line x1="120" y1="72" x2="120" y2="572" stroke="rgba(45,49,66,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
+<line x1="330" y1="72" x2="330" y2="572" stroke="rgba(45,49,66,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
+<line x1="540" y1="72" x2="540" y2="572" stroke="rgba(45,49,66,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
+<line x1="750" y1="72" x2="750" y2="572" stroke="rgba(45,49,66,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
+<rect x="96" y="256" width="678" height="288" rx="4" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.22)" stroke-width="1"/>
+<rect x="96" y="256" width="40" height="16" rx="2" fill="#f5f5f5" stroke="rgba(45,49,66,0.22)" stroke-width="1"/>
+<text x="116" y="268" fill="#4f5d75" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.12em">ALT</text>
+<text x="108" y="288" fill="#5a6580" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.04em">[refresh ok]</text>
+<line x1="104" y1="444" x2="766" y2="444" stroke="rgba(45,49,66,0.2)" stroke-width="1" stroke-dasharray="4,3"/>
+<text x="108" y="460" fill="#5a6580" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.04em">[refresh falha]</text>
+<path d="M 540,112 H 568 Q 574,112 574,118 V 126 Q 574,132 568,132 H 540" fill="none" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+<text x="586" y="125" fill="#5a6580" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.06em">PATCH FETCH</text>
+<line x1="120" y1="164" x2="540" y2="164" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+<rect x="187.0" y="144" width="76" height="12" rx="2" fill="#f5f5f5"/>
+<text x="225.0" y="153" fill="#5a6580" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">FETCH QUERY</text>
+<line x1="330" y1="200" x2="540" y2="200" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+<rect x="397.0" y="180" width="76" height="12" rx="2" fill="#f5f5f5"/>
+<text x="435.0" y="189" fill="#5a6580" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">FETCH QUERY</text>
+<line x1="540" y1="236" x2="750" y2="236" stroke="#bf4520" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+<rect x="607.0" y="216" width="76" height="12" rx="2" fill="#f5f5f5"/>
+<text x="645.0" y="225" fill="#bf4520" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">REFRESH rt1</text>
+<line x1="750" y1="316" x2="540" y2="316" stroke="#4f5d75" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+<rect x="613.0" y="296" width="64" height="12" rx="2" fill="#f5f5f5"/>
+<text x="645.0" y="305" fill="#5a6580" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">200 + rt2</text>
+<line x1="540" y1="352" x2="750" y2="352" stroke="#2e5aa8" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+<rect x="613.0" y="332" width="64" height="12" rx="2" fill="#f5f5f5"/>
+<text x="645.0" y="341" fill="#5a6580" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">REPLAY 2X</text>
+<line x1="540" y1="388" x2="120" y2="388" stroke="#4f5d75" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+<rect x="419.0" y="368" width="32" height="12" rx="2" fill="#f5f5f5"/>
+<text x="435.0" y="377" fill="#5a6580" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">200</text>
+<line x1="540" y1="424" x2="330" y2="424" stroke="#4f5d75" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+<rect x="419.0" y="404" width="32" height="12" rx="2" fill="#f5f5f5"/>
+<text x="435.0" y="413" fill="#5a6580" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">200</text>
+<line x1="540" y1="488" x2="120" y2="488" stroke="#4f5d75" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+<rect x="397.0" y="468" width="76" height="12" rx="2" fill="#f5f5f5"/>
+<text x="435.0" y="477" fill="#5a6580" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">AUTHEXPIRED</text>
+<line x1="540" y1="524" x2="330" y2="524" stroke="#4f5d75" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+<rect x="397.0" y="504" width="76" height="12" rx="2" fill="#f5f5f5"/>
+<text x="435.0" y="513" fill="#5a6580" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">AUTHEXPIRED</text>
+<rect x="40.0" y="24" width="160" height="48" rx="6" fill="#f5f5f5"/>
+<rect x="40.0" y="24" width="160" height="48" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+<text x="120.0" y="46.0" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">MFE catalog</text>
+<text x="120.0" y="62.0" fill="#4f5d75" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">HttpLink padrão</text>
+<rect x="250.0" y="24" width="160" height="48" rx="6" fill="#f5f5f5"/>
+<rect x="250.0" y="24" width="160" height="48" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+<text x="330.0" y="46.0" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">MFE cart</text>
+<text x="330.0" y="62.0" fill="#4f5d75" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">HttpLink padrão</text>
+<rect x="460.0" y="24" width="160" height="48" rx="6" fill="#f5f5f5"/>
+<rect x="460.0" y="24" width="160" height="48" rx="6" fill="rgba(191,69,32,0.08)" stroke="#bf4520" stroke-width="1"/>
+<text x="540.0" y="46.0" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">window.fetch</text>
+<text x="540.0" y="62.0" fill="#4f5d75" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">patch no root</text>
+<rect x="670.0" y="24" width="160" height="48" rx="6" fill="#f5f5f5"/>
+<rect x="670.0" y="24" width="160" height="48" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+<text x="750.0" y="46.0" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">API</text>
+<text x="750.0" y="62.0" fill="#4f5d75" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">node · graphql · jwt</text>
+<line x1="30" y1="600" x2="930" y2="600" stroke="rgba(45,49,66,0.1)" stroke-width="0.8"/>
+<text x="30" y="616" fill="#4f5d75" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">LEGENDA</text>
+<line x1="110" y1="613" x2="138" y2="613" stroke="#2e5aa8" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+<text x="146" y="616" fill="#5a6580" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.06em">CHAMADA HTTP</text>
+<line x1="237" y1="613" x2="265" y2="613" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+<text x="273" y="616" fill="#5a6580" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.06em">CHAMADA</text>
+<line x1="336" y1="613" x2="364" y2="613" stroke="#4f5d75" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+<text x="372" y="616" fill="#5a6580" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.06em">RETORNO</text>
+<line x1="435" y1="613" x2="463" y2="613" stroke="#4f5d75" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-open)"/>
+<text x="471" y="616" fill="#5a6580" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.06em">SEM RESPOSTA</text>
+<line x1="562" y1="613" x2="590" y2="613" stroke="#bf4520" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+<text x="598" y="616" fill="#5a6580" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.06em">FALHA / DESTAQUE</text>
+<rect x="711" y="607" width="20" height="12" rx="3" fill="rgba(191,69,32,0.08)" stroke="#bf4520" stroke-width="1"/>
+<text x="747" y="616" fill="#5a6580" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.06em">ONDE MORA A LÓGICA</text>
+      </svg>
+    </div>
+    <div class="cards">
+      <div class="card"><h2>Como funciona</h2><ul><li>Fila rejeitada com <code>AuthExpiredError</code>, nunca <code>undefined</code></li><li><code>signal</code> de quem chama é preservado</li><li><code>navigator.locks</code> e releitura do storage entre abas</li><li>Renova antes de expirar e faz um retry único no 401</li><li>Matcher por origem e pathname; <code>redirectTo</code> codificado</li></ul></div>
+      <div class="card"><h2>Custo do patch</h2><p>O patch ainda é global e escondido: o contrato vive no root-config, o formato do storage é conhecido pelo orquestrador e a lógica depende de alguém manter esse repositório.</p></div>
+    </div>
+  </div>
+</body>
+</html>
