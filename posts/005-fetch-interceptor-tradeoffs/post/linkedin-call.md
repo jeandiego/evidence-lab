@@ -53,7 +53,7 @@ Para quem controla 20 MFEs de times diferentes: patch no shell ou módulo compar
 
 ## Checklist antes de publicar
 
-- [ ] Anexar o vídeo `post/assets/reel-005.mp4` (1080×1350, 15 s) ao post.
+- [ ] Anexar o vídeo `post/assets/reel-005.mp4` (1080×1350, 30 s) ao post.
 - [ ] Artigo em português e em inglês acessíveis nas URLs acima.
 - [ ] Commit com `lab/`, `evidence/`, `design/` e `post/` enviado para `main` no GitHub.
 - [ ] Números conferidos em `evidence/scale-benchmark.json`: 16,53 refreshes por usuário, 94% de refreshes com falha e 100% de usuários deslogados com 20 MFEs e janela de 200 ms.
