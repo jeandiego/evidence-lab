@@ -1,0 +1,865 @@
+{
+  "take": "baseline",
+  "view": {
+    "width": 1280,
+    "height": 960
+  },
+  "scale": 2,
+  "frames": [
+    {
+      "t": 101,
+      "file": "frames/00000.jpg"
+    },
+    {
+      "t": 145,
+      "file": "frames/00001.jpg"
+    },
+    {
+      "t": 209,
+      "file": "frames/00002.jpg"
+    },
+    {
+      "t": 219,
+      "file": "frames/00003.jpg"
+    },
+    {
+      "t": 244,
+      "file": "frames/00004.jpg"
+    },
+    {
+      "t": 412,
+      "file": "frames/00005.jpg"
+    },
+    {
+      "t": 426,
+      "file": "frames/00006.jpg"
+    },
+    {
+      "t": 437,
+      "file": "frames/00007.jpg"
+    },
+    {
+      "t": 453,
+      "file": "frames/00008.jpg"
+    },
+    {
+      "t": 470,
+      "file": "frames/00009.jpg"
+    },
+    {
+      "t": 486,
+      "file": "frames/00010.jpg"
+    },
+    {
+      "t": 504,
+      "file": "frames/00011.jpg"
+    },
+    {
+      "t": 520,
+      "file": "frames/00012.jpg"
+    },
+    {
+      "t": 536,
+      "file": "frames/00013.jpg"
+    },
+    {
+      "t": 553,
+      "file": "frames/00014.jpg"
+    },
+    {
+      "t": 570,
+      "file": "frames/00015.jpg"
+    },
+    {
+      "t": 587,
+      "file": "frames/00016.jpg"
+    },
+    {
+      "t": 656,
+      "file": "frames/00017.jpg"
+    },
+    {
+      "t": 1123,
+      "file": "frames/00018.jpg"
+    },
+    {
+      "t": 1141,
+      "file": "frames/00019.jpg"
+    },
+    {
+      "t": 1189,
+      "file": "frames/00020.jpg"
+    },
+    {
+      "t": 1388,
+      "file": "frames/00021.jpg"
+    },
+    {
+      "t": 1411,
+      "file": "frames/00022.jpg"
+    },
+    {
+      "t": 1430,
+      "file": "frames/00023.jpg"
+    },
+    {
+      "t": 1448,
+      "file": "frames/00024.jpg"
+    },
+    {
+      "t": 1467,
+      "file": "frames/00025.jpg"
+    },
+    {
+      "t": 1481,
+      "file": "frames/00026.jpg"
+    },
+    {
+      "t": 1502,
+      "file": "frames/00027.jpg"
+    },
+    {
+      "t": 1506,
+      "file": "frames/00028.jpg"
+    },
+    {
+      "t": 1522,
+      "file": "frames/00029.jpg"
+    },
+    {
+      "t": 1536,
+      "file": "frames/00030.jpg"
+    },
+    {
+      "t": 1553,
+      "file": "frames/00031.jpg"
+    },
+    {
+      "t": 1570,
+      "file": "frames/00032.jpg"
+    },
+    {
+      "t": 1589,
+      "file": "frames/00033.jpg"
+    },
+    {
+      "t": 1656,
+      "file": "frames/00034.jpg"
+    },
+    {
+      "t": 2525,
+      "file": "frames/00035.jpg"
+    },
+    {
+      "t": 2906,
+      "file": "frames/00036.jpg"
+    },
+    {
+      "t": 2921,
+      "file": "frames/00037.jpg"
+    },
+    {
+      "t": 2936,
+      "file": "frames/00038.jpg"
+    },
+    {
+      "t": 2953,
+      "file": "frames/00039.jpg"
+    },
+    {
+      "t": 2969,
+      "file": "frames/00040.jpg"
+    },
+    {
+      "t": 3591,
+      "file": "frames/00041.jpg"
+    },
+    {
+      "t": 3802,
+      "file": "frames/00042.jpg"
+    },
+    {
+      "t": 3846,
+      "file": "frames/00043.jpg"
+    },
+    {
+      "t": 5002,
+      "file": "frames/00044.jpg"
+    },
+    {
+      "t": 5175,
+      "file": "frames/00045.jpg"
+    },
+    {
+      "t": 5375,
+      "file": "frames/00046.jpg"
+    },
+    {
+      "t": 5447,
+      "file": "frames/00047.jpg"
+    },
+    {
+      "t": 7028,
+      "file": "frames/00048.jpg"
+    },
+    {
+      "t": 7206,
+      "file": "frames/00049.jpg"
+    },
+    {
+      "t": 7413,
+      "file": "frames/00050.jpg"
+    },
+    {
+      "t": 7420,
+      "file": "frames/00051.jpg"
+    },
+    {
+      "t": 7435,
+      "file": "frames/00052.jpg"
+    },
+    {
+      "t": 7453,
+      "file": "frames/00053.jpg"
+    },
+    {
+      "t": 7470,
+      "file": "frames/00054.jpg"
+    },
+    {
+      "t": 7486,
+      "file": "frames/00055.jpg"
+    },
+    {
+      "t": 7503,
+      "file": "frames/00056.jpg"
+    },
+    {
+      "t": 7519,
+      "file": "frames/00057.jpg"
+    },
+    {
+      "t": 7536,
+      "file": "frames/00058.jpg"
+    },
+    {
+      "t": 7553,
+      "file": "frames/00059.jpg"
+    },
+    {
+      "t": 7572,
+      "file": "frames/00060.jpg"
+    },
+    {
+      "t": 7623,
+      "file": "frames/00061.jpg"
+    },
+    {
+      "t": 7638,
+      "file": "frames/00062.jpg"
+    },
+    {
+      "t": 7658,
+      "file": "frames/00063.jpg"
+    },
+    {
+      "t": 7669,
+      "file": "frames/00064.jpg"
+    },
+    {
+      "t": 7686,
+      "file": "frames/00065.jpg"
+    },
+    {
+      "t": 7703,
+      "file": "frames/00066.jpg"
+    },
+    {
+      "t": 7719,
+      "file": "frames/00067.jpg"
+    },
+    {
+      "t": 7736,
+      "file": "frames/00068.jpg"
+    },
+    {
+      "t": 7754,
+      "file": "frames/00069.jpg"
+    },
+    {
+      "t": 7769,
+      "file": "frames/00070.jpg"
+    },
+    {
+      "t": 7789,
+      "file": "frames/00071.jpg"
+    }
+  ],
+  "marks": [
+    {
+      "t": 1364,
+      "name": "reset",
+      "at": {
+        "x": 1177.5,
+        "y": 911
+      },
+      "box": {
+        "x": 1109,
+        "y": 896,
+        "width": 137,
+        "height": 30
+      }
+    },
+    {
+      "t": 2880,
+      "name": "openProduct",
+      "at": {
+        "x": 249.703125,
+        "y": 668.4375
+      },
+      "box": {
+        "x": 64,
+        "y": 497.59375,
+        "width": 371.40625,
+        "height": 341.6875
+      }
+    },
+    {
+      "t": 3779,
+      "name": "addToCart",
+      "at": {
+        "x": 750.0625,
+        "y": 414.078125
+      },
+      "box": {
+        "x": 691.796875,
+        "y": 391.078125,
+        "width": 116.53125,
+        "height": 46
+      }
+    },
+    {
+      "t": 5346,
+      "name": "expireToken",
+      "at": {
+        "x": 1034.5,
+        "y": 911
+      },
+      "box": {
+        "x": 966,
+        "y": 896,
+        "width": 137,
+        "height": 30
+      }
+    },
+    {
+      "t": 7381,
+      "name": "back",
+      "at": {
+        "x": 89.3828125,
+        "y": 180.75
+      },
+      "box": {
+        "x": 64,
+        "y": 171,
+        "width": 50.765625,
+        "height": 19.5
+      }
+    },
+    {
+      "t": 7616,
+      "name": "settled"
+    },
+    {
+      "t": 9434,
+      "name": "end"
+    }
+  ],
+  "network": [
+    {
+      "op": "cart",
+      "start": 210,
+      "auth": null,
+      "end": 215,
+      "status": 401,
+      "body": "{\"errors\":[{\"message\":\"UNAUTHENTICATED\",\"extensions\":{\"code\":\"UNAUTHENTICATED\",\"reason\":\"missing token\"}}]}"
+    },
+    {
+      "op": "products",
+      "start": 407,
+      "auth": null,
+      "end": 408,
+      "status": 401,
+      "body": "{\"errors\":[{\"message\":\"UNAUTHENTICATED\",\"extensions\":{\"code\":\"UNAUTHENTICATED\",\"reason\":\"missing token\"}}]}"
+    },
+    {
+      "op": "cart",
+      "start": 1393,
+      "auth": "Bearer eyJhbGciOiJIUzI1N",
+      "end": 1442,
+      "status": 200,
+      "body": "{\"data\":{\"cart\":[]}}"
+    },
+    {
+      "op": "products",
+      "start": 1393,
+      "auth": "Bearer eyJhbGciOiJIUzI1N",
+      "end": 1446,
+      "status": 200,
+      "body": "{\"data\":{\"products\":[{\"id\":\"p1\",\"name\":\"Tênis Move\",\"priceCents\":34900,\"__typename\":\"Product\"},{\"id\":\"p2\",\"name\":\"Fone Aura\",\"priceCents\":59900,\"__typename\":\"Product\"},{\"id\":\"p3\",\"name\":\"Mochila Trilho\",\"priceCents\":28900,\"__typename\":\"Prod"
+    },
+    {
+      "op": "products",
+      "start": 2902,
+      "auth": "Bearer eyJhbGciOiJIUzI1N",
+      "end": 2946,
+      "status": 200,
+      "body": "{\"data\":{\"products\":[{\"id\":\"p1\",\"name\":\"Tênis Move\",\"priceCents\":34900,\"__typename\":\"Product\"},{\"id\":\"p2\",\"name\":\"Fone Aura\",\"priceCents\":59900,\"__typename\":\"Product\"},{\"id\":\"p3\",\"name\":\"Mochila Trilho\",\"priceCents\":28900,\"__typename\":\"Prod"
+    },
+    {
+      "op": "addToCart",
+      "start": 3793,
+      "auth": "Bearer eyJhbGciOiJIUzI1N",
+      "end": 3837,
+      "status": 200,
+      "body": "{\"data\":{\"addToCart\":[{\"productId\":\"p1\",\"qty\":1,\"__typename\":\"CartItem\"}]}}"
+    },
+    {
+      "op": "refreshToken",
+      "start": 7399,
+      "auth": null,
+      "end": 7553,
+      "status": 200,
+      "body": "{\"data\":{\"refreshToken\":{\"access_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkZW1vIiwidHlwIjoiYWNjZXNzIiwianRpIjoiODQ2ZGIyZTMtZjAyNi00NmIwLWIyN2YtZTAxMTIyYWNhM2Q4IiwiaWF0IjoxNzkyNzA1MTE1LCJpYXRNcyI6MTc5MjcwNTExNTExNCwiZXhwIjoxNz"
+    },
+    {
+      "op": "refreshToken",
+      "start": 7399,
+      "auth": null,
+      "end": 7555,
+      "status": 401,
+      "body": "{\"errors\":[{\"message\":\"REFRESH_REUSED\",\"extensions\":{\"code\":\"REFRESH_REUSED\"}}],\"data\":null}"
+    },
+    {
+      "op": "products",
+      "start": 7554,
+      "auth": "Bearer eyJhbGciOiJIUzI1N",
+      "end": 7599,
+      "status": 200,
+      "body": "{\"data\":{\"products\":[{\"id\":\"p1\",\"name\":\"Tênis Move\",\"priceCents\":34900,\"__typename\":\"Product\"},{\"id\":\"p2\",\"name\":\"Fone Aura\",\"priceCents\":59900,\"__typename\":\"Product\"},{\"id\":\"p3\",\"name\":\"Mochila Trilho\",\"priceCents\":28900,\"__typename\":\"Prod"
+    }
+  ],
+  "snapshots": {
+    "home": {
+      "catalog": {
+        "x": 64,
+        "y": 421.5,
+        "width": 760.8125,
+        "height": 1019.25
+      },
+      "cart": {
+        "x": 876,
+        "y": 421.5,
+        "width": 340,
+        "height": 511.09375
+      },
+      "inspector": {
+        "x": 954,
+        "y": 762.5,
+        "width": 304,
+        "height": 175.5
+      },
+      "dock": {
+        "x": 954,
+        "y": 810.5,
+        "width": 304,
+        "height": 127.5
+      },
+      "strategy": {
+        "x": 966,
+        "y": 810.5,
+        "width": 280,
+        "height": 16.5
+      },
+      "health": {
+        "x": 966,
+        "y": 836,
+        "width": 280,
+        "height": 51
+      },
+      "session": {
+        "x": 966,
+        "y": 836,
+        "width": 65.5,
+        "height": 51
+      },
+      "refresh": {
+        "x": 1037.5,
+        "y": 836,
+        "width": 65.5,
+        "height": 51
+      },
+      "failures": {
+        "x": 1109,
+        "y": 836,
+        "width": 65.5,
+        "height": 51
+      },
+      "unauthorized": {
+        "x": 1180.5,
+        "y": 836,
+        "width": 65.5,
+        "height": 51
+      },
+      "catalogStatus": {
+        "x": 64,
+        "y": 1425.75,
+        "width": 760.8125,
+        "height": 15
+      },
+      "cartStatus": {
+        "x": 876,
+        "y": 917.59375,
+        "width": 340,
+        "height": 15
+      },
+      "grid": {
+        "x": 64,
+        "y": 497.59375,
+        "width": 760.8125,
+        "height": 908.15625
+      },
+      "firstCard": {
+        "x": 64,
+        "y": 497.59375,
+        "width": 371.40625,
+        "height": 437.078125
+      },
+      "expireBtn": {
+        "x": 966,
+        "y": 896,
+        "width": 137,
+        "height": 30
+      },
+      "text": {
+        "strategy": "Refresh em cada MFE",
+        "health": [
+          [
+            "Sessão",
+            "Ativa"
+          ],
+          [
+            "Refresh",
+            "0"
+          ],
+          [
+            "Falhas",
+            "0"
+          ],
+          [
+            "401",
+            "0"
+          ]
+        ],
+        "dockAlert": null,
+        "catalogStatus": "Sincronizada",
+        "cartStatus": "Sincronizado",
+        "alerts": []
+      }
+    },
+    "expired": {
+      "catalog": {
+        "x": 64,
+        "y": 167,
+        "width": 1152,
+        "height": 614.96875
+      },
+      "cart": {
+        "x": 64,
+        "y": 833.15625,
+        "width": 1152,
+        "height": 0
+      },
+      "inspector": {
+        "x": 954,
+        "y": 762.5,
+        "width": 304,
+        "height": 175.5
+      },
+      "dock": {
+        "x": 954,
+        "y": 810.5,
+        "width": 304,
+        "height": 127.5
+      },
+      "strategy": {
+        "x": 966,
+        "y": 810.5,
+        "width": 280,
+        "height": 16.5
+      },
+      "health": {
+        "x": 966,
+        "y": 836,
+        "width": 280,
+        "height": 51
+      },
+      "session": {
+        "x": 966,
+        "y": 836,
+        "width": 65.5,
+        "height": 51
+      },
+      "refresh": {
+        "x": 1037.5,
+        "y": 836,
+        "width": 65.5,
+        "height": 51
+      },
+      "failures": {
+        "x": 1109,
+        "y": 836,
+        "width": 65.5,
+        "height": 51
+      },
+      "unauthorized": {
+        "x": 1180.5,
+        "y": 836,
+        "width": 65.5,
+        "height": 51
+      },
+      "catalogStatus": {
+        "x": 64,
+        "y": 766.96875,
+        "width": 1152,
+        "height": 15
+      },
+      "back": {
+        "x": 64,
+        "y": 171,
+        "width": 50.765625,
+        "height": 19.5
+      },
+      "detail": {
+        "x": 64,
+        "y": 216.5,
+        "width": 1152,
+        "height": 530.46875
+      },
+      "expireBtn": {
+        "x": 966,
+        "y": 896,
+        "width": 137,
+        "height": 30
+      },
+      "text": {
+        "strategy": "Refresh em cada MFE",
+        "health": [
+          [
+            "Sessão",
+            "Vencida"
+          ],
+          [
+            "Refresh",
+            "0"
+          ],
+          [
+            "Falhas",
+            "0"
+          ],
+          [
+            "401",
+            "0"
+          ]
+        ],
+        "dockAlert": null,
+        "catalogStatus": "Sincronizada",
+        "cartStatus": null,
+        "alerts": []
+      }
+    },
+    "after": {
+      "catalog": {
+        "x": 64,
+        "y": 421.5,
+        "width": 760.8125,
+        "height": 1019.25
+      },
+      "cart": {
+        "x": 876,
+        "y": 421.5,
+        "width": 340,
+        "height": 392.09375
+      },
+      "inspector": {
+        "x": 954,
+        "y": 739.5,
+        "width": 304,
+        "height": 198.5
+      },
+      "dock": {
+        "x": 954,
+        "y": 787.5,
+        "width": 304,
+        "height": 150.5
+      },
+      "strategy": {
+        "x": 966,
+        "y": 787.5,
+        "width": 280,
+        "height": 16.5
+      },
+      "health": {
+        "x": 966,
+        "y": 813,
+        "width": 280,
+        "height": 51
+      },
+      "session": {
+        "x": 966,
+        "y": 813,
+        "width": 65.5,
+        "height": 51
+      },
+      "refresh": {
+        "x": 1037.5,
+        "y": 813,
+        "width": 65.5,
+        "height": 51
+      },
+      "failures": {
+        "x": 1109,
+        "y": 813,
+        "width": 65.5,
+        "height": 51
+      },
+      "unauthorized": {
+        "x": 1180.5,
+        "y": 813,
+        "width": 65.5,
+        "height": 51
+      },
+      "dockAlert": {
+        "x": 966,
+        "y": 873,
+        "width": 280,
+        "height": 14
+      },
+      "cartAlert": {
+        "x": 876,
+        "y": 520.59375,
+        "width": 340,
+        "height": 119
+      },
+      "catalogStatus": {
+        "x": 64,
+        "y": 1425.75,
+        "width": 760.8125,
+        "height": 15
+      },
+      "cartStatus": {
+        "x": 876,
+        "y": 798.59375,
+        "width": 340,
+        "height": 15
+      },
+      "grid": {
+        "x": 64,
+        "y": 497.59375,
+        "width": 760.8125,
+        "height": 908.15625
+      },
+      "firstCard": {
+        "x": 64,
+        "y": 497.59375,
+        "width": 371.40625,
+        "height": 437.078125
+      },
+      "expireBtn": {
+        "x": 966,
+        "y": 896,
+        "width": 137,
+        "height": 30
+      },
+      "text": {
+        "strategy": "Refresh em cada MFE",
+        "health": [
+          [
+            "Sessão",
+            "Ausente"
+          ],
+          [
+            "Refresh",
+            "2"
+          ],
+          [
+            "Falhas",
+            "1"
+          ],
+          [
+            "401",
+            "0"
+          ]
+        ],
+        "dockAlert": "Sessão encerrada: o refresh falhou.",
+        "catalogStatus": "Sincronizada",
+        "cartStatus": "Com falha",
+        "alerts": [
+          "Carrinho indisponível"
+        ]
+      }
+    }
+  },
+  "results": [
+    {
+      "mfe": "catalog",
+      "op": "products",
+      "startedAt": 7390.799999952316,
+      "outcome": "ok",
+      "endedAt": 7595.899999976158
+    },
+    {
+      "mfe": "cart",
+      "op": "cart",
+      "startedAt": 7393.599999904633,
+      "outcome": "error",
+      "detail": "ApolloError: refresh failed",
+      "endedAt": 7551.699999928474
+    }
+  ],
+  "sessionLost": true,
+  "stats": {
+    "refresh": {
+      "calls": 2,
+      "ok": 1,
+      "failed": 1,
+      "reused": 1
+    },
+    "operations": {
+      "refreshToken": 2,
+      "products": 1
+    },
+    "unauthorized": 0,
+    "events": [
+      {
+        "t": 1792705115114,
+        "kind": "refresh",
+        "op": "refreshToken",
+        "status": 200
+      },
+      {
+        "t": 1792705115117,
+        "kind": "refresh",
+        "op": "refreshToken",
+        "status": 401,
+        "note": "REFRESH_REUSED"
+      },
+      {
+        "t": 1792705115160,
+        "kind": "op",
+        "op": "products",
+        "status": 200
+      }
+    ]
+  }
+}

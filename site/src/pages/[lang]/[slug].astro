@@ -35,7 +35,7 @@ const heroVideo = demoUrl ? undefined : video
 
 <Base
   lang={lang}
-  title={`${post.data.title} · Evidence Lab Nº ${post.data.number}`}
+  title={`${post.data.title} · Synko Lab Nº ${post.data.number}`}
   description={post.data.description}
   alternates={alternates}
   ogImage={url(`og/${lang}/${post.data.slug}.png`)}
@@ -45,9 +45,7 @@ const heroVideo = demoUrl ? undefined : video
   <article>
     <header class="issue-hero container">
       <div class="issue-hero__text">
-        <p class="issue-hero__number" aria-label={`${strings.edition} ${post.data.number}`}>
-          <span class="issue-hero__no" aria-hidden="true">Nº</span><span aria-hidden="true">{post.data.number}</span>
-        </p>
+        <p class="issue-hero__number">{strings.edition} Nº {post.data.number}</p>
         <IssueTitle class="issue-hero__title" title={post.data.title} emphasis={post.data.emphasis} />
       </div>
 
@@ -171,8 +169,8 @@ const heroVideo = demoUrl ? undefined : video
 </Base>
 
 <script>
-  // Tabelas largas: esmaece o lado que ainda tem conteúdo para rolar.
-  for (const scroller of document.querySelectorAll<HTMLElement>('.table-scroll')) {
+  // Tabelas e diagramas largos: esmaece o lado que ainda tem conteúdo para rolar.
+  for (const scroller of document.querySelectorAll<HTMLElement>('.table-scroll, .diagram-scroll')) {
     const sync = () => {
       scroller.toggleAttribute('data-more-left', scroller.scrollLeft > 1)
       scroller.toggleAttribute('data-more-right', scroller.scrollLeft + scroller.clientWidth < scroller.scrollWidth - 1)
@@ -211,25 +209,14 @@ const heroVideo = demoUrl ? undefined : video
   }
 
   .issue-hero__number {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.08em;
-    margin: 0 0 clamp(12px, 2vw, 24px) -0.04em;
-    color: var(--ink);
-    font-size: clamp(6rem, 17vw, 11rem);
-    font-weight: 250;
-    line-height: 0.82;
-    letter-spacing: -0.045em;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .issue-hero__no {
-    margin-top: 0.12em;
-    color: var(--wine-text);
+    margin: 0 0 clamp(16px, 2vw, 24px);
+    color: var(--ink-muted);
     font-family: var(--font-mono);
-    font-size: 0.1em;
-    font-weight: 600;
-    letter-spacing: 0.04em;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
   }
 
   .issue-hero :global(.issue-hero__title) {
@@ -237,13 +224,13 @@ const heroVideo = demoUrl ? undefined : video
     margin: 0;
     color: var(--ink);
     font-size: clamp(2.15rem, 1.4rem + 3vw, 3.65rem);
-    font-weight: 330;
-    line-height: 1.02;
-    letter-spacing: -0.03em;
+    font-weight: 500;
+    line-height: 1.04;
+    letter-spacing: -0.025em;
   }
 
   .issue-hero :global(.issue-hero__title em) {
-    color: var(--wine-text);
+    color: var(--accent);
     font-style: normal;
   }
 
@@ -256,8 +243,6 @@ const heroVideo = demoUrl ? undefined : video
     position: relative;
     overflow: hidden;
     background: var(--media-bg);
-    border: 1px solid var(--rule);
-    border-radius: 12px;
   }
 
   .player video {
@@ -265,7 +250,7 @@ const heroVideo = demoUrl ? undefined : video
     aspect-ratio: 4 / 5;
     object-fit: cover;
     filter: var(--media-filter);
-    transition: filter 240ms var(--ease-out);
+    transition: filter var(--base) var(--ease);
   }
 
   .player.is-playing video {
@@ -274,20 +259,18 @@ const heroVideo = demoUrl ? undefined : video
 
   .player__play {
     position: absolute;
-    right: 16px;
-    bottom: 16px;
+    right: 0;
+    bottom: 0;
     display: grid;
     place-items: center;
-    width: 52px;
-    height: 52px;
+    width: 56px;
+    height: 56px;
     padding: 0;
-    color: #fdfcfc;
-    background: #421d24;
+    color: #f3f0e9;
+    background: #15243d;
     border: 0;
-    border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 6px 18px rgb(30 27 24 / 0.22);
-    transition: transform 280ms var(--ease-out), background-color 160ms var(--ease-out);
+    transition: background-color var(--fast) var(--ease);
   }
 
   .player__play svg {
@@ -297,8 +280,7 @@ const heroVideo = demoUrl ? undefined : video
   }
 
   .player__play:hover {
-    background: #55262f;
-    transform: scale(1.06);
+    background: #141518;
   }
 
   .player.is-playing .player__play {
@@ -312,11 +294,10 @@ const heroVideo = demoUrl ? undefined : video
   .issue-hero__demo iframe {
     display: block;
     width: 100%;
-    height: min(620px, calc(100vh - var(--header-h) - 80px));
-    min-height: 540px;
+    /* Mesmo quadro 4:5 do vídeo: a demo é uma prévia; o uso completo fica no link de tela cheia. */
+    aspect-ratio: 4 / 5;
     background: var(--media-bg);
     border: 1px solid var(--rule);
-    border-radius: 12px;
   }
 
   .issue-hero__demo figcaption {
@@ -330,7 +311,7 @@ const heroVideo = demoUrl ? undefined : video
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    color: var(--wine-text);
+    color: var(--ink);
     font-family: var(--font-mono);
     font-size: 0.68rem;
     line-height: 1.35;
@@ -365,10 +346,10 @@ const heroVideo = demoUrl ? undefined : video
     max-width: 44ch;
     margin: 0;
     color: var(--ink);
-    font-size: clamp(1.15rem, 1rem + 0.55vw, 1.4rem);
-    font-weight: 350;
-    line-height: 1.38;
-    letter-spacing: -0.01em;
+    font-size: clamp(1.125rem, 1.05rem + 0.33vw, 1.3125rem);
+    font-weight: 400;
+    line-height: 1.45;
+    letter-spacing: -0.005em;
   }
 
   .brief__meta {
@@ -391,7 +372,7 @@ const heroVideo = demoUrl ? undefined : video
   }
 
   .brief__meta a {
-    color: var(--wine-text);
+    color: var(--ink);
   }
 
   .issue-body {
@@ -450,7 +431,7 @@ const heroVideo = demoUrl ? undefined : video
   }
 
   .issue-end__evidence a {
-    color: var(--wine-text);
+    color: var(--ink);
   }
 
   .issue-end__nav {
@@ -473,23 +454,13 @@ const heroVideo = demoUrl ? undefined : video
     align-items: center;
     gap: 8px;
     font-size: 1.05rem;
-    transition: color 160ms var(--ease-out);
-  }
-
-  .issue-link--all .issue-link__title {
-    color: var(--wine-text);
-  }
-
-  .issue-link--all .icon {
-    transition: transform 280ms var(--ease-out);
-  }
-
-  .issue-link--all:hover .icon {
-    transform: translateX(4px);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color var(--fast) var(--ease);
   }
 
   .issue-link:hover .issue-link__title {
-    color: var(--wine-hover);
+    text-decoration-color: currentColor;
   }
 
   @media (max-width: 1099px) {
@@ -533,10 +504,6 @@ const heroVideo = demoUrl ? undefined : video
 
     .brief__meta {
       padding-left: 0;
-    }
-
-    .issue-hero__demo iframe {
-      min-height: 680px;
     }
   }
 </style>

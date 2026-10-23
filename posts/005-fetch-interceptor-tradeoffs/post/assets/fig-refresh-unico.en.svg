@@ -1,0 +1,34 @@
+<svg class="dg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 436" role="img" aria-labelledby="dg2-t dg2-d">
+<title id="dg2-t">One refresh with the patch or the module</title>
+<desc id="dg2-d">Sequence: catalog and cart call the auth layer, which makes a single refresh, replays both requests with the new token and returns the responses.</desc>
+<style>
+.dg{--c-paper:var(--paper,#f3f0e9);--c-ink:var(--ink,#141518);--c-soft:var(--ink-soft,#2f3034);--c-muted:var(--ink-muted,#66655f);--c-rule:var(--rule,#d8d2c5);--c-surface:var(--surface,rgb(20 21 24/.04));--c-fail:var(--dg-fail,#a3311f)}
+.dg text{font-family:var(--font-sans,'Instrument Sans','Helvetica Neue',Arial,sans-serif)}
+.dg .m{font-family:var(--font-mono,'IBM Plex Mono',ui-monospace,monospace)}
+.dg-bg{fill:var(--c-paper)}
+.dg-node{fill:var(--c-paper);stroke:var(--c-ink);stroke-width:1}
+.dg-focal{fill:var(--c-ink);stroke:var(--c-ink);stroke-width:1}
+.dg-store{fill:var(--c-surface);stroke:var(--c-muted);stroke-width:1}
+.dg-chip{fill:var(--c-paper);stroke:var(--c-ink);stroke-width:1}
+.dg-chip-solid{fill:var(--c-ink)}
+.dg-name{fill:var(--c-ink);font-size:13.5px;font-weight:600}
+.dg-name-f{fill:var(--c-paper)}
+.dg-sub{fill:var(--c-muted);font-size:10.5px}
+.dg-sub-f{fill:var(--c-paper);opacity:.82}
+.dg-life{stroke:var(--c-rule);stroke-width:1;stroke-dasharray:3 3}
+.dg-rule{stroke:var(--c-rule);stroke-width:1}
+.dg-ln{stroke:var(--c-ink);stroke-width:1.4;fill:none}
+.dg-ln-strong{stroke:var(--c-ink);stroke-width:2.2;fill:none}
+.dg-ln-soft{stroke:var(--c-muted);stroke-width:1.2;fill:none}
+.dg-dash{stroke-dasharray:5 4}
+.dg-fail{stroke:var(--c-fail)}
+.dg-lbl{fill:var(--c-muted);font-size:10px;font-weight:500;letter-spacing:.06em}
+.dg-lbl-fail{fill:var(--c-fail)}
+.dg-mask{fill:var(--c-paper)}
+.dg-eyebrow{fill:var(--c-muted);font-size:10px;font-weight:500;letter-spacing:.14em}
+.dg-cap{fill:var(--c-muted);font-size:11px}
+.dg-mk{fill:var(--c-ink)}.dg-mk-s{fill:var(--c-muted)}.dg-mk-f{fill:var(--c-fail)}
+</style>
+<defs><marker id="dg2-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-mk" points="0 0, 8 3, 0 6"/></marker><marker id="dg2-s" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-mk-s" points="0 0, 8 3, 0 6"/></marker><marker id="dg2-f" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-mk-f" points="0 0, 8 3, 0 6"/></marker></defs>
+<rect class="dg-bg" width="720" height="436"/>
+<line class="dg-life" x1="96" y1="64" x2="96" y2="380"/><line class="dg-life" x1="272" y1="64" x2="272" y2="380"/><line class="dg-life" x1="448" y1="64" x2="448" y2="380"/><line class="dg-life" x1="624" y1="64" x2="624" y2="380"/><line class="dg-ln" x1="96" y1="112" x2="448" y2="112" marker-end="url(#dg2-a)"/><rect class="dg-mask" x="160.0" y="90" width="48" height="14"/><text class="m dg-lbl" x="184.0" y="101" text-anchor="middle">FETCH</text><line class="dg-ln" x1="272" y1="152" x2="448" y2="152" marker-end="url(#dg2-a)"/><rect class="dg-mask" x="336.0" y="130" width="48" height="14"/><text class="m dg-lbl" x="360.0" y="141" text-anchor="middle">FETCH</text><line class="dg-ln-strong" x1="448" y1="192" x2="624" y2="192" marker-end="url(#dg2-a)"/><rect class="dg-mask" x="496.0" y="170" width="80" height="14"/><text class="m dg-lbl" x="536.0" y="181" text-anchor="middle">1× REFRESH</text><line class="dg-ln-soft dg-dash" x1="624" y1="232" x2="448" y2="232" marker-end="url(#dg2-s)"/><rect class="dg-mask" x="500.0" y="210" width="72" height="14"/><text class="m dg-lbl" x="536.0" y="221" text-anchor="middle">200 · RT2</text><line class="dg-ln" x1="448" y1="272" x2="624" y2="272" marker-end="url(#dg2-a)"/><rect class="dg-mask" x="500.0" y="250" width="72" height="14"/><text class="m dg-lbl" x="536.0" y="261" text-anchor="middle">REPLAY 2×</text><line class="dg-ln-soft dg-dash" x1="448" y1="312" x2="96" y2="312" marker-end="url(#dg2-s)"/><rect class="dg-mask" x="344.0" y="290" width="32" height="14"/><text class="m dg-lbl" x="360.0" y="301" text-anchor="middle">200</text><line class="dg-ln-soft dg-dash" x1="448" y1="352" x2="272" y2="352" marker-end="url(#dg2-s)"/><rect class="dg-mask" x="344.0" y="330" width="32" height="14"/><text class="m dg-lbl" x="360.0" y="341" text-anchor="middle">200</text><rect class="dg-mask" x="24" y="16" width="144" height="48"/><rect class="dg-node" x="24" y="16" width="144" height="48"/><text class="dg-name" x="96.0" y="38.0" text-anchor="middle">MFE catalog</text><text class="m dg-sub" x="96.0" y="54.0" text-anchor="middle">no refresh logic</text><rect class="dg-mask" x="200" y="16" width="144" height="48"/><rect class="dg-node" x="200" y="16" width="144" height="48"/><text class="dg-name" x="272.0" y="38.0" text-anchor="middle">MFE cart</text><text class="m dg-sub" x="272.0" y="54.0" text-anchor="middle">no refresh logic</text><rect class="dg-mask" x="376" y="16" width="144" height="48"/><rect class="dg-focal" x="376" y="16" width="144" height="48"/><text class="dg-name dg-name-f" x="448.0" y="38.0" text-anchor="middle">Auth layer</text><text class="m dg-sub dg-sub-f" x="448.0" y="54.0" text-anchor="middle">patch or authFetch</text><rect class="dg-mask" x="552" y="16" width="144" height="48"/><rect class="dg-node" x="552" y="16" width="144" height="48"/><text class="dg-name" x="624.0" y="38.0" text-anchor="middle">API</text><text class="m dg-sub" x="624.0" y="54.0" text-anchor="middle">node · graphql · jwt</text><line class="dg-rule" x1="0" y1="396" x2="720" y2="396"/><line class="dg-ln" x1="0" y1="414" x2="24" y2="414" marker-end="url(#dg2-a)"/><text class="m dg-lbl" x="34" y="417">CALL</text><line class="dg-ln-soft dg-dash" x1="130" y1="414" x2="154" y2="414" marker-end="url(#dg2-s)"/><text class="m dg-lbl" x="164" y="417">RESPONSE</text><line class="dg-ln dg-fail" x1="260" y1="414" x2="284" y2="414" marker-end="url(#dg2-f)"/><text class="m dg-lbl dg-lbl-fail" x="294" y="417">FAILURE</text></svg>

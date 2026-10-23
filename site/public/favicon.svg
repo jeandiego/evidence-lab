@@ -1,1 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#421d24"/><circle cx="16" cy="16" r="5" fill="#d48a46"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="img" aria-label="Synko">
+<title>Synko</title>
+<style>
+  .m { fill: #141518 } .t { fill: #141518 }
+  @media (prefers-color-scheme: dark) { .m { fill: #F3F0E9 } .t { fill: #F3F0E9; fill-opacity: .8 } }
+</style>
+<!-- Synko micro mark, 16-px grid master. Squares 7 px, margin 1 px, contact at (8,8).
+     The two contact pixels (.t) are split out so dark mode can apply the 80% contact trap. -->
+<path class="m" d="M1 8H7V9H8V15H1Z"/>
+<path class="m" d="M8 1H15V8H9V7H8Z"/>
+<rect class="t" x="7" y="8" width="1" height="1"/>
+<rect class="t" x="8" y="7" width="1" height="1"/>
+</svg>

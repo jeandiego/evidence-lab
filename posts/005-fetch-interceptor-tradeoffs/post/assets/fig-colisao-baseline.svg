@@ -1,0 +1,34 @@
+<svg class="dg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 428" role="img" aria-labelledby="dg1-t dg1-d">
+<title id="dg1-t">Colisão no baseline</title>
+<desc id="dg1-d">Sequência: catálogo e carrinho enviam o mesmo refresh token à API. O primeiro recebe tokens novos; o segundo recebe 401, e o carrinho apaga a sessão do storage.</desc>
+<style>
+.dg{--c-paper:var(--paper,#f3f0e9);--c-ink:var(--ink,#141518);--c-soft:var(--ink-soft,#2f3034);--c-muted:var(--ink-muted,#66655f);--c-rule:var(--rule,#d8d2c5);--c-surface:var(--surface,rgb(20 21 24/.04));--c-fail:var(--dg-fail,#a3311f)}
+.dg text{font-family:var(--font-sans,'Instrument Sans','Helvetica Neue',Arial,sans-serif)}
+.dg .m{font-family:var(--font-mono,'IBM Plex Mono',ui-monospace,monospace)}
+.dg-bg{fill:var(--c-paper)}
+.dg-node{fill:var(--c-paper);stroke:var(--c-ink);stroke-width:1}
+.dg-focal{fill:var(--c-ink);stroke:var(--c-ink);stroke-width:1}
+.dg-store{fill:var(--c-surface);stroke:var(--c-muted);stroke-width:1}
+.dg-chip{fill:var(--c-paper);stroke:var(--c-ink);stroke-width:1}
+.dg-chip-solid{fill:var(--c-ink)}
+.dg-name{fill:var(--c-ink);font-size:13.5px;font-weight:600}
+.dg-name-f{fill:var(--c-paper)}
+.dg-sub{fill:var(--c-muted);font-size:10.5px}
+.dg-sub-f{fill:var(--c-paper);opacity:.82}
+.dg-life{stroke:var(--c-rule);stroke-width:1;stroke-dasharray:3 3}
+.dg-rule{stroke:var(--c-rule);stroke-width:1}
+.dg-ln{stroke:var(--c-ink);stroke-width:1.4;fill:none}
+.dg-ln-strong{stroke:var(--c-ink);stroke-width:2.2;fill:none}
+.dg-ln-soft{stroke:var(--c-muted);stroke-width:1.2;fill:none}
+.dg-dash{stroke-dasharray:5 4}
+.dg-fail{stroke:var(--c-fail)}
+.dg-lbl{fill:var(--c-muted);font-size:10px;font-weight:500;letter-spacing:.06em}
+.dg-lbl-fail{fill:var(--c-fail)}
+.dg-mask{fill:var(--c-paper)}
+.dg-eyebrow{fill:var(--c-muted);font-size:10px;font-weight:500;letter-spacing:.14em}
+.dg-cap{fill:var(--c-muted);font-size:11px}
+.dg-mk{fill:var(--c-ink)}.dg-mk-s{fill:var(--c-muted)}.dg-mk-f{fill:var(--c-fail)}
+</style>
+<defs><marker id="dg1-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-mk" points="0 0, 8 3, 0 6"/></marker><marker id="dg1-s" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-mk-s" points="0 0, 8 3, 0 6"/></marker><marker id="dg1-f" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-mk-f" points="0 0, 8 3, 0 6"/></marker></defs>
+<rect class="dg-bg" width="720" height="428"/>
+<line class="dg-life" x1="96" y1="64" x2="96" y2="372"/><line class="dg-life" x1="272" y1="64" x2="272" y2="372"/><line class="dg-life" x1="448" y1="64" x2="448" y2="372"/><line class="dg-life" x1="624" y1="64" x2="624" y2="372"/><line class="dg-ln" x1="96" y1="112" x2="624" y2="112" marker-end="url(#dg1-a)"/><rect class="dg-mask" x="140.0" y="90" width="88" height="14"/><text class="m dg-lbl" x="184.0" y="101" text-anchor="middle">REFRESH RT1</text><line class="dg-ln" x1="272" y1="152" x2="624" y2="152" marker-end="url(#dg1-a)"/><rect class="dg-mask" x="316.0" y="130" width="88" height="14"/><text class="m dg-lbl" x="360.0" y="141" text-anchor="middle">REFRESH RT1</text><line class="dg-ln-soft dg-dash" x1="624" y1="192" x2="96" y2="192" marker-end="url(#dg1-s)"/><rect class="dg-mask" x="500.0" y="170" width="72" height="14"/><text class="m dg-lbl" x="536.0" y="181" text-anchor="middle">200 · RT2</text><line class="dg-ln-soft dg-dash dg-fail" x1="624" y1="232" x2="272" y2="232" marker-end="url(#dg1-f)"/><rect class="dg-mask" x="492.0" y="210" width="88" height="14"/><text class="m dg-lbl dg-lbl-fail" x="536.0" y="221" text-anchor="middle">401 REUSADO</text><line class="dg-ln" x1="96" y1="272" x2="448" y2="272" marker-end="url(#dg1-a)"/><rect class="dg-mask" x="148.0" y="250" width="72" height="14"/><text class="m dg-lbl" x="184.0" y="261" text-anchor="middle">SALVA RT2</text><line class="dg-ln dg-fail" x1="272" y1="312" x2="448" y2="312" marker-end="url(#dg1-f)"/><rect class="dg-mask" x="314.0" y="290" width="92" height="14"/><text class="m dg-lbl dg-lbl-fail" x="360.0" y="301" text-anchor="middle">APAGA SESSÃO</text><path class="dg-ln dg-fail" d="M 272,336 H 300 Q 306,336 306,342 V 350 Q 306,356 300,356 H 272" marker-end="url(#dg1-f)"/><text class="m dg-lbl dg-lbl-fail" x="318" y="350">LOGOUT</text><rect class="dg-mask" x="24" y="16" width="144" height="48"/><rect class="dg-node" x="24" y="16" width="144" height="48"/><text class="dg-name" x="96.0" y="38.0" text-anchor="middle">MFE catálogo</text><text class="m dg-sub" x="96.0" y="54.0" text-anchor="middle">authLink + refresh</text><rect class="dg-mask" x="200" y="16" width="144" height="48"/><rect class="dg-node" x="200" y="16" width="144" height="48"/><text class="dg-name" x="272.0" y="38.0" text-anchor="middle">MFE carrinho</text><text class="m dg-sub" x="272.0" y="54.0" text-anchor="middle">authLink + refresh</text><rect class="dg-mask" x="376" y="16" width="144" height="48"/><rect class="dg-store" x="376" y="16" width="144" height="48"/><text class="dg-name" x="448.0" y="38.0" text-anchor="middle">localStorage</text><text class="m dg-sub" x="448.0" y="54.0" text-anchor="middle">access + refresh</text><rect class="dg-mask" x="552" y="16" width="144" height="48"/><rect class="dg-node" x="552" y="16" width="144" height="48"/><text class="dg-name" x="624.0" y="38.0" text-anchor="middle">API</text><text class="m dg-sub" x="624.0" y="54.0" text-anchor="middle">node · graphql · jwt</text><line class="dg-rule" x1="0" y1="388" x2="720" y2="388"/><line class="dg-ln" x1="0" y1="406" x2="24" y2="406" marker-end="url(#dg1-a)"/><text class="m dg-lbl" x="34" y="409">CHAMADA</text><line class="dg-ln-soft dg-dash" x1="130" y1="406" x2="154" y2="406" marker-end="url(#dg1-s)"/><text class="m dg-lbl" x="164" y="409">RESPOSTA</text><line class="dg-ln dg-fail" x1="260" y1="406" x2="284" y2="406" marker-end="url(#dg1-f)"/><text class="m dg-lbl dg-lbl-fail" x="294" y="409">FALHA</text></svg>

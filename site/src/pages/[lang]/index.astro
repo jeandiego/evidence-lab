@@ -18,9 +18,9 @@ const poster = latest ? assetUrl(latest, latest.data.poster) : undefined
 const foreign = (lang: Lang, postLang: string) => postLang !== lang
 ---
 
-<Base lang={lang} title="Evidence Lab · Synko" description={strings.siteDescription} alternates={alternates}>
+<Base lang={lang} title="Synko Lab" description={strings.siteDescription} alternates={alternates}>
   <section class="lab-intro container">
-    <h1 class="lab-intro__title">Evidence Lab</h1>
+    <h1 class="visually-hidden">Synko Lab</h1>
     <p class="lab-intro__text">{strings.intro}</p>
   </section>
 
@@ -29,10 +29,7 @@ const foreign = (lang: Lang, postLang: string) => postLang !== lang
       <section class="cover container" aria-label={strings.latest}>
         <a class="cover__link" href={postPath(latest.data.lang as Lang, latest.data.slug)}>
           <div class="cover__text">
-            <p class="cover__number" aria-hidden="true">
-              <span class="cover__no">Nº</span>
-              {latest.data.number}
-            </p>
+            <p class="cover__number">{strings.latest} · Nº {latest.data.number}</p>
             <IssueTitle as="h2" class="cover__title" title={latest.data.title} emphasis={latest.data.emphasis} />
             <p class="cover__thesis">{latest.data.thesis}</p>
             <p class="cover__meta">
@@ -84,29 +81,18 @@ const foreign = (lang: Lang, postLang: string) => postLang !== lang
 </Base>
 
 <style>
+  /* O nome já está no header: a home abre só com a frase do lab, discreta, acima da capa. */
   .lab-intro {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 30rem);
-    align-items: end;
-    gap: 24px clamp(32px, 6vw, 96px);
-    padding-block: clamp(40px, 6vw, 72px) clamp(28px, 4vw, 44px);
-    border-bottom: 1px solid var(--rule-strong);
-  }
-
-  .lab-intro__title {
-    margin: 0;
-    color: var(--ink);
-    font-size: clamp(2.2rem, 1.5rem + 3vw, 3.65rem);
-    font-weight: 300;
-    line-height: 1;
-    letter-spacing: -0.03em;
+    padding-block: clamp(20px, 3vw, 28px);
+    border-bottom: 1px solid var(--rule);
   }
 
   .lab-intro__text {
+    max-width: 62ch;
     margin: 0;
-    color: var(--ink-soft);
-    font-size: 1.05rem;
-    line-height: 1.55;
+    color: var(--ink-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
   }
 
   .cover__link {
@@ -125,25 +111,14 @@ const foreign = (lang: Lang, postLang: string) => postLang !== lang
   }
 
   .cover__number {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.08em;
-    margin: 0 0 clamp(16px, 2.4vw, 28px) -0.05em;
-    color: var(--ink);
-    font-size: clamp(6rem, 18vw, 12rem);
-    font-weight: 200;
-    line-height: 0.8;
-    letter-spacing: -0.05em;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .cover__no {
-    margin-top: 0.14em;
-    color: var(--wine-text);
+    margin: 0 0 clamp(16px, 2vw, 24px);
+    color: var(--ink-muted);
     font-family: var(--font-mono);
-    font-size: 0.1em;
-    font-weight: 600;
-    letter-spacing: 0.04em;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
   }
 
   .cover :global(.cover__title) {
@@ -151,14 +126,13 @@ const foreign = (lang: Lang, postLang: string) => postLang !== lang
     margin: 0;
     color: var(--ink);
     font-size: clamp(2rem, 1.3rem + 2.6vw, 3.3rem);
-    font-weight: 330;
+    font-weight: 500;
     line-height: 1.04;
-    letter-spacing: -0.03em;
-    transition: color 200ms var(--ease-out);
+    letter-spacing: -0.025em;
   }
 
   .cover :global(.cover__title em) {
-    color: var(--wine-text);
+    color: var(--accent);
     font-style: normal;
   }
 
@@ -187,16 +161,15 @@ const foreign = (lang: Lang, postLang: string) => postLang !== lang
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    color: var(--wine-text);
-    font-weight: 600;
+    color: var(--ink);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color var(--fast) var(--ease);
   }
 
-  .cover__cta .icon {
-    transition: transform 280ms var(--ease-out);
-  }
-
-  .cover__link:hover .cover__cta .icon {
-    transform: translateX(4px);
+  .cover__link:hover .cover__cta {
+    text-decoration-color: currentColor;
   }
 
   .cover__media img {
@@ -205,15 +178,7 @@ const foreign = (lang: Lang, postLang: string) => postLang !== lang
     aspect-ratio: 4 / 5;
     object-fit: cover;
     background: var(--media-bg);
-    border: 1px solid var(--rule);
-    border-radius: 12px;
     filter: var(--media-filter);
-    transition: transform 420ms var(--ease-out), border-color 200ms var(--ease-out);
-  }
-
-  .cover__link:hover .cover__media img {
-    transform: translateY(-4px);
-    border-color: var(--rule-strong);
   }
 
   .archive {
@@ -248,6 +213,10 @@ const foreign = (lang: Lang, postLang: string) => postLang !== lang
   .archive__title {
     color: var(--ink);
     font-size: 1.15rem;
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color var(--fast) var(--ease);
   }
 
   .archive__thesis {
@@ -256,7 +225,7 @@ const foreign = (lang: Lang, postLang: string) => postLang !== lang
   }
 
   .archive__row:hover .archive__title {
-    color: var(--wine-text);
+    text-decoration-color: currentColor;
   }
 
   .empty {
@@ -265,7 +234,6 @@ const foreign = (lang: Lang, postLang: string) => postLang !== lang
   }
 
   @media (max-width: 860px) {
-    .lab-intro,
     .cover__link {
       grid-template-columns: minmax(0, 1fr);
     }

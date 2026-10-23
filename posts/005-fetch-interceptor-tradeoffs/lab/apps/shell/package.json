@@ -1,0 +1,17 @@
+{
+  "name": "@shop-lab/shell",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@shop-lab/auth-fetch": "*",
+    "@shop-lab/lab-protocol": "*",
+    "@shop-lab/ui": "*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "single-spa": "^6.0.3"
+  }
+}

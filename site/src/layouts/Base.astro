@@ -36,12 +36,14 @@ const strings = t(lang)
         <link rel="alternate" hreflang={htmlLang[alt as Lang]} href={new URL(path, Astro.site)} />
       ))
     }
-    <link rel="alternate" type="application/rss+xml" title={`Evidence Lab (${lang})`} href={url(`${lang}/rss.xml`)} />
+    <link rel="alternate" type="application/rss+xml" title={`Synko Lab (${lang})`} href={url(`${lang}/rss.xml`)} />
+    <link rel="icon" href={url('favicon.ico')} sizes="48x48" />
     <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
-    <meta name="theme-color" content="#fdfcfc" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#161310" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href={url('apple-touch-icon.png')} />
+    <meta name="theme-color" content="#f3f0e9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#141518" media="(prefers-color-scheme: dark)" />
     <meta property="og:type" content={type} />
-    <meta property="og:site_name" content="Evidence Lab · Synko" />
+    <meta property="og:site_name" content="Synko Lab" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -68,6 +70,6 @@ const strings = t(lang)
     <main id="content">
       <slot />
     </main>
-    <Footer lang={lang} />
+    <Footer lang={lang} alternates={alternates} />
   </body>
 </html>

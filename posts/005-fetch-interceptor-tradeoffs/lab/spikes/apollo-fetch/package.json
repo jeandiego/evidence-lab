@@ -1,0 +1,11 @@
+{
+  "name": "spike-apollo-fetch",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "apollo3": "npm:@apollo/client@^3.14.0",
+    "apollo4": "npm:@apollo/client@^4.0.0",
+    "graphql": "^16.12.0",
+    "rxjs": "^7.8.2"
+  }
+}

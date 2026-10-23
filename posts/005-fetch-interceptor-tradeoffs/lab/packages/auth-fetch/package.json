@@ -1,0 +1,10 @@
+{
+  "name": "@shop-lab/auth-fetch",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": "./src/index.ts",
+  "scripts": {
+    "build": "vite build"
+  }
+}
