@@ -1,0 +1,168 @@
+---
+import Base from '../../../layouts/Base.astro'
+const flows = [
+  {
+    id: 'patrimonio-investido', name: 'Patrimônio investido',
+    situation: 'Quanto está investido, em quais instituições e em nome de quem? O total da casa é o ponto de partida para abrir essa composição.',
+    decision: 'O detalhe nasce da linha “Patrimônio investido”. Os filtros por titular mantêm o total e as contas na mesma superfície; uma instituição abre as posições que compõem seu valor.',
+    actions: ['Toque em “Patrimônio investido” e alterne entre Todos, Rafael e Marina.', 'Abra Avenue para observar as posições e a referência de conversão do dólar.'],
+    question: 'Como deixar claro o que foi convertido, quando foi atualizado e o que pode estar faltando no total?',
+  },
+  {
+    id: 'cartao', name: 'Cartão',
+    situation: 'Consultar uma fatura exige distinguir o cartão, a pessoa titular e o período. O mesmo cartão tem compromissos diferentes a cada mês.',
+    decision: 'Cartão e fatura aparecem como níveis separados. O seletor de período e a navegação entre cartões ficam no detalhe da fatura, sem exigir uma volta à tela inicial.',
+    actions: ['Toque em “Cartão” e abra um dos cartões da lista.', 'Troque a fatura pelo seletor de mês e observe como mudam os lançamentos e o estado.'],
+    question: 'A diferença entre fatura aberta, fechada e paga fica compreensível sem conhecer as regras de fechamento?',
+  },
+  {
+    id: 'transacoes', name: 'Transações',
+    situation: 'Encontrar uma compra, separar as movimentações da casa ou corrigir uma categoria pede mais do que percorrer uma lista de valores.',
+    decision: 'Busca e filtros ficam no rodapé. O filtro mostra uma prévia antes da confirmação; o detalhe permite revisar a categoria e voltar à lista.',
+    actions: ['Busque “Uber” no rodapé e depois limpe a busca.', 'Abra uma transação e experimente trocar sua categoria.'],
+    question: 'Busca, filtros e resumo ajudam a responder uma pergunta sem fazer a pessoa perder o contexto da lista?',
+  },
+  {
+    id: 'contas', name: 'Contas',
+    situation: 'Marcar uma conta como paga resolve uma etapa. Ainda falta saber quem pagou e se o pagamento já apareceu no extrato.',
+    decision: 'A lista separa A pagar de Pagas. O protótipo distingue marcar o pagamento de conferir a movimentação e deixa casos ambíguos para revisão.',
+    actions: ['Marque uma conta como paga e consulte a aba Pagas.', 'Abra Água em Pagas e examine as opções de conferência.'],
+    question: 'Como comunicar espera, falha e pagamentos feitos por outra pessoa sem transmitir uma certeza que o extrato ainda não trouxe?',
+  },
+]
+const demo = (id: string) => `/demos/fyin/dia-2/${id}/index.html`
+---
+<Base lang="pt-br" title="Fyin · Produto em exploração · Synko Lab" description="Quatro protótipos do Fyin: patrimônio, cartão, transações e contas. Uma exploração entre produto, design e desenvolvimento.">
+  <div class="container fyin">
+    <header class="intro">
+      <div>
+        <h1>Fyin<span>Finanças da casa,<br />decisões em exploração.</span></h1>
+        <p class="lead">O Fyin é um app iOS de finanças pessoais em desenvolvimento. O ponto de partida é a rotina de juntar saldos, investimentos, faturas e contas para entender a situação da casa.</p>
+      </div>
+      <div class="editorial">
+        <p>Esta publicação amplia o formato dos laboratórios técnicos do site. Aqui, exploro problemas de uso, decisões de produto, interfaces, interações e implementação.</p>
+        <p>Os protótipos abaixo permitem experimentar parte desse processo. Eles representam decisões em exploração; <strong>não comprovam que todas as funcionalidades estejam implementadas no app.</strong></p>
+      </div>
+    </header>
+
+    <section class="explorer" aria-labelledby="explore-title">
+      <div class="explorer-heading"><h2 id="explore-title">Experimente os fluxos</h2><span class="label">Protótipos · dados fictícios</span></div>
+      <nav class="flows" aria-label="Fluxos do Fyin">
+        {flows.map((flow, index) => <a href={`#${flow.id}`} data-flow={flow.id} aria-current={index === 0 ? 'true' : undefined}>{flow.name}</a>)}
+      </nav>
+      <div class="workbench">
+        <div class="context">
+          {flows.map((flow, index) => <section id={flow.id} data-context={flow.id} hidden={index !== 0} aria-labelledby={`${flow.id}-title`}>
+            <h3 id={`${flow.id}-title`}>{flow.name}</h3>
+            <p>{flow.situation}</p>
+            <h4>O que observar</h4><p>{flow.decision}</p>
+            <h4>Para experimentar</h4><ol>{flow.actions.map(action => <li>{action}</li>)}</ol>
+            <p class="question"><span class="label">Questão em aberto</span>{flow.question}</p>
+          </section>)}
+          <p class="scope">A tela inicial de Patrimônio e Cartão é uma imagem de contexto com uma área interativa. Os outros atalhos dessa imagem não fazem parte da demonstração.</p>
+        </div>
+        <figure class="demo">
+          <div class="demo-bar"><span class="label" id="demo-label">Protótipo · Patrimônio investido</span><a id="direct-demo" href={demo(flows[0].id)} target="_blank" rel="noreferrer">Abrir demonstração</a></div>
+          <p id="load-status" role="status">A demonstração carrega ao entrar nesta área.</p>
+          <iframe id="fyin-demo" data-src={demo(flows[0].id)} title="Protótipo do Fyin: Patrimônio investido" loading="lazy" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer"></iframe>
+          <figcaption>Valores, nomes e movimentações são fictícios. As ações acontecem apenas nesta demonstração, sem conexão com bancos ou dados reais. Ao trocar de fluxo, a demonstração recomeça.</figcaption>
+          <noscript><p>Para experimentar os fluxos sem JavaScript nesta página: {flows.map(flow => <a href={demo(flow.id)}>{flow.name} </a>)}</p></noscript>
+        </figure>
+      </div>
+    </section>
+
+    <section class="open" aria-labelledby="open-title">
+      <h2 id="open-title">O que ainda preciso descobrir</h2>
+      <div><p>Uma interação navegável ajuda a examinar uma decisão, mas não demonstra que ela funciona na rotina de outras casas. Ainda quero entender se essas divisões fazem sentido para quem consulta o dinheiro com outra pessoa.</p>
+      <p>Compartilhamento, conferência pelo extrato e respostas a falhas aparecem como simulações. No roadmap do produto, a conexão de instituições por usuário e o compartilhamento da casa seguem como etapas pendentes. O que aparece aqui não é uma lista de funcionalidades entregues.</p>
+      <p>O próximo passo é confrontar essas escolhas com o uso e com os limites dos dados disponíveis. Uma soma pode estar certa e ainda deixar uma parte da situação de fora.</p>
+      <p class="source">A leitura parte do README, do roteiro de publicações, do roadmap e dos quatro protótipos do Fyin. As perguntas em aberto são propostas desta apresentação. O formato de navegação com contexto se inspira no <a href="https://github.com/appariciojunior/prototype-viewer">Prototype Viewer</a>.</p></div>
+    </section>
+  </div>
+</Base>
+
+<script>
+  const frame = document.querySelector<HTMLIFrameElement>('#fyin-demo')!
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-flow]')]
+  const contexts = [...document.querySelectorAll<HTMLElement>('[data-context]')]
+  const direct = document.querySelector<HTMLAnchorElement>('#direct-demo')!
+  const status = document.querySelector<HTMLElement>('#load-status')!
+  const label = document.querySelector<HTMLElement>('#demo-label')!
+  const load = () => {
+    if (frame.getAttribute('src') === frame.dataset.src) return
+    status.textContent = 'Carregando protótipo… Se ele não aparecer, use Abrir demonstração.'
+    frame.src = frame.dataset.src!
+  }
+  const select = () => {
+    const id = location.hash.slice(1)
+    const selected = links.find(link => link.dataset.flow === id) ?? links[0]
+    for (const link of links) {
+      if (link === selected) link.setAttribute('aria-current', 'true')
+      else link.removeAttribute('aria-current')
+    }
+    for (const context of contexts) context.hidden = context.dataset.context !== selected.dataset.flow
+    frame.title = `Protótipo do Fyin: ${selected.textContent}`
+    label.textContent = `Protótipo · ${selected.textContent}`
+    frame.dataset.src = `/demos/fyin/dia-2/${selected.dataset.flow}/index.html`
+    direct.href = frame.dataset.src
+    if (frame.hasAttribute('src')) load()
+  }
+  // Atualiza a URL sem deslocar a página até o texto de contexto.
+  for (const link of links) link.addEventListener('click', event => {
+    event.preventDefault()
+    history.pushState(null, '', link.hash)
+    select()
+  })
+  window.addEventListener('hashchange', select)
+  window.addEventListener('popstate', select)
+  frame.addEventListener('load', () => { status.textContent = 'Protótipo carregado.' })
+  select()
+  const observer = new IntersectionObserver(entries => {
+    if (entries.some(entry => entry.isIntersecting)) { load(); observer.disconnect() }
+  }, { rootMargin: '200px' })
+  observer.observe(frame)
+</script>
+
+<style>
+  .fyin { padding-block: clamp(32px, 5vw, 72px); }
+  .intro { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(28px, 6vw, 88px); padding-bottom: 40px; }
+  h1 { font-size: clamp(3.5rem, 7vw, 6rem); font-weight: 500; line-height: 1; letter-spacing: -0.03em; margin: 0 0 24px; }
+  h1 span { display: block; margin-top: 18px; color: var(--ink-soft); font-size: clamp(1.6rem, 2.6vw, 2.5rem); line-height: 1.15; letter-spacing: -0.02em; }
+  p { margin: 0 0 18px; }
+  .lead { max-width: 54ch; font-size: 1.125rem; }
+  .editorial { align-self: end; color: var(--ink-soft); max-width: 60ch; }
+  .explorer { border-top: 1px solid var(--rule-strong); }
+  .explorer-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-block: 22px; }
+  h2 { margin: 0; font-size: clamp(1.4rem, 2vw, 2rem); font-weight: 500; letter-spacing: -0.015em; line-height: 1.2; }
+  .flows { display: flex; flex-wrap: wrap; border-block: 1px solid var(--rule); }
+  .flows a { padding: 14px 20px; min-height: 48px; text-decoration: none; color: var(--ink-soft); }
+  .flows a:first-child { padding-left: 0; }
+  .flows a[aria-current] { color: var(--ink); text-decoration: underline; text-underline-offset: 8px; }
+  .flows a:hover { background: var(--surface); }
+  .workbench { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(28px, 6vw, 88px); padding-block: 32px; }
+  .context { max-width: 60ch; }
+  h3 { margin: 0 0 20px; font-size: 1.6rem; font-weight: 500; letter-spacing: -0.015em; line-height: 1.2; }
+  h4 { margin: 28px 0 8px; font-size: 1rem; font-weight: 600; }
+  ol { padding-left: 22px; margin: 0; }
+  li + li { margin-top: 10px; }
+  .question { display: grid; gap: 12px; padding-top: 22px; margin-top: 32px; border-top: 1px solid var(--rule); }
+  .scope, figcaption, .source { color: var(--ink-muted); font-size: 0.875rem; }
+  .scope { margin-top: 28px; }
+  .demo { margin: 0; min-width: 0; }
+  .demo-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; border-bottom: 1px solid var(--rule); padding-bottom: 12px; }
+  .demo-bar a { font-size: 0.875rem; padding-block: 8px; }
+  #load-status { font-size: 0.8rem; color: var(--ink-muted); margin: 10px 0; min-height: 1.6em; }
+  iframe { display: block; width: 100%; height: 914px; border: 0; background: #e9e9e8; color-scheme: light; }
+  figcaption { margin-top: 16px; }
+  .open { display: grid; grid-template-columns: 1fr 1.15fr; gap: clamp(28px, 6vw, 88px); padding-top: 32px; margin-top: 20px; border-top: 1px solid var(--rule-strong); }
+  .open > div { max-width: 68ch; }
+  @media (max-width: 760px) {
+    .intro, .workbench, .open { grid-template-columns: minmax(0, 1fr); }
+    .explorer-heading { flex-direction: column; gap: 10px; }
+    .flows a, .flows a:first-child { padding: 12px; }
+    .flows { margin-inline: -12px; }
+    .context { max-width: none; }
+    .demo { grid-row: 1; }
+    iframe { height: calc((100vw - 32px) * 874 / 402 + 36px); max-height: 914px; }
+  }
+</style>

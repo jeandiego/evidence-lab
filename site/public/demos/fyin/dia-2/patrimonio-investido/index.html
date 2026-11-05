@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fyin · Patrimônio investido · Morph</title>
+<link href="../vendor/urbanist.css" rel="stylesheet">
+<style>
+  /* Tokens do Fyin.pen (q/*) e do quadro 13 · Movimento */
+  :root {
+    --ink: #161616;
+    --on-dark: #FFFFFF;
+    --on-dark-2: #FFFFFF8C;
+    --on-dark-3: #FFFFFF4D;
+    --on-dark-line: #FFFFFF1F;
+    --pill-line: #FFFFFF29;
+    --pill-text: #FFFFFFB3;
+    --accent: #D4F55A;
+    --scrim: #0E0D0D59;
+    --soft: #E9E9E8;
+    --radius-group: 28px;
+    --motion-instant: 100ms;
+    --motion-quick: 160ms;
+    --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--soft);
+    display: grid; place-items: center;
+    font-family: Urbanist, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus:not(:focus-visible) { outline: none; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; text-align: left; }
+
+  .phone { position: relative; width: 402px; height: 874px; overflow: hidden; background: url(home.png) 0 0 / 402px 874px no-repeat; }
+  @media (min-width: 440px) { .phone { border-radius: 48px; box-shadow: 0 30px 80px #0E0D0D26; } }
+
+  /* Linha de origem na Início: idêntica ao Card / Hero → Patrimony */
+  .patch { position: absolute; left: 32px; top: 434px; width: 338px; height: 59px; background: var(--ink); }
+  .home-row { position: absolute; left: 32px; top: 433px; width: 338px; height: 60px; cursor: pointer;
+    transition: transform var(--motion-instant) var(--ease-standard); }
+  .home-row:active { transform: scale(0.98); }
+  .prow { width: 338px; height: 60px; border-top: 1px solid var(--on-dark-line); padding-top: 15px;
+    display: flex; justify-content: space-between; align-items: flex-end; }
+  .prow-texts { display: flex; flex-direction: column; gap: 2px; }
+  .lbl { font-size: 13px; line-height: 16px; font-weight: 500; color: var(--on-dark-2); white-space: nowrap; }
+  .pval { font-size: 22px; line-height: 26px; font-weight: 300; letter-spacing: -0.6px; color: var(--on-dark); white-space: nowrap; }
+  .pchg { font-size: 13px; line-height: 25px; font-weight: 600; color: var(--accent); white-space: nowrap; }
+
+  .scrim { position: absolute; inset: 0; background: var(--scrim); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    opacity: 0; pointer-events: none; }
+  .scrim.on { pointer-events: auto; }
+
+  .modal { position: absolute; left: 0; top: 0; background: var(--ink); overflow: hidden; display: none; will-change: transform, width, height; }
+  .layer { position: absolute; left: 0; top: 0; width: 100%; overflow: hidden; } /* acompanha a largura do modal durante o morph */
+  .layer.scroll { overflow-y: auto; scrollbar-width: none; }
+  .layer.scroll::-webkit-scrollbar { display: none; }
+  .flight { position: absolute; inset: 0; pointer-events: none; }
+  .flight > * { position: absolute; left: 0; top: 0; transform-origin: 0 0; margin: 0; }
+
+  /* Icon Button / On Dark */
+  .ib { width: 44px; height: 44px; border-radius: 999px; border: 1px solid var(--on-dark-line); display: grid; place-items: center;
+    transition: transform var(--motion-instant) var(--ease-standard), background var(--motion-quick) var(--ease-standard); }
+  .ib:active { transform: scale(0.96); background: #FFFFFF0F; }
+  .ib svg { width: 20px; height: 20px; fill: var(--on-dark); }
+
+  .top { display: flex; justify-content: space-between; align-items: center; padding: 16px 16px 0 20px; min-height: 60px; }
+  .hero { padding: 6px 20px 0; }
+  .amt { display: flex; align-items: flex-end; white-space: nowrap; color: var(--on-dark); }
+  .amt .cur { font-size: 18px; line-height: 1.1; font-weight: 300; color: var(--on-dark-3); padding: 0 4px 7px 0; }
+  .amt .main, .amt .cents { font-size: 44px; line-height: 1.1; font-weight: 300; letter-spacing: -1.6px; }
+  .amt .cents { color: var(--on-dark-3); }
+  .amt.md .cur { font-size: 16px; padding-bottom: 6px; }
+  .amt.md .main, .amt.md .cents { font-size: 36px; letter-spacing: -1.2px; }
+  .meta { font-size: 13px; line-height: 16px; font-weight: 500; color: var(--on-dark-2); margin-top: 6px; position: relative; }
+  .meta .chg { color: var(--accent); font-weight: 600; }
+  .xf { position: relative; }
+  .xf > .ghost { position: absolute; left: 0; top: 0; }
+
+  /* Month Pill → filtro de titular */
+  .pills { display: flex; gap: 6px; padding: 18px 20px 6px; }
+  .pill { height: 32px; border-radius: 16px; border: 1px solid var(--pill-line); padding: 0 14px; display: grid; place-items: center;
+    font-size: 13px; font-weight: 500; color: var(--pill-text);
+    transition: background var(--motion-quick) var(--ease-standard), border-color var(--motion-quick) var(--ease-standard), color var(--motion-quick) var(--ease-standard), transform var(--motion-instant) var(--ease-standard); }
+  .pill:active { transform: scale(0.97); }
+  .pill.on { background: var(--accent); border-color: var(--accent); color: var(--ink); font-weight: 600; }
+
+  .list { padding: 4px 0 10px; position: relative; }
+  .acc { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 16px 12px 20px; position: relative;
+    transition: transform var(--motion-instant) var(--ease-standard); }
+  .acc:active { transform: scale(0.98); }
+  .acc + .acc::before { content: ""; position: absolute; left: 72px; right: 20px; top: 0; height: 1px; background: var(--on-dark-line); }
+  .acc.leaving { position: absolute; left: 0; pointer-events: none; }
+  .av { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; flex: none;
+    font-size: 13px; font-weight: 700; color: #fff; }
+  .av.lg { width: 48px; height: 48px; border-radius: 14px; font-size: 15px; }
+  .acc-texts { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .nm { font-size: 15px; line-height: 18px; font-weight: 500; color: var(--on-dark); white-space: nowrap; }
+  .sub { font-size: 12px; line-height: 15px; font-weight: 500; color: var(--on-dark-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .acc-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .v15 { font-size: 15px; line-height: 18px; font-weight: 500; color: var(--on-dark); white-space: nowrap; letter-spacing: -0.2px; }
+  .pct { font-size: 12px; line-height: 15px; font-weight: 500; color: var(--on-dark-3); white-space: nowrap; }
+  .caret { width: 16px; height: 16px; fill: var(--on-dark-3); flex: none; }
+
+  .ident { display: flex; align-items: center; gap: 12px; padding: 14px 20px 0; }
+  .dname { font-size: 22px; line-height: 26px; font-weight: 500; color: var(--on-dark); white-space: nowrap; }
+  .dtotal { padding: 18px 20px 0; }
+  .group { padding: 18px 20px 0; }
+  .ghead { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 4px; }
+  .gname { font-size: 13px; line-height: 16px; font-weight: 600; color: var(--on-dark); }
+  .gname span, .gtot { font-size: 13px; line-height: 16px; font-weight: 500; color: var(--on-dark-2); }
+  .pos { padding: 12px 0; border-bottom: 1px solid var(--on-dark-line); }
+  .pos:last-child { border-bottom: 0; }
+  .pos-row { display: flex; justify-content: space-between; gap: 12px; }
+  .pos-row > div:first-child { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .track { height: 4px; border-radius: 999px; background: var(--on-dark-line); margin-top: 10px; overflow: hidden; }
+  .track i { display: block; height: 100%; border-radius: 999px; background: var(--on-dark); }
+  .note { font-size: 12px; line-height: 17px; font-weight: 500; color: var(--on-dark-3); padding: 14px 20px 0; }
+  .end { height: 20px; }
+
+  .hint { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); font: 500 12px Urbanist, sans-serif; color: #5F5F5F; }
+  @media (max-width: 439px) { .hint { display: none; } }
+</style>
+<link rel="stylesheet" href="../presentation.css">
+</head>
+<body>
+<div class="phone" id="phone">
+  <div class="patch"></div>
+  <button class="home-row" id="homeRow" aria-label="Abrir patrimônio investido"></button>
+  <div class="scrim" id="scrim"></div>
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Patrimônio investido"></div>
+  <div class="flight" id="flight"></div>
+</div>
+<div class="hint">Toque em “Patrimônio investido”. <b>?slow=4</b> desacelera o movimento.</div>
+
+<script>
+/* ---------- Dados (mock) ---------- */
+const USD = 5.45; // PTAX usada para converter posições em dólar
+const ACCOUNTS = [
+  { id: 'nu-rafael', inst: 'Nubank', holder: 'Rafael', kind: 'Banco digital', color: '#820AD1', ini: 'nu', summary: 'Caixinhas + RDB', groups: [
+    { name: 'Caixinhas', items: [
+      { name: 'Reserva de emergência', meta: '100% do CDI · resgate a qualquer hora', brl: 12400.00 },
+      { name: 'Viagem Japão', meta: '100% do CDI · meta R$ 15.000', brl: 6250.30 },
+      { name: 'IPVA 2027', meta: '100% do CDI · meta R$ 2.400', brl: 1820.35 } ] },
+    { name: 'RDB', items: [
+      { name: 'RDB Nubank 115% CDI', meta: 'Vence em ago 2027', brl: 6400.00 } ] } ] },
+  { id: 'nu-marina', inst: 'Nubank', holder: 'Marina', kind: 'Banco digital', color: '#820AD1', ini: 'nu', summary: 'Caixinhas', groups: [
+    { name: 'Caixinhas', items: [
+      { name: 'Reserva', meta: '100% do CDI · resgate a qualquer hora', brl: 14000.00 },
+      { name: 'Reforma da cozinha', meta: '100% do CDI · meta R$ 9.000', brl: 5200.00 },
+      { name: 'Natal', meta: '100% do CDI · meta R$ 3.000', brl: 2150.00 } ] } ] },
+  { id: 'inter-rafael', inst: 'Inter', holder: 'Rafael', kind: 'Banco digital', color: '#FF7A00', ini: 'in', summary: 'CDB + Tesouro', groups: [
+    { name: 'CDB', items: [
+      { name: 'CDB Inter 102% CDI', meta: 'Liquidez diária', brl: 28400.00 } ] },
+    { name: 'Tesouro Direto', items: [
+      { name: 'Tesouro Selic 2029', meta: 'Selic + 0,09% a.a.', brl: 14231.00 },
+      { name: 'Tesouro IPCA+ 2035', meta: 'IPCA + 6,42% a.a.', brl: 8270.00 } ] } ] },
+  { id: 'xp-rafael', inst: 'XP Investimentos', holder: 'Rafael', kind: 'Corretora', color: '#FFFFFF', ink: '#161616', ini: 'xp', summary: 'Renda fixa', groups: [
+    { name: 'CDB', items: [
+      { name: 'CDB Daycoval 2027', meta: 'Prefixado 13,2% a.a.', brl: 25000.00 } ] },
+    { name: 'LCI e LCA', items: [
+      { name: 'LCI Banco ABC 2026', meta: '94% do CDI · isento de IR', brl: 18500.00 },
+      { name: 'LCA BTG Pactual 2027', meta: '95% do CDI · isento de IR', brl: 15270.00 } ] },
+    { name: 'Crédito privado', items: [
+      { name: 'Debênture incentivada 2031', meta: 'IPCA + 7,1% a.a. · isento de IR', brl: 12000.00 } ] },
+    { name: 'Tesouro Direto', items: [
+      { name: 'Tesouro IPCA+ 2045', meta: 'IPCA + 6,55% a.a.', brl: 10000.00 } ] } ] },
+  { id: 'rico-rafael', inst: 'Rico', holder: 'Rafael', kind: 'Corretora', color: '#E8530E', ini: 'ri', summary: 'Ações BR + ETFs', groups: [
+    { name: 'Ações', items: [
+      { name: 'PETR4', meta: 'Petrobras · 400 ações', brl: 15240.00 },
+      { name: 'ITUB4', meta: 'Itaú Unibanco · 300 ações', brl: 10410.00 },
+      { name: 'WEGE3', meta: 'WEG · 150 ações', brl: 7800.00 } ] },
+    { name: 'ETFs', items: [
+      { name: 'BOVA11', meta: 'Ibovespa · 80 cotas', brl: 10200.00 },
+      { name: 'IVVB11', meta: 'S&P 500 em reais · 18 cotas', brl: 7200.00 } ] } ] },
+  { id: 'avenue-rafael', inst: 'Avenue', holder: 'Rafael', kind: 'Corretora internacional', color: '#2457F5', ini: 'av', summary: 'US Stocks + ETFs', usd: true, groups: [
+    { name: 'Ações EUA', items: [
+      { name: 'NVDA', meta: 'NVIDIA · 20 ações', brl: 21800.00 },
+      { name: 'AAPL', meta: 'Apple · 25 ações', brl: 16350.00 } ] },
+    { name: 'ETFs EUA', items: [
+      { name: 'VOO', meta: 'Vanguard S&P 500 · 6 cotas', brl: 18530.00 },
+      { name: 'VT', meta: 'Vanguard Total World · 20 cotas', brl: 13080.00 } ] },
+    { name: 'Caixa e renda fixa EUA', items: [
+      { name: 'T-Bill 3 meses', meta: 'Tesouro americano · vence jan 2027', brl: 7430.00 },
+      { name: 'Saldo em dólar', meta: 'Disponível na conta', brl: 4360.00 } ] } ] },
+  { id: 'itau-marina', inst: 'Itaú', holder: 'Marina', kind: 'Banco', color: '#EC7000', ini: 'it', summary: 'CDB + Tesouro', groups: [
+    { name: 'CDB', items: [
+      { name: 'CDB Itaú 100% CDI', meta: 'Liquidez diária', brl: 22000.00 } ] },
+    { name: 'Tesouro Direto', items: [
+      { name: 'Tesouro Selic 2027', meta: 'Selic + 0,06% a.a.', brl: 15500.00 },
+      { name: 'Tesouro IPCA+ 2032', meta: 'IPCA + 6,30% a.a.', brl: 8250.00 } ] } ] },
+];
+// Cada posição pertence a uma única conta; o total da conta é a soma das posições
+// e o consolidado é a soma das contas.
+const cents = n => Math.round(n * 100);
+for (const a of ACCOUNTS) {
+  // Corretora internacional informa o equivalente em reais; o valor em dólar é só referência.
+  if (a.usd) for (const g of a.groups) for (const p of g.items) p.usd = cents(p.brl / USD) / 100;
+  for (const g of a.groups) g.total = g.items.reduce((s, p) => s + cents(p.brl), 0) / 100;
+  a.total = a.groups.reduce((s, g) => s + cents(g.total), 0) / 100;
+  a.count = a.groups.reduce((s, g) => s + g.items.length, 0);
+  if (a.usd) a.totalUsd = a.groups.reduce((s, g) => s + g.items.reduce((t, p) => t + cents(p.usd), 0), 0) / 100;
+}
+const HOLDERS = ['Todos', 'Rafael', 'Marina'];
+const visible = f => ACCOUNTS.filter(a => f === 'Todos' || a.holder === f).sort((a, b) => b.total - a.total);
+const sum = list => list.reduce((s, a) => s + cents(a.total), 0) / 100;
+const GRAND = sum(ACCOUNTS);
+console.assert(GRAND === 358041.65, 'Consolidado esperado R$ 358.041,65, veio ' + GRAND);
+
+/* ---------- Formatação ---------- */
+const nf = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const pf = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const brl = v => 'R$ ' + nf.format(v);
+const usd = v => 'US$ ' + nf.format(v);
+const pct = (v, t) => pf.format(v / t * 100) + '%';
+const amtHTML = (v, cls = '') => { const [m, c] = nf.format(v).split(','); return `<div class="amt ${cls}"><span class="cur">R$</span><span class="main">${m}</span><span class="cents">,${c}</span></div>`; };
+const ICON = {
+  x: '<svg viewBox="0 0 256 256"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>',
+  back: '<svg viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/></svg>',
+  caret: '<svg class="caret" viewBox="0 0 256 256"><path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"/></svg>',
+};
+const avHTML = (a, lg) => `<div class="av${lg ? ' lg' : ''}" data-share="av-${a.id}" style="background:${a.color};color:${a.ink || '#fff'}">${a.ini}</div>`;
+
+/* ---------- Views ---------- */
+const rowHTML = () => `<div class="prow"><div class="prow-texts"><div class="lbl" data-share="pat-label">Patrimônio investido</div><div class="pval" data-share="pat-value">R$ ${nf.format(GRAND).split(',')[0]}</div></div><div class="pchg">+1,2% no mês</div></div>`;
+
+function metaText(list, f) {
+  const n = list.length, word = n === 1 ? 'conta' : 'contas';
+  return f === 'Todos' ? `<span class="chg">+1,2% no mês</span> · ${n} ${word} de Rafael e Marina` : `${n} ${word} de ${f} · ${pct(sum(list), GRAND)} do total`;
+}
+function accRow(a, total) {
+  return `<button class="acc" data-id="${a.id}">${avHTML(a)}
+    <div class="acc-texts"><div class="nm" data-share="nm-${a.id}">${a.inst}</div><div class="sub">${a.holder} · ${a.summary}</div></div>
+    <div class="acc-right"><div class="v15" data-share="val-${a.id}">${brl(a.total)}</div><div class="pct">${pct(a.total, total)}</div></div>${ICON.caret}</button>`;
+}
+function accountsHTML(f, pillFrom = f) {
+  const list = visible(f), total = sum(list);
+  return `<div class="top"><div class="lbl" data-share="pat-label">Patrimônio investido</div><button class="ib" data-act="close" aria-label="Fechar">${ICON.x}</button></div>
+    <div class="hero"><div class="xf" data-x="total">${amtHTML(total).replace('class="amt ', 'data-share="pat-value" class="amt ')}</div>
+    <div class="meta xf" data-x="meta"><div>${metaText(list, f)}</div></div></div>
+    <div class="pills" role="group" aria-label="Titular">${HOLDERS.map(h => `<button class="pill${h === pillFrom ? ' on' : ''}" data-filter="${h}" aria-pressed="${h === pillFrom}">${h}</button>`).join('')}</div>
+    <div class="list">${list.map(a => accRow(a, total)).join('')}</div><div class="end" style="height:6px"></div>`;
+}
+function detailHTML(a) {
+  const posRow = p => `<div class="pos"><div class="pos-row"><div><div class="nm">${p.name}</div><div class="sub">${p.meta}</div></div>
+      <div class="acc-right"><div class="v15">${brl(p.brl)}</div><div class="pct">${p.usd != null ? usd(p.usd) + ' · ' : ''}${pct(p.brl, a.total)}</div></div></div>
+      <div class="track"><i style="width:${(p.brl / a.total * 100).toFixed(2)}%"></i></div></div>`;
+  return `<div class="top"><button class="ib" data-act="back" aria-label="Voltar para contas">${ICON.back}</button><button class="ib" data-act="close" aria-label="Fechar">${ICON.x}</button></div>
+    <div class="ident">${avHTML(a, true)}<div class="acc-texts"><div class="dname" data-share="nm-${a.id}">${a.inst}</div><div class="sub">${a.holder} · ${a.kind}</div></div></div>
+    <div class="dtotal"><div class="lbl">Total investido</div><div style="margin-top:4px">${amtHTML(a.total, 'md').replace('class="amt ', `data-share="val-${a.id}" class="amt `)}</div>
+      <div class="meta">${a.usd ? `≈ ${usd(a.totalUsd)} · ` : ''}${pct(a.total, GRAND)} do patrimônio · ${a.count} posições</div></div>
+    ${a.groups.map(g => `<div class="group"><div class="ghead"><div class="gname">${g.name} <span>· ${g.items.length}</span></div><div class="gtot">${brl(g.total)} · ${pct(g.total, a.total)}</div></div>${g.items.map(posRow).join('')}</div>`).join('')}
+    ${a.usd ? `<div class="note">Valores em dólar convertidos pela PTAX de 28 out (US$ 1 = R$ ${nf.format(USD)}). Só o valor em reais entra no patrimônio.</div>` : ''}
+    <div class="end"></div>`;
+}
+
+/* ---------- Motor de movimento ---------- */
+const $ = id => document.getElementById(id);
+const phone = $('phone'), modal = $('modal'), scrim = $('scrim'), flight = $('flight'), homeRow = $('homeRow');
+const params = new URLSearchParams(location.search);
+const SLOW = Math.max(1, Number(params.get('slow')) || 1);
+const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const ROW = { x: 32, y: 433, w: 338, h: 60, r: 0, s: 0 };
+const AREA = { top: 62, bottom: 862 }; // abaixo da status bar; base com a mesma margem de 12 das laterais
+const W = 378, X = 12, R = 28;
+// Mola criticamente amortecida (bounce 0): sem overshoot, como pede o quadro 13.
+// ω=18 ≈ 330ms até 98% (motion/considered); ω=24 ≈ 250ms nas saídas (~70% da entrada).
+const OMEGA = { open: 18, drill: 18, back: 20, close: 24, filter: 20 };
+
+let state = { view: 'home', filter: 'Todos', account: null, listScroll: 0 };
+let cur = { ...ROW };      // retângulo atual do modal
+let layer = null;          // camada de conteúdo visível
+let run = null;            // animação em curso
+
+homeRow.innerHTML = rowHTML();
+
+function applyModal(m) {
+  modal.style.transform = `translate(${m.x}px, ${m.y}px)`;
+  modal.style.width = m.w + 'px';
+  modal.style.height = m.h + 'px';
+  modal.style.borderRadius = m.r + 'px';
+  modal.style.boxShadow = `0 24px 60px rgba(0,0,0,${0.32 * m.s}), inset 0 0 0 1px rgba(255,255,255,${0.12 * m.s})`;
+  scrim.style.opacity = m.s;
+}
+const lerp = (a, b, p) => a + (b - a) * p;
+const clamp01 = v => Math.max(0, Math.min(1, v));
+const ease = v => { v = clamp01(v); return v * v * (3 - 2 * v); };
+
+function makeLayer(html, cls = '') {
+  const el = document.createElement('div');
+  el.className = 'layer ' + cls;
+  el.innerHTML = html;
+  modal.appendChild(el);
+  return el;
+}
+function fitRect(el) {
+  el.classList.remove('scroll'); el.style.height = ''; el.style.width = W + 'px';
+  const natural = el.scrollHeight, max = AREA.bottom - AREA.top;
+  el.style.width = '';
+  const h = Math.min(natural, max);
+  if (natural > max) { el.classList.add('scroll'); el.style.height = h + 'px'; }
+  const y = AREA.bottom - h; // ancorado na base: só o topo se move quando a altura muda
+  return { x: X, y, w: W, h, r: R, s: 1 };
+}
+const rel = el => { const a = el.getBoundingClientRect(), b = phone.getBoundingClientRect(); const s = b.width / 402; return { x: (a.left - b.left) / s, y: (a.top - b.top) / s, w: a.width / s, h: a.height / s }; };
+
+// Conclui a transição atual (usado antes de filtrar e nos atalhos de revisão).
+function finishRun() {
+  if (!run) return;
+  cancelAnimationFrame(run.raf);
+  const r = run; run = null; r.done();
+}
+// Interrompe sem saltar: o modal fica onde está e a próxima transição parte dali.
+function abandonRun() {
+  if (!run) return;
+  cancelAnimationFrame(run.raf);
+  const r = run; run = null; r.abandon();
+}
+
+// Uma transição = um único progresso de mola que dirige retângulo, conteúdo e elementos compartilhados.
+function morph({ to, next, omega, extra, end }) {
+  abandonRun();
+  const from = { ...cur }, prev = layer;
+  const prevStart = prev ? Number(prev.style.opacity || 1) : 1;
+  const t0 = performance.now();
+  // Pares de elementos compartilhados: o valor tocado viaja para o próximo nível.
+  const pairs = [];
+  if (prev && next) {
+    next.style.width = to.w + 'px'; // mede os destinos na largura final
+    for (const nEl of next.querySelectorAll('[data-share]')) {
+      const oEl = prev.querySelector(`[data-share="${nEl.dataset.share}"]`);
+      if (!oEl) continue;
+      const o = rel(oEl), lay = rel(next), n0 = rel(nEl);
+      const n = { x: to.x + (n0.x - lay.x), y: to.y + (n0.y - lay.y), w: n0.w, h: n0.h };
+      const oc = oEl.cloneNode(true), nc = nEl.cloneNode(true);
+      for (const [c, r] of [[oc, o], [nc, n]]) { c.removeAttribute('data-share'); c.style.width = r.w + 'px'; c.style.height = r.h + 'px'; flight.appendChild(c); }
+      oEl.style.visibility = nEl.style.visibility = 'hidden';
+      pairs.push({ o, n, oc, nc, oEl, nEl });
+    }
+    next.style.width = '';
+  }
+  if (next) next.style.opacity = 0;
+  const step = now => {
+    const t = (now - t0) / 1000 / SLOW;
+    let p = REDUCE ? 1 : 1 - (1 + omega * t) * Math.exp(-omega * t);
+    const done = p > 0.998; if (done) p = 1;
+    cur = { x: lerp(from.x, to.x, p), y: lerp(from.y, to.y, p), w: lerp(from.w, to.w, p), h: lerp(from.h, to.h, p), r: lerp(from.r, to.r, p), s: lerp(from.s, to.s, p) };
+    applyModal(cur);
+    if (prev && next) {
+      const po = 1 - ease(p / 0.3), no = ease((p - 0.3) / 0.5);
+      prev.style.opacity = prevStart * po;                     // sai rápido (motion/quick)
+      prev.style.filter = `blur(${(1 - po) * 4}px)`;
+      next.style.opacity = no;                                 // entra depois que os compartilhados já viajaram
+      next.style.filter = no < 1 ? `blur(${(1 - no) * 4}px)` : '';
+      next.style.transform = `translateY(${(1 - ease(p)) * 4}px)`; // 0–4px: conteúdo expandido
+    }
+    for (const q of pairs) {
+      const x = lerp(q.o.x, q.n.x, p), y = lerp(q.o.y, q.n.y, p), h = lerp(q.o.h, q.n.h, p);
+      q.oc.style.transform = `translate(${x}px,${y}px) scale(${h / q.o.h})`;
+      q.nc.style.transform = `translate(${x}px,${y}px) scale(${h / q.n.h})`;
+      q.oc.style.opacity = 1 - ease(p / 0.55);
+      q.nc.style.opacity = ease((p - 0.2) / 0.55);
+    }
+    if (extra) extra(p);
+    if (run) run.p = p;
+    if (done) { const r = run; run = null; r.done(); } else run.raf = requestAnimationFrame(step);
+  };
+  run = {
+    p: 0,
+    raf: requestAnimationFrame(step),
+    abandon() {
+      for (const q of pairs) { q.oc.remove(); q.nc.remove(); q.oEl.style.visibility = q.nEl.style.visibility = ''; }
+      if (prev && next && prev !== next) {
+        const keep = this.p < 0.35 ? prev : next;
+        (keep === prev ? next : prev).remove();
+        keep.style.transform = keep.style.filter = ''; layer = keep;
+      }
+      if (extra) extra(1);
+    },
+    done: () => {
+      cur = { ...to }; applyModal(cur);
+      for (const q of pairs) { q.oc.remove(); q.nc.remove(); q.nEl.style.visibility = ''; }
+      if (prev && next && prev !== next) prev.remove();
+      if (next) { next.style.opacity = next.style.filter = next.style.transform = ''; layer = next; }
+      if (extra) extra(1);
+      if (end) end();
+    },
+  };
+}
+
+/* ---------- Navegação ---------- */
+function open() {
+  if (state.view !== 'home') return;
+  state.view = 'accounts';
+  if (!run) { // partindo da Início em repouso; se estiver fechando, parte de onde o modal está
+    modal.innerHTML = ''; modal.style.display = 'block';
+    cur = { ...ROW }; applyModal(cur);
+    layer = makeLayer(rowHTML(), 'home');
+    homeRow.style.visibility = 'hidden';
+  }
+  scrim.classList.add('on');
+  const next = makeLayer(accountsHTML(state.filter), 'v-accounts');
+  morph({ to: fitRect(next), next, omega: OMEGA.open, end: () => next.querySelector('[data-act="close"]').focus({ preventScroll: true }) });
+}
+function close() {
+  if (state.view === 'home') return;
+  if (state.view === 'accounts') state.listScroll = layer.scrollTop;
+  state.view = 'home';
+  scrim.classList.remove('on');
+  const next = makeLayer(rowHTML(), 'home');
+  morph({ to: { ...ROW }, next, omega: OMEGA.close, end: () => { modal.style.display = 'none'; modal.innerHTML = ''; layer = null; homeRow.style.visibility = ''; } });
+}
+function drill(id) {
+  if (state.view !== 'accounts') return;
+  state.listScroll = layer.scrollTop;
+  state.view = 'detail'; state.account = id;
+  const next = makeLayer(detailHTML(ACCOUNTS.find(a => a.id === id)), 'v-detail');
+  morph({ to: fitRect(next), next, omega: OMEGA.drill, end: () => next.querySelector('[data-act="back"]').focus({ preventScroll: true }) });
+}
+function back() {
+  if (state.view !== 'detail') return;
+  state.view = 'accounts';
+  const next = makeLayer(accountsHTML(state.filter), 'v-accounts');
+  const to = fitRect(next);
+  next.scrollTop = state.listScroll; // voltar preserva rolagem e filtro
+  const id = state.account;
+  morph({ to, next, omega: OMEGA.back, end: () => next.querySelector(`.acc[data-id="${id}"]`)?.focus({ preventScroll: true }) });
+}
+
+// Filtro: o modal não troca de nível. Linhas que ficam deslizam, as que saem somem,
+// as que entram aparecem; total e legenda trocam por crossfade; a altura acompanha.
+function setFilter(f) {
+  if (state.view !== 'accounts' || f === state.filter) return;
+  finishRun();
+  const prevF = state.filter; state.filter = f;
+  const prev = layer;
+  const oldTop = new Map([...prev.querySelectorAll('.acc')].map(el => [el.dataset.id, rel(el).y]));
+  const oldTotal = prev.querySelector('[data-x="total"]').innerHTML, oldMeta = prev.querySelector('[data-x="meta"]').innerHTML;
+  const oldRows = [...prev.querySelectorAll('.acc')];
+  const next = makeLayer(accountsHTML(f, prevF), 'v-accounts');
+  const to = fitRect(next);
+  prev.remove(); layer = next;
+  requestAnimationFrame(() => next.querySelectorAll('.pill').forEach(p => { p.classList.toggle('on', p.dataset.filter === f); p.setAttribute('aria-pressed', String(p.dataset.filter === f)); }));
+
+  const moves = [], enters = [], leaves = [];
+  for (const el of next.querySelectorAll('.acc')) {
+    const y0 = oldTop.get(el.dataset.id);
+    if (y0 != null) moves.push({ el, d: y0 - rel(el).y });
+    else enters.push(el);
+  }
+  const list = next.querySelector('.list');
+  for (const el of oldRows) if (!next.querySelector(`.acc[data-id="${el.dataset.id}"]`)) {
+    const c = el.cloneNode(true); c.classList.add('leaving');
+    c.style.top = (oldTop.get(el.dataset.id) - rel(list).y) + 'px'; c.style.width = '100%';
+    list.appendChild(c); leaves.push(c);
+  }
+  const ghosts = [['total', oldTotal], ['meta', oldMeta]].map(([k, html]) => {
+    const host = next.querySelector(`[data-x="${k}"]`), g = document.createElement('div');
+    g.className = 'ghost'; g.innerHTML = html; g.querySelectorAll('[data-share]').forEach(e => e.removeAttribute('data-share'));
+    host.appendChild(g); return { g, fresh: host.firstElementChild };
+  });
+  morph({ to, next: null, omega: OMEGA.filter, extra: p => {
+    for (const m of moves) m.el.style.transform = p >= 1 ? '' : `translateY(${(1 - p) * m.d}px)`;
+    for (const e of enters) e.style.opacity = p >= 1 ? '' : ease((p - 0.2) / 0.5);
+    for (const l of leaves) { l.style.opacity = 1 - ease(p / 0.3); if (p >= 1) l.remove(); }
+    for (const { g, fresh } of ghosts) { g.style.opacity = 1 - ease(p / 0.35); fresh.style.opacity = p >= 1 ? '' : ease((p - 0.15) / 0.45); if (p >= 1) g.remove(); }
+  } });
+}
+
+/* ---------- Eventos ---------- */
+homeRow.addEventListener('click', open);
+scrim.addEventListener('click', close);
+modal.addEventListener('click', e => {
+  if (state.view === 'home' && run) return open(); // tocar no modal enquanto recolhe reabre
+  const t = e.target.closest('[data-act],[data-filter],.acc');
+  if (!t || t.classList.contains('leaving')) return;
+  if (t.dataset.act === 'close') close();
+  else if (t.dataset.act === 'back') back();
+  else if (t.dataset.filter) setFilter(t.dataset.filter);
+  else if (t.dataset.id) drill(t.dataset.id);
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') state.view === 'detail' ? back() : close();
+});
+
+// Atalho para revisão: ?state=accounts | ?state=detail&account=avenue-rafael&filter=Rafael
+const startState = params.get('state');
+if (startState) {
+  const f = params.get('filter'); if (HOLDERS.includes(f)) state.filter = f;
+  open(); finishRun();
+  if (startState === 'detail') { drill(params.get('account') || 'nu-rafael'); finishRun(); }
+}
+</script>
+<script src="../presentation.js"></script>
+</body>
+</html>
