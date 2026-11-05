@@ -1,0 +1,1085 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fyin · Cartão · Morph</title>
+<link href="../vendor/urbanist.css" rel="stylesheet">
+<style>
+  /* Tokens do Fyin.pen (q/*) e do quadro 13 · Movimento */
+  :root {
+    --ink: #161616;
+    --bg: #FFFFFF;
+    --card: #F3F3F2;
+    --text-2: #5F5F5F;
+    --text-3: #737373;
+    --line: #E7E5E0;
+    --on-dark: #FFFFFF;
+    --on-dark-2: #FFFFFF8C;
+    --on-dark-3: #FFFFFF4D;
+    --on-dark-line: #FFFFFF1F;
+    --skeleton-dark: #FFFFFF14;
+    --pill-line: #FFFFFF29;
+    --pill-text: #FFFFFFB3;
+    --accent: #D4F55A;
+    --accent-soft: #EEF9C4;
+    --warn: #F4B740;
+    --over: #F0735A;
+    --scrim: #0E0D0D59;
+    --soft: #E9E9E8;
+    --motion-instant: 100ms;
+    --motion-quick: 160ms;
+    --motion-base: 240ms;
+    --motion-screen: 400ms;
+    --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--soft);
+    display: grid; place-items: center;
+    font-family: Urbanist, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus:not(:focus-visible) { outline: none; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; text-align: left; }
+
+  .phone { position: relative; width: 402px; height: 874px; overflow: hidden; background: url(home.png) 0 0 / 402px 874px no-repeat; }
+  @media (min-width: 440px) { .phone { border-radius: 48px; box-shadow: 0 30px 80px #0E0D0D26; } }
+
+  /* Superfície do modal, igual à da origem. Escuro: nasce do herói (patrimônio). Cinza: nasce do Metric Card (q/card).
+     ?tone=dark volta ao modal escuro para comparar. */
+  .phone { --s-surface: #161616; --s-fg: #FFFFFF; --s-fg-2: #FFFFFF8C; --s-fg-3: #FFFFFF4D; --s-ghost: #FFFFFF4D;
+    --s-line: #FFFFFF1F; --s-well: #FFFFFF14; --s-press: #FFFFFF0F; --s-ib-bg: transparent; --s-ib-line: #FFFFFF1F;
+    --s-pill-bg: transparent; --s-pill-line: #FFFFFF29; --s-pill-text: #FFFFFFB3; --s-on: #D4F55A; --s-on-text: #161616;
+    --s-paid: #D4F55A; --s-cta-bg: transparent; --s-cta-line: #FFFFFF1F; --s-panel: #232323; --s-hl: #FFFFFF14; --s-over-ink: #F0735A; --s-attn-ink: #F4B740; }
+  .phone.tone-gray { --s-surface: #F3F3F2; --s-fg: #161616; --s-fg-2: #5F5F5F; --s-fg-3: #737373; --s-ghost: #B5B5B5;
+    --s-line: #E7E5E0; --s-well: #FFFFFF; --s-press: #0E0D0D0A; --s-ib-bg: #FFFFFF; --s-ib-line: transparent;
+    --s-pill-bg: #FFFFFF; --s-pill-line: #E7E5E0; --s-pill-text: #161616; --s-on: #161616; --s-on-text: #FFFFFF;
+    --s-paid: #4E6B4A; --s-cta-bg: #FFFFFF; --s-cta-line: #E7E5E0; --s-panel: #FFFFFF; --s-hl: #F3F3F2; --s-over-ink: #B5462F; --s-attn-ink: #9A4A12; }
+
+  /* Card de origem na Início: idêntico ao Metric Card “Cartão” */
+  .patch { position: absolute; left: 11px; top: 660px; width: 187px; height: 119px; border-radius: 19px; background: var(--bg); }
+  .home-card { position: absolute; left: 12px; top: 661px; width: 185px; height: 117px; border-radius: 18px; background: var(--card); cursor: pointer;
+    transition: transform var(--motion-instant) var(--ease-standard); }
+  .home-card:active { transform: scale(0.98); }
+  .mc { width: 185px; height: 117px; padding: 16px; display: flex; flex-direction: column; gap: 22px; }
+  .mc-head { display: flex; justify-content: space-between; align-items: center; height: 18px; }
+  .mc-lbl { font-size: 14px; line-height: 17px; font-weight: 500; color: var(--text-3); white-space: nowrap; }
+  .mc-head svg { width: 18px; height: 18px; fill: var(--ink); }
+  .mc-body { display: flex; flex-direction: column; gap: 2px; }
+  .mc-val { font-size: 24px; line-height: 28px; font-weight: 300; letter-spacing: -0.8px; color: var(--ink); white-space: nowrap; }
+  .mc-sub { font-size: 13px; line-height: 15px; font-weight: 500; color: var(--text-3); white-space: nowrap; }
+
+  .scrim { position: absolute; inset: 0; background: var(--scrim); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    opacity: 0; pointer-events: none; }
+  .scrim.on { pointer-events: auto; }
+
+  .modal { position: absolute; left: 0; top: 0; background: var(--s-surface); overflow: hidden; display: none; will-change: transform, width, height; }
+  .layer { position: absolute; left: 0; top: 0; width: 100%; overflow: hidden; } /* acompanha a largura do modal durante o morph */
+  .layer.scroll { overflow-y: auto; scrollbar-width: none; }
+  .layer.scroll::-webkit-scrollbar { display: none; }
+  .flight { position: absolute; inset: 0; pointer-events: none; }
+  .flight > * { position: absolute; left: 0; top: 0; transform-origin: 0 0; margin: 0; }
+
+  /* Icon Button (On Dark no escuro; fundo branco no cinza) */
+  .ib { width: 44px; height: 44px; border-radius: 999px; border: 1px solid var(--s-ib-line); background: var(--s-ib-bg); display: grid; place-items: center; flex: none;
+    transition: transform var(--motion-instant) var(--ease-standard), background var(--motion-quick) var(--ease-standard); }
+  .ib:active { transform: scale(0.96); background: var(--s-press); }
+  .ib svg { width: 20px; height: 20px; fill: var(--s-fg); }
+
+  .top { display: flex; justify-content: space-between; align-items: center; padding: 16px 16px 0 20px; min-height: 60px; }
+  .hero { padding: 6px 20px 0; }
+  .amt { display: flex; align-items: flex-end; white-space: nowrap; color: var(--s-fg); }
+  .amt .cur { font-size: 18px; line-height: 1.1; font-weight: 300; color: var(--s-ghost); padding: 0 4px 7px 0; }
+  .amt .main, .amt .cents { font-size: 44px; line-height: 1.1; font-weight: 300; letter-spacing: -1.6px; }
+  .amt .cents { color: var(--s-ghost); }
+  .amt.md .cur { font-size: 16px; padding-bottom: 6px; }
+  .amt.md .main, .amt.md .cents { font-size: 36px; letter-spacing: -1.2px; }
+  .lbl { font-size: 13px; line-height: 16px; font-weight: 500; color: var(--s-fg-2); white-space: nowrap; }
+  .meta { font-size: 13px; line-height: 16px; font-weight: 500; color: var(--s-fg-2); margin-top: 6px; position: relative; }
+  .xf { position: relative; }
+  .xf > .ghost { position: absolute; left: 0; top: 0; width: 100%; }
+
+  /* Month Pill no escuro, Filter Pill no cinza: titular na lista */
+  .pills { display: flex; gap: 6px; padding: 18px 20px 6px; }
+  .pill { height: 32px; border-radius: 16px; border: 1px solid var(--s-pill-line); background: var(--s-pill-bg); padding: 0 14px; display: flex; align-items: center; gap: 6px; flex: none;
+    font-size: 13px; font-weight: 500; color: var(--s-pill-text); white-space: nowrap;
+    transition: background var(--motion-quick) var(--ease-standard), border-color var(--motion-quick) var(--ease-standard), color var(--motion-quick) var(--ease-standard), transform var(--motion-instant) var(--ease-standard); }
+  .pill:active { transform: scale(0.97); }
+  .pill.on { background: var(--s-on); border-color: var(--s-on); color: var(--s-on-text); font-weight: 600; }
+
+  .list { padding: 4px 0 10px; position: relative; }
+  .acc { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 16px 12px 20px; position: relative;
+    transition: transform var(--motion-instant) var(--ease-standard); }
+  .acc:active { transform: scale(0.98); }
+  .acc + .acc::before { content: ""; position: absolute; left: 72px; right: 20px; top: 0; height: 1px; background: var(--s-line); }
+  .acc.leaving { position: absolute; left: 0; pointer-events: none; }
+  .av { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; flex: none;
+    font-size: 13px; font-weight: 700; color: #fff; }
+  .av.lg { width: 48px; height: 48px; border-radius: 14px; font-size: 15px; }
+  .acc-texts { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .nm { font-size: 15px; line-height: 18px; font-weight: 500; color: var(--s-fg); white-space: nowrap; }
+  .nm .last4 { color: var(--s-fg-3); }
+  .sub { font-size: 12px; line-height: 15px; font-weight: 500; color: var(--s-fg-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .acc-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .v15 { font-size: 15px; line-height: 18px; font-weight: 500; color: var(--s-fg); white-space: nowrap; letter-spacing: -0.2px; font-variant-numeric: tabular-nums; }
+  .caret { width: 16px; height: 16px; fill: var(--s-fg-3); flex: none; }
+
+  /* Status da fatura: cor + texto, nunca só cor */
+  .st { font-size: 12px; line-height: 15px; font-weight: 500; color: var(--s-fg-2); white-space: nowrap; }
+  .st i { display: inline-block; width: 6px; height: 6px; border-radius: 999px; margin-right: 6px; vertical-align: 1px; }
+  .st-aberta i { background: var(--s-fg-2); }
+  .st-fechada i { background: var(--warn); }
+  .st-paga i { background: var(--s-paid); }
+  .st-vencida i { background: var(--over); }
+  .st-futura i { background: transparent; box-shadow: inset 0 0 0 1px var(--s-fg-2); }
+  .meta .st { font-size: 13px; line-height: 16px; }
+  .meta .st b { color: var(--s-fg); font-weight: 600; }
+
+  .ident { display: flex; align-items: center; gap: 12px; padding: 14px 20px 0; }
+  .idbox { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; }
+  .idbox > .ghost { display: flex; align-items: center; gap: 12px; }
+  /* Navegador entre cartões: discreto, à direita da identidade. Toque de 44pt, ícone de 16. */
+  .cnav { flex: none; display: flex; align-items: center; margin-right: -12px; }
+  .cnav-b { width: 36px; height: 44px; display: grid; place-items: center; border-radius: 999px;
+    transition: opacity var(--motion-quick) var(--ease-standard), background var(--motion-quick) var(--ease-standard); }
+  .cnav-b:active:not(:disabled) { background: var(--s-press); }
+  .cnav-b svg { width: 16px; height: 16px; fill: var(--s-fg-2); }
+  .cnav-b:disabled { opacity: 0.3; cursor: default; }
+  .cnav-n { min-width: 28px; text-align: center; font-size: 13px; line-height: 16px; font-weight: 500; color: var(--s-fg-2); font-variant-numeric: tabular-nums; }
+  .dname { font-size: 22px; line-height: 26px; font-weight: 500; color: var(--s-fg); white-space: nowrap; }
+  .dtotal { padding: 14px 20px 0; }
+
+  /* Seletor de fatura (morph select): gatilho no cabeçalho, entre voltar e fechar. Abre por cima do conteúdo,
+     preso dentro do modal; o modal não muda de altura ao abrir nem ao fechar. */
+  .ptrig { display: flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px 0 14px; border: 1px solid var(--s-line); border-radius: 999px;
+    font-size: 14px; font-weight: 600; color: var(--s-fg); white-space: nowrap;
+    transition: background var(--motion-quick) var(--ease-standard), transform var(--motion-instant) var(--ease-standard); }
+  .ptrig:active { background: var(--s-press); transform: scale(0.97); }
+  .ptrig svg, .phead svg { width: 14px; height: 14px; fill: var(--s-fg-2); flex: none; }
+  .pv { position: relative; display: block; overflow: hidden; }
+  .pv > span { display: block; }
+  .pv > .ghost { position: absolute; left: 0; top: 0; }
+  .ppop { position: absolute; z-index: 2; display: flex; flex-direction: column; overflow: hidden;
+    border: 1px solid var(--s-line); background: var(--s-panel); }
+  .phead { flex: none; height: 34px; display: flex; justify-content: center; align-items: center; gap: 6px; cursor: pointer;
+    font-size: 14px; font-weight: 600; color: var(--s-fg); white-space: nowrap; }
+  .phead svg { transform: rotate(180deg); }
+  /* Fade só na borda em que ainda há mais para rolar */
+  .plist { --ft: 1; --fb: 1; position: relative; overflow-y: auto; scrollbar-width: none; padding: 0 4px 4px; outline: none;
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,var(--ft)) 0, #000 24px, #000 calc(100% - 24px), rgba(0,0,0,var(--fb)) 100%);
+    mask-image: linear-gradient(180deg, rgba(0,0,0,var(--ft)) 0, #000 24px, #000 calc(100% - 24px), rgba(0,0,0,var(--fb)) 100%); }
+  .plist::-webkit-scrollbar { display: none; }
+  .plist.more-t { --ft: 0; }
+  .plist.more-b { --fb: 0; }
+  .phl { position: absolute; left: 4px; right: 4px; top: 0; border-radius: 14px; background: var(--s-hl); pointer-events: none;
+    transition: transform var(--motion-base) var(--ease-standard), height var(--motion-base) var(--ease-standard); }
+  .opt { position: relative; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 8px 12px; border-radius: 14px; cursor: pointer; }
+  /* Fatura aberta do cartão: fundo q/accent-soft para achar o mês corrente de relance (texto escuro nos dois tons) */
+  .opt.now { background: var(--accent-soft); --s-fg: #161616; --s-fg-2: #5F5F5F; --s-fg-3: #737373; }
+  .opt-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .opt-m { font-size: 15px; line-height: 18px; font-weight: 500; color: var(--s-fg); white-space: nowrap; }
+  .opt .v15.none { color: var(--s-fg-3); }
+  .opt .chk { width: 16px; height: 16px; fill: var(--s-fg); flex: none; visibility: hidden; }
+  .opt[aria-selected="true"] .chk { visibility: visible; }
+  /* Fatura anterior ainda com saldo: logo abaixo do status da atual, na tinta do estado. A linha inteira é o botão
+     (alvo de 44pt) e abre essa fatura; o valor grande continua sendo só o da fatura escolhida. */
+  .owe { display: flex; align-items: center; gap: 6px; margin: -6px 0 -14px; padding: 14px 0; font-size: 13px; line-height: 16px; font-weight: 600;
+    color: var(--s-over-ink); white-space: nowrap; transition: opacity var(--motion-instant) var(--ease-standard); }
+  .owe.st-fechada { color: var(--s-attn-ink); }
+  .owe:active { opacity: 0.6; }
+  .owe i { width: 6px; height: 6px; border-radius: 999px; flex: none; }
+  .owe svg { width: 14px; height: 14px; fill: currentColor; flex: none; }
+  .owe-space { height: 24px; } /* mesma altura líquida da linha acima: todo cartão tem o mesmo resumo, o modal nunca muda de tamanho */
+  .ghead { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 4px; }
+  .gname { font-size: 13px; line-height: 16px; font-weight: 600; color: var(--s-fg); }
+  .gname span, .gtot { font-size: 13px; line-height: 16px; font-weight: 500; color: var(--s-fg-2); }
+  .tx { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--s-line); }
+  .tx:last-child { border-bottom: 0; }
+  .tx > div:first-child { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .empty { margin-top: 8px; padding: 20px; border-radius: 14px; background: var(--s-well); }
+  .empty .nm { white-space: normal; }
+  .empty p { font-size: 13px; line-height: 19px; font-weight: 500; color: var(--s-fg-2); margin-top: 6px; }
+  .note { font-size: 12px; line-height: 17px; font-weight: 500; color: var(--s-fg-3); padding: 12px 0 8px; }
+
+  /* Fatura com geometria fixa: cabeçalho, resumo e rodapé no lugar; só a lista de lançamentos rola.
+     A janela da lista reserva ~5 linhas (5 × 60) seja qual for o número de lançamentos, então trocar de mês não
+     mexe na altura do modal. Em tela baixa o modal para em 100dvh menos status bar e margem, e a lista cede primeiro. */
+  .v-invoice { display: flex; flex-direction: column; max-height: min(800px, calc(100dvh - 74px));
+    touch-action: pan-y; -webkit-user-select: none; user-select: none; } /* vertical fica com o navegador (rolagem da lista); horizontal é nosso (trocar cartão) */
+  .v-invoice > * { flex: none; }
+  .txbox { flex: 1 1 auto !important; min-height: 0; display: flex; flex-direction: column; position: relative; padding: 18px 20px 0; }
+  .txbox > .ghead { flex: none; }
+  .txbox > .ghost { position: absolute; top: 18px; left: 20px; right: 20px; bottom: 0; display: flex; flex-direction: column; pointer-events: none; }
+  .txv { --ft: 1; --fb: 1; flex: 1 1 300px; min-height: 96px; overflow-y: auto; scrollbar-width: none; overscroll-behavior: contain;
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,var(--ft)) 0, #000 24px, #000 calc(100% - 28px), rgba(0,0,0,var(--fb)) 100%);
+    mask-image: linear-gradient(180deg, rgba(0,0,0,var(--ft)) 0, #000 24px, #000 calc(100% - 28px), rgba(0,0,0,var(--fb)) 100%); }
+  .txv::-webkit-scrollbar { display: none; }
+  .txv.more-t { --ft: 0; }
+  .txv.more-b { --fb: 0; }
+  .foot { padding: 20px; }
+  .cta { width: 100%; height: 44px; border-radius: 999px; border: 1px solid var(--s-cta-line); background: var(--s-cta-bg); display: flex; justify-content: center; align-items: center; gap: 8px;
+    font-size: 15px; font-weight: 600; color: var(--s-fg);
+    transition: transform var(--motion-instant) var(--ease-standard), background var(--motion-quick) var(--ease-standard); }
+  .cta:active { transform: scale(0.98); background: var(--s-press); }
+
+  /* Destino provisório: tela do cartão (push na pilha da Início) */
+  .screen { position: absolute; inset: 0; background: var(--bg); transform: translateX(100%); display: none; padding: 62px 20px 0;
+    box-shadow: -12px 0 40px #0E0D0D1F; }
+  .screen .bar { display: flex; height: 44px; align-items: center; }
+  .ib.light { border-color: var(--line); }
+  .ib.light svg { fill: var(--ink); }
+  .screen h1 { font-size: 28px; line-height: 34px; font-weight: 600; letter-spacing: -1.2px; color: var(--ink); margin-top: 14px; }
+  .screen .s-sub { font-size: 14px; line-height: 18px; font-weight: 500; color: var(--text-2); margin-top: 4px; }
+  .screen .es { margin-top: 24px; background: var(--card); border-radius: 28px; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+  .screen .dot { width: 40px; height: 40px; border-radius: 999px; background: var(--bg); display: grid; place-items: center; }
+  .screen .dot svg { width: 19px; height: 19px; fill: var(--ink); }
+  .screen .es h2 { font-size: 18px; line-height: 22px; font-weight: 600; letter-spacing: -0.3px; color: var(--ink); }
+  .screen .es p { font-size: 14px; line-height: 20px; font-weight: 500; color: var(--text-2); margin-top: 6px; }
+  .screen .btn2 { align-self: flex-start; height: 44px; padding: 0 20px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); font-size: 15px; font-weight: 600; color: var(--ink); }
+  .screen .route { font: 500 12px/16px ui-monospace, Menlo, monospace; color: var(--text-3); }
+
+  .hint { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); font: 500 12px Urbanist, sans-serif; color: #5F5F5F; }
+  @media (max-width: 479px) { .hint { display: none; } }
+</style>
+<link rel="stylesheet" href="../presentation.css">
+</head>
+<body>
+<div class="phone" id="phone">
+  <div class="patch"></div>
+  <button class="home-card" id="homeCard" aria-label="Abrir faturas dos cartões"></button>
+  <div class="scrim" id="scrim"></div>
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Cartão"></div>
+  <div class="flight" id="flight"></div>
+  <div class="screen" id="screen" role="region" aria-label="Tela do cartão"></div>
+</div>
+<div class="hint">Toque em “Cartão”. <b>?slow=4</b> desacelera o movimento; <b>?tone=dark</b> mostra o modal escuro.</div>
+
+<script>
+/* ---------- Datas ---------- */
+const TODAY = '2026-10-28';
+const MES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+const MES_LONGO = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+const iso = (y, m, d) => new Date(Date.UTC(y, m - 1, d)).toISOString().slice(0, 10); // normaliza mês 0 e 13
+const addDays = (s, n) => { const d = new Date(s + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+const addMonths = (key, n) => { const [y, m] = key.split('-').map(Number); return iso(y, m + n, 1).slice(0, 7); };
+const ymd = s => s.split('-').map(Number);
+const dm = s => { const [, m, d] = ymd(s); return `${d} ${MES[m - 1]}`; };
+
+/* ---------- Dados (mock) ----------
+   Cartão e fatura são entidades separadas. O cartão guarda o ciclo (dia de fechamento e de vencimento),
+   as compras e os pagamentos; cada fatura é derivada: período, datas, lançamentos, total e status. */
+const CARDS = [
+  { id: 'nu-rafael-4821', inst: 'Nubank', holder: 'Rafael', last4: '4821', color: '#820AD1', ini: 'nu', closeDay: 3, dueDay: 10,
+    buys: [
+      { name: 'Mercado Livre', date: '2026-08-20', total: 1289.40, n: 6 },
+      { name: 'Latam · passagens', date: '2026-09-15', total: 1190.00, n: 4 },
+      { name: 'Amazon', date: '2026-10-27', total: 250.44, n: 3 },
+      { name: 'Pão de Açúcar', date: '2026-10-18', total: 389.72 },
+      { name: 'Posto Shell', date: '2026-10-21', total: 180.00 },
+      { name: 'iFood', date: '2026-10-25', total: 64.90 },
+      { name: 'Netflix', date: '2026-10-15', total: 55.90 },
+      { name: 'Pão de Açúcar', date: '2026-09-20', total: 352.18 },
+      { name: 'Drogaria Raia', date: '2026-09-30', total: 135.48 },
+      { name: 'Uber', date: '2026-09-27', total: 48.30 },
+      { name: 'Netflix', date: '2026-09-15', total: 55.90 },
+      { name: 'Pão de Açúcar', date: '2026-08-22', total: 410.35 },
+      { name: 'Cinemark', date: '2026-08-30', total: 96.00 },
+      { name: 'Netflix', date: '2026-08-15', total: 55.90 },
+      { name: 'Pão de Açúcar', date: '2026-07-19', total: 365.10 },
+      { name: 'Livraria Cultura', date: '2026-07-28', total: 142.80 },
+      { name: 'Netflix', date: '2026-07-15', total: 55.90 } ],
+    pays: { '2026-08': '2026-08-08', '2026-09': '2026-09-08', '2026-10': '2026-10-08' } },
+  { id: 'nu-marina-0937', inst: 'Nubank', holder: 'Marina', last4: '0937', color: '#820AD1', ini: 'nu', closeDay: 27, dueDay: 3,
+    buys: [
+      { name: 'Renner', date: '2026-09-20', total: 399.90, n: 3 },
+      { name: 'Zara', date: '2026-10-12', total: 289.90 },
+      { name: 'Cobasi', date: '2026-10-19', total: 187.60 },
+      { name: 'Uber', date: '2026-10-24', total: 120.00 },
+      { name: 'Drogasil', date: '2026-10-03', total: 76.45 },
+      { name: 'Spotify', date: '2026-10-10', total: 34.90 },
+      { name: 'Hortifruti', date: '2026-09-05', total: 212.40 },
+      { name: 'Spotify', date: '2026-09-10', total: 34.90 },
+      { name: 'Petz', date: '2026-08-14', total: 158.00 },
+      { name: 'Spotify', date: '2026-08-10', total: 34.90 },
+      { name: 'Riachuelo', date: '2026-07-22', total: 98.70 },
+      { name: 'Spotify', date: '2026-07-10', total: 34.90 } ],
+    pays: { '2026-08': '2026-08-03', '2026-09': '2026-09-03', '2026-10': '2026-10-02' } },
+  { id: 'itau-marina-5530', inst: 'Itaú', holder: 'Marina', last4: '5530', color: '#EC7000', ini: 'it', closeDay: 15, dueDay: 22,
+    buys: [
+      { name: 'Clínica Odonto', date: '2026-09-02', total: 600.00, n: 4 },
+      { name: 'Uniqlo', date: '2026-10-17', total: 349.90 },
+      { name: 'Sem Parar', date: '2026-10-16', total: 70.00 },
+      { name: 'Padaria Bella', date: '2026-10-20', total: 42.00 },
+      { name: 'Carrefour', date: '2026-09-29', total: 233.15 },
+      { name: 'Sem Parar', date: '2026-09-16', total: 70.00 },
+      { name: 'Coco Bambu', date: '2026-08-23', total: 186.40 },
+      { name: 'Sem Parar', date: '2026-08-16', total: 70.00 },
+      { name: 'Drogasil', date: '2026-07-30', total: 54.30 },
+      { name: 'Sem Parar', date: '2026-07-16', total: 70.00 } ],
+    pays: { '2026-08': '2026-08-22', '2026-09': '2026-09-21', '2026-10': '2026-10-20' } },
+  { id: 'itau-marina-2214', inst: 'Itaú', holder: 'Marina', last4: '2214', color: '#EC7000', ini: 'it', closeDay: 18, dueDay: 25,
+    buys: [
+      { name: 'Seguro do celular', date: '2026-05-30', total: 598.80, n: 12 },
+      { name: 'Smart Fit', date: '2026-10-05', total: 129.90 },
+      { name: 'Posto Ipiranga', date: '2026-09-26', total: 118.90 },
+      { name: 'Amazon Prime', date: '2026-10-01', total: 19.90 },
+      { name: 'Posto Ipiranga', date: '2026-10-22', total: 85.00 },
+      { name: 'Smart Fit', date: '2026-09-05', total: 129.90 },
+      { name: 'Amazon Prime', date: '2026-09-01', total: 19.90 },
+      { name: 'Smart Fit', date: '2026-08-05', total: 129.90 },
+      { name: 'Amazon Prime', date: '2026-08-01', total: 19.90 } ],
+    pays: { '2026-07': '2026-07-24', '2026-08': '2026-08-25', '2026-09': '2026-09-24' } }, // outubro sem pagamento
+  { id: 'inter-rafael-1209', inst: 'Inter', holder: 'Rafael', last4: '1209', color: '#FF7A00', ini: 'in', closeDay: 20, dueDay: 27,
+    buys: [
+      { name: 'Shell Box', date: '2026-10-22', total: 200.00 },
+      { name: 'Coco Bambu', date: '2026-10-26', total: 100.00 },
+      { name: 'Steam', date: '2026-10-24', total: 61.35 },
+      { name: 'Decathlon', date: '2026-10-11', total: 229.90 },
+      { name: 'Shell Box', date: '2026-09-25', total: 180.00 },
+      { name: 'Kindle', date: '2026-10-02', total: 39.90 },
+      { name: 'Shell Box', date: '2026-08-25', total: 150.00 },
+      { name: 'Kindle', date: '2026-09-02', total: 39.90 },
+      { name: 'Shell Box', date: '2026-07-25', total: 120.00 } ],
+    pays: { '2026-08': '2026-08-27', '2026-09': '2026-09-26', '2026-10': '2026-10-25' } },
+];
+const HOLDERS = ['Todos', 'Rafael', 'Marina'];
+const cents = n => Math.round(n * 100);
+
+// Ciclo da fatura que vence no mês `key`: fecha antes de vencer; abre no dia seguinte ao fechamento anterior.
+function cycle(c, key) {
+  const [y, m] = key.split('-').map(Number);
+  const close = k => { const [yy, mm] = k.split('-').map(Number); return iso(yy, c.closeDay < c.dueDay ? mm : mm - 1, c.closeDay); };
+  return { open: addDays(close(addMonths(key, -1)), 1), close: close(key), due: iso(y, m, c.dueDay) };
+}
+// Fatura em que cai uma compra feita em `date`.
+function keyFor(c, date) {
+  let key = date.slice(0, 7);
+  while (cycle(c, key).close < date) key = addMonths(key, 1);
+  while (cycle(c, addMonths(key, -1)).close >= date) key = addMonths(key, -1);
+  return key;
+}
+// Parcelas caem uma por fatura, a partir da fatura da compra; a última absorve o arredondamento.
+for (const c of CARDS) {
+  c.tx = [];
+  for (const b of c.buys) {
+    const n = b.n || 1, each = Math.floor(cents(b.total) / n), first = keyFor(c, b.date);
+    for (let i = 0; i < n; i++) c.tx.push({ name: b.name, date: b.date, key: addMonths(first, i), i: i + 1, n,
+      amount: (i === n - 1 ? cents(b.total) - each * (n - 1) : each) / 100 });
+  }
+}
+function invoice(c, key) {
+  const cy = cycle(c, key);
+  const tx = c.tx.filter(t => t.key === key).sort((a, b) => b.date.localeCompare(a.date));
+  const total = tx.reduce((s, t) => s + cents(t.amount), 0) / 100;
+  const paidOn = c.pays[key] || null, paid = paidOn ? total : 0; // pagamento integral no mock; parcial mudaria só o saldo
+  const balance = (cents(total) - cents(paid)) / 100;
+  let status;
+  if (cy.open > TODAY) status = 'futura';
+  else if (cy.close >= TODAY) status = 'aberta';
+  else if (balance <= 0) status = 'paga';
+  else if (cy.due < TODAY) status = 'vencida';
+  else status = 'fechada';
+  return { cardId: c.id, key, ...cy, tx, total, paid, paidOn, balance, status };
+}
+// Fatura atual = a mais antiga ainda com saldo (vencida ou fechada); sem saldo, a que está aberta.
+function currentKey(c) {
+  let key = addMonths(TODAY.slice(0, 7), -3);
+  for (let i = 0; i < 8; i++, key = addMonths(key, 1)) if (['vencida', 'fechada'].includes(invoice(c, key).status)) return key;
+  key = TODAY.slice(0, 7);
+  while (invoice(c, key).status !== 'aberta') key = addMonths(key, 1);
+  return key;
+}
+// Períodos navegáveis: três anteriores, a atual e as futuras até uma depois da última parcela lançada.
+function periods(c) {
+  const cur = c.current, last = c.tx.reduce((m, t) => t.key > m ? t.key : m, cur);
+  const end = [addMonths(last, 1), addMonths(cur, 2)].sort().pop();
+  const out = []; for (let k = addMonths(cur, -3); k <= end; k = addMonths(k, 1)) out.push(k);
+  return out;
+}
+// Fatura que abre o cartão: a que está aberta pelo ciclo dele; sem nenhuma aberta, a atual.
+function openKey(c) {
+  for (let k = addMonths(TODAY.slice(0, 7), -1), i = 0; i < 4; i++, k = addMonths(k, 1)) if (invoice(c, k).status === 'aberta') return k;
+  return c.current;
+}
+// Fatura anterior ainda com saldo (vencida ou fechada): sinalizada ao lado do seletor.
+const owedKey = c => periods(c).find(k => ['vencida', 'fechada'].includes(invoice(c, k).status)) || null;
+for (const c of CARDS) { c.current = currentKey(c); c.cur = invoice(c, c.current); c.openKey = openKey(c); }
+const visible = f => CARDS.filter(c => f === 'Todos' || c.holder === f).sort((a, b) => a.cur.due.localeCompare(b.cur.due) || a.inst.localeCompare(b.inst));
+const sum = list => list.reduce((s, c) => s + cents(c.cur.balance), 0) / 100;
+const GRAND = sum(CARDS);
+console.assert(GRAND === 3420.40, 'Consolidado esperado R$ 3.420,40, veio ' + GRAND);
+console.assert(invoice(CARDS[0], '2026-11').total === 1286.40 && invoice(CARDS[0], '2027-01').total === 595.88, 'Parcelas fora do período');
+
+/* ---------- Formatação ---------- */
+const nf = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const pf = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const brl = v => 'R$ ' + nf.format(v);
+const pct = (v, t) => pf.format(v / t * 100) + '%';
+const amtHTML = (v, cls = '', share = '') => { const [m, c] = nf.format(v).split(','); return `<div class="amt ${cls}"${share ? ` data-share="${share}"` : ''}><span class="cur">R$</span><span class="main">${m}</span><span class="cents">,${c}</span></div>`; };
+const cap = t => t[0].toUpperCase() + t.slice(1);
+const periodLabel = key => { const [y, m] = key.split('-').map(Number); return `${cap(MES_LONGO[m - 1])} ${y}`; };
+const invTitle = key => { const [y, m] = key.split('-').map(Number); return `Fatura de ${MES_LONGO[m - 1]}${y === Number(TODAY.slice(0, 4)) ? '' : ' de ' + y}`; };
+const STATUS = { aberta: 'Aberta', fechada: 'Fechada', paga: 'Paga', vencida: 'Vencida', futura: 'Futura' };
+const ICON = {
+  x: '<svg viewBox="0 0 256 256"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>',
+  back: '<svg viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/></svg>',
+  down: '<svg viewBox="0 0 256 256"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"/></svg>',
+  check: '<svg class="chk" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/></svg>',
+  prev: '<svg viewBox="0 0 256 256"><path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"/></svg>',
+  caret: '<svg class="caret" viewBox="0 0 256 256"><path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"/></svg>',
+  out: '<svg viewBox="0 0 256 256"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg>',
+  card: '<svg viewBox="0 0 256 256"><path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,16V88H32V64Zm0,128H32V104H224v88Zm-16-24a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h32A8,8,0,0,1,208,168Zm-64,0a8,8,0,0,1-8,8H120a8,8,0,0,1,0-16h16A8,8,0,0,1,144,168Z"/></svg>',
+};
+const avHTML = (c, lg) => `<div class="av${lg ? ' lg' : ''}" data-share="av-${c.id}" style="background:${c.color}">${c.ini}</div>`;
+const stHTML = s => `<span class="st st-${s}"><i></i>${STATUS[s]}</span>`;
+
+/* ---------- Views ---------- */
+const homeHTML = () => `<div class="mc"><div class="mc-head"><div class="mc-lbl" data-share="card-label">Cartão</div>${ICON.out}</div>
+  <div class="mc-body"><div class="mc-val" data-share="card-value">R$ ${nf.format(GRAND).split(',')[0]}</div><div class="mc-sub">Fatura fecha 3 nov</div></div></div>`;
+
+function metaText(list, f) {
+  const n = list.length, word = n === 1 ? 'cartão' : 'cartões';
+  return f === 'Todos' ? `Faturas atuais · ${n} ${word} de Rafael e Marina` : `Faturas atuais · ${n} ${word} de ${f} · ${pct(sum(list), GRAND)} do total`;
+}
+function cardRow(c) {
+  const v = c.cur, when = v.status === 'vencida' ? `venceu ${dm(v.due)}` : `vence ${dm(v.due)}`;
+  return `<button class="acc" data-id="${c.id}" aria-label="${c.inst} final ${c.last4}, ${c.holder}, ${brl(v.balance)}, ${STATUS[v.status]}, ${when}">${avHTML(c)}
+    <div class="acc-texts"><div class="nm"><span data-share="nm-${c.id}">${c.inst}</span> <span class="last4">•• ${c.last4}</span></div><div class="sub">${c.holder} · ${when}</div></div>
+    <div class="acc-right"><div class="v15" data-share="val-${c.id}">${brl(v.balance)}</div>${stHTML(v.status)}</div>${ICON.caret}</button>`;
+}
+function cardsHTML(f, pillFrom = f) {
+  const list = visible(f);
+  return `<div class="top"><div class="lbl" data-share="card-label">Cartão</div><button class="ib" data-act="close" aria-label="Fechar">${ICON.x}</button></div>
+    <div class="hero"><div class="xf" data-x="total">${amtHTML(sum(list), '', 'card-value')}</div>
+    <div class="meta xf" data-x="meta"><div>${metaText(list, f)}</div></div></div>
+    <div class="pills" role="group" aria-label="Titular">${HOLDERS.map(h => `<button class="pill${h === pillFrom ? ' on' : ''}" data-filter="${h}" aria-pressed="${h === pillFrom}">${h}</button>`).join('')}</div>
+    <div class="list">${list.map(cardRow).join('')}</div><div style="height:6px"></div>`;
+}
+function statusLine(v) {
+  switch (v.status) {
+    case 'aberta': return `${stHTML('aberta')} · fecha ${dm(v.close)} · vence ${dm(v.due)}`;
+    case 'fechada': return `${stHTML('fechada')} · fechou ${dm(v.close)} · <b>vence ${dm(v.due)}</b>`;
+    case 'paga': return `${stHTML('paga')} em ${dm(v.paidOn)} · venceu ${dm(v.due)}`;
+    case 'vencida': return `${stHTML('vencida')} · <b>venceu ${dm(v.due)}</b> · sem pagamento até ${dm(TODAY)}`;
+    case 'futura': return `${stHTML('futura')} · fecha ${dm(v.close)} · vence ${dm(v.due)}`;
+  }
+}
+function txRow(t) {
+  const sub = t.n > 1 ? `Parcela ${t.i} de ${t.n} · compra em ${dm(t.date)}` : `À vista · ${dm(t.date)}`;
+  return `<div class="tx"><div><div class="nm">${t.name}</div><div class="sub">${sub}</div></div><div class="v15">${brl(t.amount)}</div></div>`;
+}
+// Resumo da fatura: valor, status e (se houver) a fatura anterior com saldo.
+function sumHTML(c, key) {
+  const v = invoice(c, key);
+  return `<div class="dtotal"><div>${amtHTML(v.total, 'md', key === c.current ? `val-${c.id}` : '')}</div>
+      <div class="meta">${statusLine(v)}</div>${oweHTML(c, key) || '<div class="owe-space" aria-hidden="true"></div>'}</div>`;
+}
+// Lista de lançamentos: título fixo + janela rolável. Futura soma só parcelas já lançadas.
+function listHTML(c, key) {
+  const v = invoice(c, key), fut = v.status === 'futura';
+  const rows = v.tx.length
+    ? v.tx.map(txRow).join('') + (fut ? `<div class="note">Não é previsão: só o que já está agendado. Compras novas entram até o fechamento, ${dm(v.close)}.</div>` : '')
+    : `<div class="empty"><div class="nm">Nada lançado para ${MES_LONGO[ymd(v.due)[1] - 1]} ainda</div><p>Parcelas e assinaturas aparecem aqui assim que caírem nesta fatura. Compras novas entram até o fechamento, ${dm(v.close)}.</p></div>`;
+  return `<div class="ghead"><div class="gname">${fut ? 'Parcelas já lançadas' : 'Lançamentos'} <span>· ${v.tx.length}</span></div><div class="gtot">${dm(v.open)} – ${dm(v.close)}</div></div>
+    <div class="txv">${rows}</div>`;
+}
+function optHTML(c, k, key) {
+  const v = invoice(c, k);
+  const when = v.status === 'paga' ? ` em ${dm(v.paidOn)}` : ` · ${v.status === 'vencida' ? 'venceu' : 'vence'} ${dm(v.due)}`;
+  return `<div class="opt${k === c.openKey ? ' now' : ''}" role="option" id="opt-${k}" data-pick="${k}" aria-selected="${k === key}"${k === c.openKey ? ' aria-description="fatura aberta"' : ''}>
+    <div class="opt-t"><div class="opt-m">${periodLabel(k)}</div><div class="sub">${stHTML(v.status)}${when}</div></div>
+    <div class="v15${v.total ? '' : ' none'}">${v.total ? brl(v.total) : 'Nada lançado'}</div>${ICON.check}</div>`;
+}
+function oweHTML(c, key) {
+  const k = owedKey(c);
+  if (!k || k === key) return '';
+  const v = invoice(c, k), m = MES_LONGO[ymd(k + '-01')[1] - 1];
+  return `<button class="owe st-${v.status}" data-period="${k}" aria-label="Ver fatura de ${m}, ${STATUS[v.status].toLowerCase()}, ${brl(v.balance)}"><i></i>${STATUS[v.status]} · ${m}${v.status === 'fechada' ? ` · vence ${dm(v.due)}` : ''} · ${brl(v.balance)}${ICON.caret.replace('class="caret" ', '')}</button>`;
+}
+function triggerHTML(key) {
+  return `<button class="ptrig" data-act="picker" aria-haspopup="listbox" aria-expanded="false" aria-label="Fatura de ${periodLabel(key)}. Trocar fatura"><span class="pv"><span>${periodLabel(key)}</span></span>${ICON.down}</button>`;
+}
+function popHTML(c, key) {
+  return `<div class="phead" data-act="picker" aria-hidden="true"><span class="pv"><span>${periodLabel(key)}</span></span>${ICON.down}</div>
+    <div class="plist" id="plist" role="listbox" tabindex="-1" aria-label="Faturas"><span class="phl" aria-hidden="true"></span>${periods(c).map(k => optHTML(c, k, key)).join('')}</div>`;
+}
+function idHTML(c) {
+  return `${avHTML(c, true)}<div class="acc-texts"><div class="dname" data-share="nm-${c.id}">${c.inst}</div><div class="sub">${c.holder} · final ${c.last4}</div></div>`;
+}
+// ‹ 1/5 ›: mesma ordem da lista de cartões, respeitando o filtro de titular; sem volta circular.
+function navHTML(c) {
+  const list = visible(state.filter), i = list.indexOf(c);
+  if (list.length < 2) return '';
+  return `<div class="cnav" role="group" aria-label="Trocar de cartão">
+    <button class="cnav-b" data-act="prev" aria-label="Cartão anterior"${i === 0 ? ' disabled' : ''}>${ICON.prev}</button>
+    <span class="cnav-n" aria-label="Cartão ${i + 1} de ${list.length}">${i + 1}/${list.length}</span>
+    <button class="cnav-b" data-act="next" aria-label="Próximo cartão"${i === list.length - 1 ? ' disabled' : ''}>${ICON.caret.replace('class="caret" ', '')}</button></div>`;
+}
+function invoiceHTML(c, key) {
+  return `<div class="top"><button class="ib" data-act="back" aria-label="Voltar para cartões">${ICON.back}</button>${triggerHTML(key)}<button class="ib" data-act="close" aria-label="Fechar">${ICON.x}</button></div>
+    <div class="ident"><div class="idbox xf" data-x="id">${idHTML(c)}</div>${navHTML(c)}</div>
+    <div class="xf" data-x="sum">${sumHTML(c, key)}</div>
+    <div class="txbox" data-x="list">${listHTML(c, key)}</div>
+    <div class="foot"><button class="cta" data-act="details">Ver detalhes do cartão</button></div>`;
+}
+
+/* ---------- Motor de movimento (o mesmo do patrimônio) ---------- */
+const $ = id => document.getElementById(id);
+const phone = $('phone'), modal = $('modal'), scrim = $('scrim'), flight = $('flight'), homeCard = $('homeCard'), screen = $('screen');
+const params = new URLSearchParams(location.search);
+const SLOW = Math.max(1, Number(params.get('slow')) || 1);
+const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const DARK = params.get('tone') === 'dark';
+phone.classList.toggle('tone-gray', !DARK);
+const ROW = { x: 12, y: 661, w: 185, h: 117, r: 18, s: 0, c: 0 }; // c: 0 = q/card, 1 = q/ink
+const AREA = { top: 62, bottom: 862 }; // abaixo da status bar; base com a mesma margem de 12 das laterais
+const W = 378, X = 12, R = 43;      // raio concêntrico ao canto do aparelho (55 − 12)
+// Mola criticamente amortecida (bounce 0): sem overshoot, como pede o quadro 13.
+const OMEGA = { open: 18, drill: 18, back: 20, close: 24, filter: 20, period: 20 };
+const CARD_RGB = [243, 243, 242], INK_RGB = [22, 22, 22];
+const SURFACE = DARK ? 1 : 0; // cinza: o modal mantém a cor do card de origem
+
+let state = { view: 'home', filter: 'Todos', card: null, period: null, listScroll: 0 };
+let cur = { ...ROW };
+let layer = null;
+let run = null;
+
+homeCard.innerHTML = homeHTML();
+
+function applyModal(m) {
+  modal.style.transform = `translate(${m.x}px, ${m.y}px)`;
+  modal.style.width = m.w + 'px';
+  modal.style.height = m.h + 'px';
+  modal.style.borderRadius = m.r + 'px';
+  modal.style.background = `rgb(${CARD_RGB.map((v, i) => Math.round(lerp(v, INK_RGB[i], m.c))).join(',')})`;
+  modal.style.boxShadow = DARK
+    ? `0 24px 60px rgba(0,0,0,${0.32 * m.s}), inset 0 0 0 1px rgba(255,255,255,${0.12 * m.s})`
+    : `0 24px 60px rgba(0,0,0,${0.2 * m.s}), inset 0 0 0 1px rgba(14,13,13,${0.06 * m.s})`;
+  scrim.style.opacity = m.s;
+}
+const lerp = (a, b, p) => a + (b - a) * p;
+const clamp01 = v => Math.max(0, Math.min(1, v));
+const ease = v => { v = clamp01(v); return v * v * (3 - 2 * v); };
+
+function makeLayer(html, cls = '') {
+  const el = document.createElement('div');
+  el.className = 'layer ' + cls;
+  el.innerHTML = html;
+  modal.appendChild(el);
+  return el;
+}
+function fitRect(el) {
+  el.classList.remove('scroll'); el.style.height = ''; el.style.width = W + 'px';
+  const natural = el.scrollHeight, max = AREA.bottom - AREA.top;
+  el.style.width = '';
+  const h = Math.min(natural, max);
+  if (natural > max) { el.classList.add('scroll'); el.style.height = h + 'px'; }
+  const y = AREA.bottom - h; // ancorado na base: só o topo se move quando a altura muda
+  return { x: X, y, w: W, h, r: R, s: 1, c: SURFACE };
+}
+const rel = el => { const a = el.getBoundingClientRect(), b = phone.getBoundingClientRect(); const s = b.width / 402; return { x: (a.left - b.left) / s, y: (a.top - b.top) / s, w: a.width / s, h: a.height / s }; };
+
+function finishRun() {
+  if (!run) return;
+  cancelAnimationFrame(run.raf);
+  const r = run; run = null; r.done();
+}
+function abandonRun() {
+  if (!run) return;
+  cancelAnimationFrame(run.raf);
+  const r = run; run = null; r.abandon();
+}
+
+function morph({ to, next, omega, extra, end }) {
+  abandonRun();
+  const from = { ...cur }, prev = layer;
+  const prevStart = prev ? Number(prev.style.opacity || 1) : 1;
+  const t0 = performance.now();
+  const pairs = [];
+  if (prev && next) {
+    next.style.width = to.w + 'px';
+    for (const nEl of next.querySelectorAll('[data-share]')) {
+      const oEl = prev.querySelector(`[data-share="${nEl.dataset.share}"]`);
+      if (!oEl) continue;
+      const o = rel(oEl), lay = rel(next), n0 = rel(nEl);
+      const n = { x: to.x + (n0.x - lay.x), y: to.y + (n0.y - lay.y) - next.scrollTop, w: n0.w, h: n0.h };
+      const oc = oEl.cloneNode(true), nc = nEl.cloneNode(true);
+      for (const [c, r] of [[oc, o], [nc, n]]) { c.removeAttribute('data-share'); c.style.width = r.w + 'px'; c.style.height = r.h + 'px'; flight.appendChild(c); }
+      oEl.style.visibility = nEl.style.visibility = 'hidden';
+      pairs.push({ o, n, oc, nc, oEl, nEl });
+    }
+    next.style.width = '';
+  }
+  if (next) next.style.opacity = 0;
+  const step = now => {
+    const t = (now - t0) / 1000 / SLOW;
+    let p = REDUCE ? 1 : 1 - (1 + omega * t) * Math.exp(-omega * t);
+    const done = p > 0.998; if (done) p = 1;
+    // Card → modal: a tinta chega a q/ink nos primeiros 40%; na volta, só nos últimos 40%.
+    const cp = to.c > from.c ? ease(p / 0.4) : to.c < from.c ? ease((p - 0.6) / 0.4) : p;
+    cur = { x: lerp(from.x, to.x, p), y: lerp(from.y, to.y, p), w: lerp(from.w, to.w, p), h: lerp(from.h, to.h, p), r: lerp(from.r, to.r, p), s: lerp(from.s, to.s, p), c: lerp(from.c, to.c, cp) };
+    applyModal(cur);
+    if (prev && next) {
+      const po = 1 - ease(p / 0.3), no = ease((p - 0.3) / 0.5);
+      prev.style.opacity = prevStart * po;
+      prev.style.filter = `blur(${(1 - po) * 4}px)`;
+      next.style.opacity = no;
+      next.style.filter = no < 1 ? `blur(${(1 - no) * 4}px)` : '';
+      next.style.transform = `translateY(${(1 - ease(p)) * 4}px)`;
+    }
+    for (const q of pairs) {
+      const x = lerp(q.o.x, q.n.x, p), y = lerp(q.o.y, q.n.y, p), h = lerp(q.o.h, q.n.h, p);
+      q.oc.style.transform = `translate(${x}px,${y}px) scale(${h / q.o.h})`;
+      q.nc.style.transform = `translate(${x}px,${y}px) scale(${h / q.n.h})`;
+      q.oc.style.opacity = 1 - ease(p / 0.55);
+      q.nc.style.opacity = ease((p - 0.2) / 0.55);
+    }
+    if (!next && layer) layer.style.minHeight = p >= 1 ? '' : cur.h + 'px'; // no mesmo nível, o rodapé acompanha a base do modal
+    if (extra) extra(p);
+    if (run) run.p = p;
+    if (done) { const r = run; run = null; r.done(); } else run.raf = requestAnimationFrame(step);
+  };
+  run = {
+    p: 0,
+    raf: requestAnimationFrame(step),
+    abandon() {
+      for (const q of pairs) { q.oc.remove(); q.nc.remove(); q.oEl.style.visibility = q.nEl.style.visibility = ''; }
+      if (prev && next && prev !== next) {
+        const keep = this.p < 0.35 ? prev : next;
+        (keep === prev ? next : prev).remove();
+        keep.style.transform = keep.style.filter = ''; layer = keep;
+      }
+      if (layer) layer.style.minHeight = '';
+      if (extra) extra(1);
+    },
+    done: () => {
+      cur = { ...to }; applyModal(cur);
+      for (const q of pairs) { q.oc.remove(); q.nc.remove(); q.nEl.style.visibility = ''; }
+      if (prev && next && prev !== next) prev.remove();
+      if (next) { next.style.opacity = next.style.filter = next.style.transform = ''; layer = next; }
+      if (extra) extra(1);
+      if (end) end();
+    },
+  };
+}
+
+/* ---------- Navegação ---------- */
+const cardById = id => CARDS.find(c => c.id === id);
+function open() {
+  if (state.view !== 'home') return;
+  state.view = 'cards';
+  if (!run) {
+    modal.innerHTML = ''; modal.style.display = 'block';
+    cur = { ...ROW }; applyModal(cur);
+    layer = makeLayer(homeHTML(), 'home');
+    homeCard.style.visibility = 'hidden';
+  }
+  scrim.classList.add('on');
+  const next = makeLayer(cardsHTML(state.filter), 'v-cards');
+  morph({ to: fitRect(next), next, omega: OMEGA.open, end: () => next.querySelector('[data-act="close"]').focus({ preventScroll: true }) });
+}
+function close() {
+  if (state.view === 'home') return;
+  if (state.view === 'cards') state.listScroll = layer.scrollTop;
+  dropPicker(); stopPaging();
+  state.view = 'home';
+  scrim.classList.remove('on');
+  const next = makeLayer(homeHTML(), 'home');
+  morph({ to: { ...ROW }, next, omega: OMEGA.close, end: () => { modal.style.display = 'none'; modal.innerHTML = ''; layer = null; homeCard.style.visibility = ''; } });
+}
+function drill(id) {
+  if (state.view !== 'cards') return;
+  state.listScroll = layer.scrollTop;
+  const c = cardById(id);
+  state.view = 'invoice'; state.card = id; state.period = c.openKey; state.picker = false; // todo cartão abre na fatura aberta
+  const next = makeLayer(invoiceHTML(c, c.openKey), 'v-invoice');
+  const to = fitRect(next);
+  edgeFadeY(next.querySelector('.txv'));
+  morph({ to, next, omega: OMEGA.drill, end: () => next.querySelector('[data-act="back"]').focus({ preventScroll: true }) });
+}
+function back() {
+  if (state.view !== 'invoice') return;
+  dropPicker(); stopPaging();
+  state.view = 'cards';
+  const next = makeLayer(cardsHTML(state.filter), 'v-cards');
+  const to = fitRect(next);
+  next.scrollTop = state.listScroll; // voltar preserva rolagem e filtro
+  const id = state.card;
+  morph({ to, next, omega: OMEGA.back, end: () => next.querySelector(`.acc[data-id="${id}"]`)?.focus({ preventScroll: true }) });
+}
+
+// Filtro: mesmo nível. Linhas que ficam deslizam, as que saem somem, as que entram aparecem.
+function setFilter(f) {
+  if (state.view !== 'cards' || f === state.filter) return;
+  finishRun();
+  const prevF = state.filter; state.filter = f;
+  const prev = layer;
+  const oldTop = new Map([...prev.querySelectorAll('.acc')].map(el => [el.dataset.id, rel(el).y]));
+  const oldTotal = prev.querySelector('[data-x="total"]').innerHTML, oldMeta = prev.querySelector('[data-x="meta"]').innerHTML;
+  const oldRows = [...prev.querySelectorAll('.acc')];
+  const next = makeLayer(cardsHTML(f, prevF), 'v-cards');
+  const to = fitRect(next);
+  prev.remove(); layer = next;
+  requestAnimationFrame(() => next.querySelectorAll('.pill').forEach(p => { p.classList.toggle('on', p.dataset.filter === f); p.setAttribute('aria-pressed', String(p.dataset.filter === f)); }));
+
+  const moves = [], enters = [], leaves = [];
+  for (const el of next.querySelectorAll('.acc')) {
+    const y0 = oldTop.get(el.dataset.id);
+    if (y0 != null) moves.push({ el, d: y0 - rel(el).y });
+    else enters.push(el);
+  }
+  const list = next.querySelector('.list');
+  for (const el of oldRows) if (!next.querySelector(`.acc[data-id="${el.dataset.id}"]`)) {
+    const c = el.cloneNode(true); c.classList.add('leaving');
+    c.style.top = (oldTop.get(el.dataset.id) - rel(list).y) + 'px'; c.style.width = '100%';
+    list.appendChild(c); leaves.push(c);
+  }
+  const ghosts = [['total', oldTotal], ['meta', oldMeta]].map(([k, html]) => {
+    const host = next.querySelector(`[data-x="${k}"]`), g = document.createElement('div');
+    g.className = 'ghost'; g.innerHTML = html; g.querySelectorAll('[data-share]').forEach(e => e.removeAttribute('data-share'));
+    host.appendChild(g); return { g, fresh: host.firstElementChild };
+  });
+  morph({ to, next: null, omega: OMEGA.filter, extra: p => {
+    for (const m of moves) m.el.style.transform = p >= 1 ? '' : `translateY(${(1 - p) * m.d}px)`;
+    for (const e of enters) e.style.opacity = p >= 1 ? '' : ease((p - 0.2) / 0.5);
+    for (const l of leaves) { l.style.opacity = 1 - ease(p / 0.3); if (p >= 1) l.remove(); }
+    for (const { g, fresh } of ghosts) { g.style.opacity = 1 - ease(p / 0.35); fresh.style.opacity = p >= 1 ? '' : ease((p - 0.15) / 0.45); if (p >= 1) g.remove(); }
+  } });
+}
+
+// Troca de mês: mesmo cartão, mesmo modal, mesma geometria. Nada é remedido: o resumo e a lista trocam no lugar
+// (anterior entra pela esquerda, próxima pela direita, 8px + fade), o rótulo do gatilho rola e a lista volta ao topo.
+function setPeriod(key) {
+  if (state.view !== 'invoice' || key === state.period) return;
+  finishRun();
+  const c = cardById(state.card), dir = key > state.period ? 1 : -1;
+  state.period = key;
+  const L = layer, trig = L.querySelector('.ptrig'), label = trig.querySelector('.pv > span');
+  const oldLabel = label.innerHTML;
+  label.textContent = periodLabel(key);
+  trig.setAttribute('aria-label', `Fatura de ${periodLabel(key)}. Trocar fatura`);
+  const roll = rollLabel(trig.querySelector('.pv'), oldLabel, dir);
+  const a = swapIn(L.querySelector('[data-x="sum"]'), sumHTML(c, key), dir), b = swapIn(L.querySelector('[data-x="list"]'), listHTML(c, key), dir);
+  const txv = L.querySelector('.txv');
+  txv.scrollTop = 0; edgeFadeY(txv);
+  morph({ to: { ...cur }, next: null, omega: OMEGA.period, extra: p => { roll(p); a(p); b(p); },
+    end: () => { if (!pickAnim) trig.focus({ preventScroll: true }); } });
+}
+// Troca o conteúdo de um bloco no lugar: o antigo sai num fantasma por cima, o novo entra deslizando `d` px.
+// `from` é onde o fantasma começa (o deslocamento do dedo, quando a troca vem de um arrasto).
+function swapIn(host, html, dir, d = 8, from = 0) {
+  const oldTxv = host.querySelector('.txv'), oldScroll = oldTxv ? oldTxv.scrollTop : 0;
+  const g = document.createElement('div');
+  g.className = 'ghost'; g.setAttribute('aria-hidden', 'true'); g.innerHTML = host.innerHTML;
+  g.querySelectorAll('[data-share]').forEach(e => e.removeAttribute('data-share'));
+  host.innerHTML = html;
+  const fresh = [...host.children];
+  host.appendChild(g);
+  const gv = g.querySelector('.txv'); if (gv) gv.scrollTop = oldScroll; // o fantasma sai de onde a lista estava
+  if (REDUCE) d = from = 0;
+  g.style.transform = `translateX(${from}px)`;
+  return p => {
+    if (p >= 1) { g.remove(); for (const f of fresh) f.style.opacity = f.style.transform = ''; return; }
+    g.style.opacity = 1 - ease(p / 0.35);
+    g.style.transform = `translateX(${from - dir * d * ease(p / 0.35)}px)`;
+    const no = ease((p - 0.15) / 0.45);
+    for (const f of fresh) { f.style.opacity = no; f.style.transform = `translateX(${dir * d * (1 - no)}px)`; }
+  };
+}
+// Troca de cartão dentro da fatura: mesmo modal, mesma geometria, mesmo mês (ou o mais próximo que o cartão tiver).
+// Só o conteúdo pagina (ver pageSwap); a lista volta ao topo. Nas pontas não faz nada.
+function switchCard(d, from = 0, fromOpacity = 1) {
+  if (state.view !== 'invoice' || state.picker) return false;
+  const list = visible(state.filter), i = list.findIndex(c => c.id === state.card), c = list[i + d];
+  if (!c) return false;
+  finishRun(); stopPaging();
+  state.card = c.id;
+  const ks = periods(c), old = state.period;
+  const key = ks.includes(old) ? old : old < ks[0] ? ks[0] : ks[ks.length - 1];
+  state.period = key;
+  const L = layer, trig = L.querySelector('.ptrig');
+  let roll = null;
+  if (key !== old) {
+    const label = trig.querySelector('.pv > span'), oldLabel = label.innerHTML;
+    label.textContent = periodLabel(key);
+    trig.setAttribute('aria-label', `Fatura de ${periodLabel(key)}. Trocar fatura`);
+    roll = rollLabel(trig.querySelector('.pv'), oldLabel, key > old ? 1 : -1);
+  }
+  L.querySelector('.cnav').outerHTML = navHTML(c);
+  stopPaging();
+  for (const [k, html] of [['id', idHTML(c)], ['sum', sumHTML(c, key)], ['list', listHTML(c, key)]]) pageSwap(L.querySelector(`[data-x="${k}"]`), html, d, from, fromOpacity);
+  const txv = L.querySelector('.txv');
+  txv.scrollTop = 0; edgeFadeY(txv);
+  if (roll) spring(OMEGA.period, roll);
+  return true;
+}
+// Paginação entre cartões nos tokens do DS (quadro 13 · Movimento): troca de visão em motion/screen (400ms).
+// O que sai continua de onde o dedo deixou, mais 16px, e some em 70% do tempo na curva padrão; o que entra vem
+// 16px do outro lado na curva de entrada, um instante depois, cruzando com a saída. Reduzir movimento: só fade.
+const MOTION = { base: 240, screen: 400, standard: 'cubic-bezier(0.2, 0, 0, 1)', enter: 'cubic-bezier(0.16, 1, 0.3, 1)' };
+let paging = [], pageGhosts = [];
+function stopPaging() { for (const a of paging) a.finish(); for (const g of pageGhosts) g.remove(); paging = []; pageGhosts = []; }
+function pageSwap(host, html, dir, from, fromOpacity) {
+  const oldTxv = host.querySelector('.txv'), oldScroll = oldTxv ? oldTxv.scrollTop : 0;
+  const g = document.createElement('div');
+  g.className = 'ghost'; g.setAttribute('aria-hidden', 'true'); g.innerHTML = host.innerHTML;
+  g.querySelectorAll('[data-share]').forEach(e => e.removeAttribute('data-share'));
+  host.innerHTML = html;
+  const fresh = [...host.children];
+  host.appendChild(g);
+  const gv = g.querySelector('.txv'); if (gv) gv.scrollTop = oldScroll;
+  const shift = REDUCE ? 0 : 16, t = (REDUCE ? 160 : MOTION.screen) * SLOW;
+  const out = g.animate([
+    { transform: `translateX(${REDUCE ? 0 : from}px)`, opacity: fromOpacity },
+    { transform: `translateX(${REDUCE ? 0 : from - dir * shift}px)`, opacity: 0 },
+  ], { duration: t * 0.7, easing: MOTION.standard, fill: 'forwards' });
+  out.onfinish = out.oncancel = () => g.remove();
+  paging.push(out); pageGhosts.push(g);
+  for (const f of fresh) paging.push(f.animate([
+    { transform: `translateX(${dir * shift}px)`, opacity: 0 },
+    { transform: 'translateX(0)', opacity: 1 },
+  ], { duration: t, delay: REDUCE ? 0 : t * 0.12, easing: MOTION.enter, fill: 'backwards' }));
+}
+// Arrasto horizontal troca de cartão. A direção trava nos primeiros 8px: vertical fica com a rolagem da lista,
+// horizontal segue o dedo com resistência (borracha nas pontas) e decide na soltura por distância ou velocidade.
+let drag = null, swallowClick = false;
+const dragHosts = () => [...layer.querySelectorAll('[data-x="id"],[data-x="sum"],[data-x="list"]')];
+modal.addEventListener('pointerdown', e => {
+  if (state.view !== 'invoice' || state.picker || e.button > 0 || e.target.closest('.ppop')) return;
+  drag = { id: e.pointerId, x: e.clientX, y: e.clientY, lock: null, dx: 0, off: 0, op: 1, vx: 0, lx: e.clientX, lt: e.timeStamp };
+});
+modal.addEventListener('pointermove', e => {
+  if (!drag || e.pointerId !== drag.id) return;
+  const scale = phone.getBoundingClientRect().width / 402;
+  const dx = (e.clientX - drag.x) / scale, dy = (e.clientY - drag.y) / scale;
+  if (!drag.lock) {
+    if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+    if (Math.abs(dx) <= Math.abs(dy) * 1.2) { drag = null; return; } // vertical: a lista rola, nada de trocar cartão
+    const list = visible(state.filter), i = list.findIndex(c => c.id === state.card);
+    if (list.length < 2) { drag = null; return; }
+    finishRun(); stopPaging();
+    drag.lock = 'x'; drag.canPrev = i > 0; drag.canNext = i < list.length - 1; drag.hosts = dragHosts();
+    modal.setPointerCapture(e.pointerId);
+  }
+  const dt = Math.max(1, e.timeStamp - drag.lt);
+  drag.vx = (e.clientX - drag.lx) / (dt * scale); drag.lx = e.clientX; drag.lt = e.timeStamp;
+  drag.dx = dx;
+  drag.off = dx * ((dx < 0 ? drag.canNext : drag.canPrev) ? 0.35 : 0.12);
+  drag.op = 1 - Math.min(0.45, Math.abs(drag.off) / 140);
+  for (const h of drag.hosts) { h.style.transform = `translateX(${drag.off}px)`; h.style.opacity = drag.op; }
+});
+function endDrag(e) {
+  if (!drag || e.pointerId !== drag.id) return;
+  const g = drag; drag = null;
+  if (g.lock !== 'x') return;
+  swallowClick = true; setTimeout(() => { swallowClick = false; }, 300); // soltar em cima de um botão não o aciona
+  const d = g.dx < 0 ? 1 : -1, can = d > 0 ? g.canNext : g.canPrev;
+  const commit = can && e.type === 'pointerup' && (Math.abs(g.dx) > 64 || Math.abs(g.vx) > 0.45);
+  for (const h of g.hosts) h.style.transform = h.style.opacity = '';
+  if (commit) { switchCard(d, g.off, g.op); return; }
+  // Não trocou: volta para o lugar em motion/base, curva padrão.
+  for (const h of g.hosts) paging.push(h.animate([
+    { transform: `translateX(${g.off}px)`, opacity: g.op },
+    { transform: 'translateX(0)', opacity: 1 },
+  ], { duration: MOTION.base * SLOW, easing: MOTION.standard }));
+}
+modal.addEventListener('pointerup', endDrag);
+modal.addEventListener('pointercancel', endDrag);
+modal.addEventListener('click', e => { if (swallowClick) { e.stopPropagation(); e.preventDefault(); swallowClick = false; } }, true);
+// ← → trocam de fatura sem abrir o seletor.
+function stepPeriod(d) {
+  const ks = periods(cardById(state.card)), i = ks.indexOf(state.period) + d;
+  if (i >= 0 && i < ks.length) setPeriod(ks[i]);
+}
+// Rótulo do gatilho rola para cima (fatura seguinte) ou para baixo (anterior).
+function rollLabel(pv, oldHTML, dir) {
+  const fresh = pv.firstElementChild, g = document.createElement('span');
+  g.className = 'ghost'; g.innerHTML = oldHTML; pv.appendChild(g);
+  const d = REDUCE ? 0 : 100;
+  return p => {
+    if (p >= 1) { g.remove(); fresh.style.opacity = fresh.style.transform = ''; return; }
+    g.style.opacity = 1 - ease(p / 0.4);
+    g.style.transform = `translateY(${-dir * d * ease(p / 0.4)}%)`;
+    const no = ease((p - 0.15) / 0.45);
+    fresh.style.opacity = no;
+    fresh.style.transform = `translateY(${dir * d * (1 - no)}%)`;
+  };
+}
+
+// Seletor de fatura (morph select): o gatilho cresce num painel por cima do conteúdo, recortado pelo modal.
+// O modal não muda de altura ao abrir, ao fechar nem ao escolher outra fatura; só o conteúdo troca por baixo.
+let pickAnim = null;
+// Mola sem bounce (quadro 13), separada da do modal para correr junto com a troca de fatura.
+function spring(omega, step) {
+  const t0 = performance.now(); let raf;
+  const tick = now => {
+    const t = (now - t0) / 1000 / SLOW;
+    let p = REDUCE ? 1 : 1 - (1 + omega * t) * Math.exp(-omega * t);
+    if (p > 0.998) p = 1;
+    step(p);
+    if (p < 1) raf = requestAnimationFrame(tick);
+  };
+  raf = requestAnimationFrame(tick);
+  return { stop: () => cancelAnimationFrame(raf) };
+}
+const inModal = el => { const a = rel(el), m = rel(modal); return { x: a.x - m.x, y: a.y - m.y, w: a.w, h: a.h }; };
+function placePop(el, r) {
+  el.style.left = r.x + 'px'; el.style.top = r.y + 'px'; el.style.width = r.w + 'px'; el.style.height = r.h + 'px'; el.style.borderRadius = r.r + 'px';
+}
+const lerpRect = (a, b, p) => ({ x: lerp(a.x, b.x, p), y: lerp(a.y, b.y, p), w: lerp(a.w, b.w, p), h: lerp(a.h, b.h, p), r: lerp(a.r, b.r, p) });
+const popShadow = p => DARK ? `0 16px 40px rgba(0,0,0,${0.45 * p})` : `0 16px 40px rgba(14,13,13,${0.14 * p})`;
+function edgeFadeY(list) {
+  list.classList.toggle('more-t', list.scrollTop > 1);
+  list.classList.toggle('more-b', list.scrollTop < list.scrollHeight - list.clientHeight - 1);
+}
+// Um destaque só, que desliza até a opção ativa.
+function glide(opt, instant) {
+  if (!opt) return;
+  const list = opt.parentElement, hl = list.querySelector('.phl');
+  hl.style.transition = instant || REDUCE ? 'none' : '';
+  hl.style.transform = `translateY(${opt.offsetTop}px)`;
+  hl.style.height = opt.offsetHeight + 'px';
+  list.setAttribute('aria-activedescendant', opt.id);
+  if (!instant) opt.scrollIntoView({ block: 'nearest', behavior: REDUCE ? 'auto' : 'smooth' });
+}
+function openPicker() {
+  if (state.view !== 'invoice' || state.picker) return;
+  finishRun(); pickAnim?.stop();
+  const c = cardById(state.card), trig = layer.querySelector('.ptrig');
+  const t = inModal(trig);
+  const el = document.createElement('div');
+  el.className = 'ppop'; el.innerHTML = popHTML(c, state.period);
+  modal.appendChild(el);
+  state.picker = true;
+  trig.style.visibility = 'hidden'; trig.setAttribute('aria-expanded', 'true');
+  const list = el.querySelector('.plist');
+  list.style.maxHeight = Math.max(160, Math.min(340, cur.h - t.y - 36 - 20)) + 'px'; // cabe no modal, com a margem de 20 da base
+  const A = { ...t, r: t.h / 2 }, B = { x: 16, y: t.y, w: W - 32, h: 0, r: 27 }; // cobre voltar e fechar; 27 = raio concêntrico ao modal (43 − 16)
+  placePop(el, { ...B, h: 'auto' }); el.style.height = '';
+  B.h = el.offsetHeight;
+  const chosen = list.querySelector('[aria-selected="true"]');
+  list.scrollTop = chosen.offsetTop - (list.clientHeight - chosen.offsetHeight) / 2;
+  glide(chosen, true); edgeFadeY(list);
+  placePop(el, A);
+  pickAnim = spring(OMEGA.period, p => {
+    placePop(el, lerpRect(A, B, p));
+    list.style.opacity = ease((p - 0.15) / 0.5);
+    el.style.boxShadow = popShadow(p);
+    if (p >= 1) list.focus({ preventScroll: true });
+  });
+}
+function closePicker(key) {
+  const el = modal.querySelector('.ppop');
+  if (!state.picker || !el) return;
+  pickAnim?.stop();
+  state.picker = false;
+  const list = el.querySelector('.plist');
+  const A = { x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight, r: parseFloat(el.style.borderRadius) || 27 };
+  let roll = null;
+  if (key && key !== state.period) {
+    roll = rollLabel(el.querySelector('.pv'), el.querySelector('.pv > span').innerHTML, key > state.period ? 1 : -1);
+    el.querySelector('.pv > span').textContent = periodLabel(key);
+    setPeriod(key); // valor, status, datas e lançamentos trocam juntos, por baixo do painel
+  }
+  const trig = layer.querySelector('.ptrig');
+  trig.style.visibility = 'hidden'; trig.setAttribute('aria-expanded', 'false');
+  const t = inModal(trig), B = { ...t, r: t.h / 2 };
+  pickAnim = spring(OMEGA.period, p => {
+    placePop(el, lerpRect(A, B, p));
+    list.style.opacity = 1 - ease(p / 0.3);
+    el.style.boxShadow = popShadow(1 - p);
+    if (roll) roll(p);
+    if (p >= 1) { el.remove(); trig.style.visibility = ''; trig.focus({ preventScroll: true }); pickAnim = null; }
+  });
+}
+// Sair do cartão com o seletor aberto: some sem animar (o modal já vai se transformar).
+function dropPicker() {
+  pickAnim?.stop(); pickAnim = null;
+  modal.querySelector('.ppop')?.remove();
+  state.picker = false;
+}
+function pickerKey(e) {
+  const list = modal.querySelector('.plist'), opts = [...list.querySelectorAll('.opt')];
+  const i = Math.max(0, opts.findIndex(o => o.id === list.getAttribute('aria-activedescendant')));
+  const go = j => { e.preventDefault(); glide(opts[Math.max(0, Math.min(opts.length - 1, j))]); };
+  if (e.key === 'ArrowDown') go(i + 1);
+  else if (e.key === 'ArrowUp') go(i - 1);
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(opts.length - 1);
+  else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); closePicker(opts[i].dataset.pick); }
+  else if (e.key === 'Escape' || e.key === 'Tab') { if (e.key === 'Escape') e.preventDefault(); closePicker(); }
+}
+
+// Única saída do morph: push na pilha da Início com cartão e período; o modal fica montado por baixo.
+function showDetails() {
+  if (state.view !== 'invoice' || screen.style.display === 'block') return;
+  finishRun();
+  const c = cardById(state.card), v = invoice(c, state.period);
+  screen.innerHTML = `<div class="bar"><button class="ib light" data-act="pop" aria-label="Voltar para a fatura">${ICON.back}</button></div>
+    <h1>${c.inst} •• ${c.last4}</h1><div class="s-sub">${c.holder} · ${invTitle(v.key).toLowerCase()} ${STATUS[v.status].toLowerCase()}</div>
+    <div class="es"><div class="dot">${ICON.card}</div><div><h2>A tela do cartão chega na próxima versão</h2>
+    <p>Limite, todas as faturas e ajustes do cartão vão morar aqui. Por enquanto, a fatura continua no Início.</p></div>
+    <button class="btn2" data-act="pop">Voltar para a fatura</button>
+    <div class="route">CardRoute(id: "${c.id}", período: "${v.key}")</div></div>`;
+  screen.style.display = 'block';
+  const ms = REDUCE ? 0 : 400 * SLOW;
+  screen.animate([{ transform: 'translateX(100%)' }, { transform: 'translateX(0)' }], { duration: ms, easing: 'cubic-bezier(0.2, 0, 0, 1)', fill: 'forwards' })
+    .finished.then(() => screen.querySelector('[data-act="pop"]').focus({ preventScroll: true }));
+  modal.setAttribute('aria-hidden', 'true');
+}
+function popDetails() {
+  if (screen.style.display !== 'block') return;
+  const ms = REDUCE ? 0 : 400 * 0.7 * SLOW;
+  screen.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(100%)' }], { duration: ms, easing: 'cubic-bezier(0.2, 0, 0, 1)', fill: 'forwards' })
+    .finished.then(() => { screen.style.display = 'none'; modal.removeAttribute('aria-hidden'); layer.querySelector('[data-act="details"]').focus({ preventScroll: true }); });
+}
+
+/* ---------- Eventos ---------- */
+homeCard.addEventListener('click', open);
+scrim.addEventListener('click', close);
+modal.addEventListener('click', e => {
+  if (state.view === 'home' && run) return open(); // tocar no modal enquanto recolhe reabre
+  const t = e.target.closest('[data-act],[data-filter],[data-period],[data-pick],.acc');
+  if (state.picker && !e.target.closest('.ppop')) return closePicker(); // tocar fora recolhe o seletor
+  if (!t || t.classList.contains('leaving')) return;
+  if (t.dataset.act === 'picker') state.picker ? closePicker() : openPicker();
+  else if (t.dataset.pick) closePicker(t.dataset.pick);
+  else if (t.dataset.act === 'prev' || t.dataset.act === 'next') switchCard(t.dataset.act === 'next' ? 1 : -1);
+  else if (t.dataset.act === 'close') close();
+  else if (t.dataset.act === 'back') back();
+  else if (t.dataset.act === 'details') showDetails();
+  else if (t.dataset.filter) setFilter(t.dataset.filter);
+  else if (t.dataset.period) setPeriod(t.dataset.period);
+  else if (t.dataset.id) drill(t.dataset.id);
+});
+// Destaque segue o mouse só em ponteiro fino; no toque, tocar já escolhe.
+modal.addEventListener('pointerover', e => { if (state.picker && e.pointerType === 'mouse') glide(e.target.closest('.opt')); });
+modal.addEventListener('scroll', e => { if (e.target.classList?.contains('plist') || e.target.classList?.contains('txv')) edgeFadeY(e.target); }, true);
+screen.addEventListener('click', e => { if (e.target.closest('[data-act="pop"]')) popDetails(); });
+document.addEventListener('keydown', e => {
+  if (screen.style.display === 'block') { if (e.key === 'Escape') popDetails(); return; }
+  if (state.picker) return pickerKey(e);
+  if (e.key === 'ArrowDown' && e.target.classList?.contains('ptrig')) { e.preventDefault(); return openPicker(); }
+  if (e.key === 'Escape') state.view === 'invoice' ? back() : close();
+  if (state.view === 'invoice' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) stepPeriod(e.key === 'ArrowLeft' ? -1 : 1);
+});
+
+// Atalho para revisão: ?state=cards&filter=Marina | ?state=invoice&card=nu-rafael-4821&period=2027-01&picker
+const startState = params.get('state');
+if (startState) {
+  const f = params.get('filter'); if (HOLDERS.includes(f)) state.filter = f;
+  open(); finishRun();
+  if (startState === 'invoice') {
+    const id = cardById(params.get('card')) ? params.get('card') : CARDS[0].id;
+    drill(id); finishRun();
+    const k = params.get('period'); if (k && periods(cardById(id)).includes(k)) { setPeriod(k); finishRun(); }
+    if (params.has('picker')) { openPicker(); finishRun(); }
+  }
+}
+</script>
+<script src="../presentation.js"></script>
+</body>
+</html>

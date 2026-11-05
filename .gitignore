@@ -16,4 +16,5 @@ coverage/
 graphify-out/
 .archive/
 .reel/
-site/public/demos/
+site/public/demos/*
+!site/public/demos/fyin/

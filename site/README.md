@@ -83,3 +83,11 @@ Cada push na `main` publica de novo; outras branches geram previews.
 - `https://lab.synko.digital/og/pt-br/002-form-abstractions-dx.png` → OG image.
 - Colar a URL do artigo no [Post Inspector do LinkedIn](https://www.linkedin.com/post-inspector/) para ver o card.
 - Web Analytics mostra a visita em alguns minutos.
+
+## Fyin: apresentação de protótipos
+
+`/lab/fyin/` apresenta quatro fluxos em um único iframe, com navegação por hash e carregamento sob demanda. A cópia estática em `public/demos/fyin/dia-2/` é versionada e independente do repositório do produto. Contas compartilha `transacoes/style.css` e `transacoes/engine.js`; preserve essas pastas juntas. Fontes e ícones estão em `vendor/`, com suas licenças.
+
+`node scripts/check-fyin.mjs` verifica hashes, arquivos locais, nomes anonimizados e ausência de chamadas de rede. `snapshot.json` registra a revisão de referência e os hashes da cópia publicada. Atualizações devem ser deliberadas: revisar dados, renovar hashes e repetir as interações em desktop e celular. Não gerar essa cópia durante o build a partir de um caminho local do produto.
+
+O artigo do dia 2 não foi localizado nesta revisão. A identificação editorial, a nota de abertura e o snippet de incorporação estão em `../docs/tasks/fyin-lab/INTEGRACAO-DIA-2.md`.
