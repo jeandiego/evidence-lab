@@ -7,8 +7,8 @@ export const htmlLang: Record<Lang, string> = { 'pt-br': 'pt-BR', en: 'en-US' }
 const strings = {
   'pt-br': {
     siteDescription:
-      'Laboratório público de engenharia de Jean Diego. Cada edição liga uma tese a código executável, metodologia e dados brutos.',
-    intro: 'Cada edição liga uma tese a código que você pode rodar, metodologia explícita e dados brutos.',
+      'Produto, design e engenharia no laboratório público de Jean Diego. Experimentos, protótipos e decisões documentadas.',
+    intro: 'Um laboratório público para explorar como produtos são construídos e como decisões de engenharia tomam forma.',
     work: 'Work',
     edition: 'Edição',
     editions: 'Edições',
@@ -18,7 +18,7 @@ const strings = {
     published: 'Publicado',
     readingTime: (min: number) => `${min} min de leitura`,
     onThisPage: 'Nesta edição',
-    codeAndData: 'Código e dados',
+    codeAndData: 'Materiais da edição',
     evidence: 'Dados brutos',
     video: 'Vídeo do resultado',
     play: 'Reproduzir o vídeo',
@@ -42,8 +42,8 @@ const strings = {
   },
   en: {
     siteDescription:
-      "Jean Diego's public engineering lab. Every issue ties a thesis to runnable code, methodology and raw data.",
-    intro: 'Every issue ties a thesis to code you can run, explicit methodology and raw data.',
+      "Product, design and engineering in Jean Diego's public lab. Experiments, prototypes and documented decisions.",
+    intro: 'A public lab exploring how products are built and how engineering decisions take shape.',
     work: 'Work',
     edition: 'Issue',
     editions: 'Issues',
@@ -53,7 +53,7 @@ const strings = {
     published: 'Published',
     readingTime: (min: number) => `${min} min read`,
     onThisPage: 'In this issue',
-    codeAndData: 'Code and data',
+    codeAndData: 'Issue materials',
     evidence: 'Raw data',
     video: 'Result video',
     play: 'Play the video',

@@ -15,26 +15,26 @@ O Synko Lab atende dois públicos principais, sem hierarquia entre eles:
 
 ## Product Purpose
 
-O Synko Lab é um laboratório público de engenharia e o repositório de evidências dos artigos publicados no blog e adaptados para o LinkedIn.
+O Synko Lab é um laboratório público de produto, design e engenharia. Seus artigos registram investigações, protótipos, decisões e práticas de construção, publicados no blog e adaptados para o LinkedIn.
 
 Seus três objetivos têm o mesmo peso:
 
-- sustentar tecnicamente as afirmações dos posts;
+- sustentar as afirmações dos posts com materiais adequados à pergunta;
 - demonstrar como Jean Diego pensa e toma decisões como engenheiro;
-- produzir material educacional reproduzível para outros profissionais.
+- produzir material educacional que outros profissionais possam examinar e, quando aplicável, reproduzir.
 
-Sucesso significa que uma pessoa consegue entender a tese, inspecionar a implementação, reproduzir o experimento e distinguir evidência de interpretação.
+Sucesso significa que uma pessoa consegue entender a pergunta, examinar os materiais e distinguir observação, interpretação e hipótese. Em edições experimentais, também deve conseguir reproduzir o experimento.
 
 ## Positioning
 
-Cada publicação conecta uma tese curta a código executável, metodologia explícita, dados brutos e limitações documentadas. O conteúdo não usa um laboratório como decoração: o laboratório existe para testar a afirmação e permanece disponível para inspeção.
+Cada edição desenvolve uma pergunta de produto, design ou engenharia e torna seu raciocínio examinável. Os materiais podem ser experimentos medidos, protótipos, exemplos de código, decisões de interface ou padrões de desenvolvimento registrados em skills. Números e benchmarks são usados quando a pergunta pede medição; não são requisitos para publicar uma edição. Fontes, decisões e limitações acompanham cada formato.
 
 ## Operating Context
 
-- Cada post vive em `posts/<NNN>-<slug>/` e possui contexto, texto, experimento e evidências próprios.
-- O conteúdo nasce como investigação técnica, é publicado em versão completa no blog e só então adaptado para o LinkedIn.
+- Cada post vive em `posts/<NNN>-<slug>/` e possui contexto, texto e materiais próprios. Experimento e dados brutos entram quando fizerem parte da investigação.
+- O conteúdo nasce como investigação de produto, design ou engenharia, é publicado em versão completa no blog e só então adaptado para o LinkedIn.
 - O artigo do blog é a fonte canônica; a versão do LinkedIn pode condensar o argumento, mas não alterar suas evidências ou ressalvas.
-- Leitores devem poder executar o lab localmente, comparar abordagens e consultar os artefatos que sustentam as conclusões.
+- Leitores devem poder consultar os materiais que sustentam o texto. Quando houver lab executável, devem poder rodá-lo localmente e comparar abordagens.
 - Cada pasta de post pode escolher sua própria stack e toolchain; não existe dependência obrigatória entre experimentos.
 
 ## Capabilities and Constraints
@@ -46,13 +46,13 @@ Cada publicação conecta uma tese curta a código executável, metodologia expl
 - Linhas de código, bundle size e outras métricas isoladas não podem ser apresentadas como equivalentes diretos de produtividade ou qualidade.
 - Limitações, assimetrias metodológicas e decisões de escopo precisam ser explícitas.
 - Posts são independentes: duplicação local é preferível a acoplamento entre labs.
-- O texto final só é escrito depois que implementação, metodologia e evidências estão estabilizadas.
+- O texto final distingue o que foi observado, o que é interpretação e o que segue em exploração. Em experimentos medidos, implementação, metodologia e dados precisam estar estabilizados antes da conclusão.
 - A redação deve ser clara, objetiva e sem preenchimento retórico.
 
 ## Brand Commitments
 
 - A identidade pública é Synko Lab, o laboratório de engenharia da Synko (Jean Diego).
-- A voz é técnica, direta, segura e intelectualmente honesta.
+- A voz é pessoal, direta, concreta e intelectualmente honesta. O nível de detalhe técnico acompanha o assunto da edição.
 - A apresentação deve comunicar publicação técnica e engenharia editorial, não um dashboard genérico ou uma ferramenta de IA.
 - A referência visual vinculante é o Synko Brand System v1.0 em `/Users/jeandiego/synko/brand-synko/brand` (`SYNKO_DESIGN_SYSTEM.md`, `foundations/`).
 - A identidade evita cores oficiais de frameworks como linguagem dominante; marcas de terceiros podem aparecer apenas como sinais locais e discretos.
@@ -69,7 +69,7 @@ Cada publicação conecta uma tese curta a código executável, metodologia expl
 ## Product Principles
 
 1. **Evidência antes da afirmação.** Uma conclusão pública precisa ser rastreável até um experimento ou fonte verificável.
-2. **Reprodução antes da persuasão.** O leitor deve conseguir repetir o caminho, não apenas aceitar o resultado.
+2. **Materiais examináveis.** O leitor deve conseguir acompanhar o raciocínio e seus limites; quando houver experimento, também reproduzir o caminho.
 3. **Transparência sobre trade-offs.** Custos, exceções, limitações e resultados desfavoráveis fazem parte da entrega.
 4. **Independência por post.** Cada investigação deve continuar compreensível e executável sem depender dos outros labs.
 5. **Clareza sem simplificação enganosa.** O texto é curto e direto, mas preserva as nuances que mudam a conclusão técnica.

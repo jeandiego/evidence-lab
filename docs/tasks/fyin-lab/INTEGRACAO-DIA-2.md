@@ -1,4 +1,6 @@
-# Integração pendente: publicação do dia 2
+# Registro histórico: integração à publicação do dia 2
+
+> Atualização: em solicitação posterior, o Fyin foi promovido a edição própria em `/pt-br/fyin/`. O texto abaixo registra a alternativa preparada no pedido inicial e não é uma pendência da edição 008.
 
 O artigo não foi localizado em `posts/*/post/` na main atualizada (92c5a85). O post `002-form-abstractions-dx` é sobre abstrações de formulário e não corresponde ao dia 2. Nenhum artigo existente foi alterado.
 

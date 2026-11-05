@@ -49,6 +49,7 @@ export default defineConfig({
       },
     }),
     sitemap({
+      filter: page => !new URL(page).pathname.startsWith('/lab/fyin'),
       i18n: { defaultLocale: 'pt-br', locales: { 'pt-br': 'pt-BR', en: 'en-US' } },
     }),
   ],
