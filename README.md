@@ -1,6 +1,8 @@
 # evidence-lab
 
-Meu laboratório de estudos e exploração — front, backend, infra — e o repositório de evidências dos posts que eu publico no LinkedIn.
+Meu laboratório público de produto, design e engenharia, com os artigos que publico no site e adapto para o LinkedIn.
+
+As edições registram experimentos, protótipos e decisões do processo de construção: problemas de uso, interfaces, padrões e práticas de desenvolvimento. Uma edição pode explorar uma pergunta ou documentar uma decisão sem precisar de benchmark. Quando há uma afirmação quantitativa, ela continua exigindo código, metodologia e dados que a sustentem.
 
 Regra do repositório: **toda afirmação quantitativa de um post precisa apontar para código, metodologia e dados brutos aqui dentro.** Se não dá para reproduzir, não vira número no post.
 
@@ -22,7 +24,7 @@ Cada pasta de post é independente: linguagem, gerenciador de pacotes, toolchain
 posts/<NNN>-<slug>/
 ├── README.md        o que o post afirma, como reproduzir, o que ficou de fora
 ├── post/            texto publicado
-│   ├── draft.md     rascunho, antes dos números
+│   ├── draft.md     rascunho da investigação
 │   ├── post.md      artigo final, publicado em lab.synko.digital
 │   ├── post.en.md   tradução revisada do artigo (en-us)
 │   ├── linkedin-call.md  copy do post de chamada no LinkedIn + link com UTM
@@ -31,7 +33,7 @@ posts/<NNN>-<slug>/
 └── evidence/        resultados brutos, ambiente, capturas, links
 ```
 
-`lab/` só existe quando o post tem código. `evidence/` sempre existe.
+`lab/` só existe quando o post tem código executável. `evidence/` reúne medições e dados brutos quando a edição os utiliza; nas demais, o README registra os materiais consultados e os limites da exploração.
 
 ## Posts
 
@@ -41,3 +43,4 @@ posts/<NNN>-<slug>/
 | 002 | [form-abstractions-dx](posts/002-form-abstractions-dx/) | em revisão | Uma abstração local pode dar a React uma DX de framework, mas transfere o custo para a infraestrutura da equipe |
 | 003 | [guarded-handlers](posts/003-guarded-handlers/) | em revisão | Guards composáveis centralizam pré-condições recorrentes; para uma condição local, um `if` continua mais simples |
 | 005 | [fetch-interceptor-tradeoffs](posts/005-fetch-interceptor-tradeoffs/) | em revisão | Quando N microfrontends renovam o mesmo token por conta própria, a colisão derruba sessões e multiplica chamadas por N; patch no shell e módulo compartilhado resolvem, e a diferença está em quem paga e no que cada um esconde |
+| 008 | [fyin](posts/008-fyin/) | em revisão | A rotina de reconstruir a situação financeira da casa como ponto de partida para explorar produto e design |

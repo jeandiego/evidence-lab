@@ -4,6 +4,7 @@ import { render } from 'astro:content'
 import Base from '../../layouts/Base.astro'
 import IssueTitle from '../../components/IssueTitle.astro'
 import Toc from '../../components/Toc.astro'
+import FyinExplorer from '../../components/FyinExplorer.astro'
 import '../../styles/prose.css'
 import { formatDate, t, type Lang } from '../../lib/i18n'
 import { allPosts, assetUrl, evidenceUrl, postPath, postsFor, readingMinutes, translationsOf, type Post } from '../../lib/posts'
@@ -17,6 +18,8 @@ const { post } = Astro.props as { post: Post }
 const lang = post.data.lang as Lang
 const strings = t(lang)
 const { Content, headings } = await render(post)
+const isFyin = post.data.slug === 'fyin'
+const tocHeadings = isFyin ? [...headings, { depth: 2, slug: 'explore-title', text: 'Experimente os fluxos' }] : headings
 
 const translations = await translationsOf(post.data.slug)
 const alternates = Object.fromEntries(translations.map(code => [code, postPath(code, post.data.slug)]))
@@ -105,14 +108,16 @@ const heroVideo = demoUrl ? undefined : video
       </dl>
     </header>
 
-    <div class="issue-body container">
+    <div class:list={['issue-body container', { 'issue-body--exploration': isFyin }]}>
       <aside class="issue-body__toc">
-        <Toc headings={headings} label={strings.onThisPage} />
+        <Toc headings={tocHeadings} label={strings.onThisPage} />
       </aside>
 
       <div class="prose">
         <Content />
       </div>
+
+      {isFyin && <section class="issue-body__exploration" aria-label="Protótipos do Fyin"><FyinExplorer /></section>}
 
       <footer class="issue-end">
         {
@@ -386,6 +391,16 @@ const heroVideo = demoUrl ? undefined : video
     margin-top: clamp(48px, 7vw, 96px);
   }
 
+  .issue-body--exploration {
+    grid-template-areas: 'prose toc' 'exploration exploration' 'end end';
+  }
+
+  .issue-body__exploration {
+    grid-area: exploration;
+    min-width: 0;
+    margin-top: 48px;
+  }
+
   .issue-body > .prose {
     grid-area: prose;
   }
@@ -472,6 +487,13 @@ const heroVideo = demoUrl ? undefined : video
         'end';
       max-width: calc(var(--measure) + var(--gutter) * 2);
     }
+
+    .issue-body--exploration {
+      max-width: var(--container);
+      grid-template-areas: 'toc' 'prose' 'exploration' 'end';
+    }
+
+    .issue-body--exploration > .prose { max-width: var(--measure); }
 
     .issue-body__toc :global(.toc) {
       position: static;
