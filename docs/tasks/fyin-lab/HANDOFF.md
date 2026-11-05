@@ -1,4 +1,4 @@
-State: IN_PROGRESS
+State: DONE
 
 ## Implementado
 
@@ -23,6 +23,10 @@ Capturas inspecionadas: /private/tmp/fyin-desktop.png e /private/tmp/fyin-mobile
 
 Revisão independente: ship; P3 de estado dos filtros resolvido e conferido. Documentação específica revisada, sem alteração do sistema global.
 
-Limites: preview remoto e PR pendentes. Nenhum deploy de produção autorizado ou realizado. O painel de simulação de Contas aparece apenas na abertura direta, inclusive no celular; fica oculto quando incorporado. A imagem de contexto da home não torna seus outros atalhos interativos, e a página avisa isso.
+PR em rascunho: https://github.com/jeandiego/evidence-lab/pull/2
+Preview validado (HTTP 200 e snapshot idêntico): https://a16bb86a.evidence-lab-5ky.pages.dev/lab/fyin/
+Preview da branch: https://codex-fyin-lab.evidence-lab-5ky.pages.dev/lab/fyin/
 
-Next action: concluir revisão independente, registrar eventuais correções, criar PR da branch e conferir preview Cloudflare Pages.
+Limites: artigo canônico não localizado, integração entregue como handoff conforme alternativa autorizada. Nenhum deploy de produção autorizado ou realizado. O painel de simulação de Contas aparece apenas na abertura direta, inclusive no celular; fica oculto quando incorporado. A imagem de contexto da home não torna seus outros atalhos interativos, e a página avisa isso.
+
+Next action: revisão humana do PR. Quando o artigo canônico do dia 2 for identificado, aplicar INTEGRACAO-DIA-2.md preservando o argumento do texto. Não mesclar/publicar sem autorização.
